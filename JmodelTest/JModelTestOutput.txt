@@ -1,0 +1,2616 @@
+-------------------------- jModeltest 2.1.10 v20160303 --------------------------
+(c) 2011-onwards D. Darriba, G.L. Taboada, R. Doallo and D. Posada,
+(1) Department of Biochemistry, Genetics and Immunology
+    University of Vigo, 36310 Vigo, Spain.
+(2) Department of Electronics and Systems
+    University of A Coruna, 15071 A Coruna, Spain.
+e-mail: ddarriba@udc.es, dposada@uvigo.es
+--------------------------------------------------------------------------------
+ 
+Mon Mar 30 19:49:42 PDT 2026
+Linux 4.18.0-513.24.1.el8_9.x86_64, arch: amd64, bits: 64, numcores: 32
+ 
+--------------------------------------------------------------------------------
+Citation: Darriba D, Taboada GL, Doallo R and Posada D. 2012.
+          "jModelTest 2: more models, new heuristics and parallel computing".
+          Nature Methods 9(8), 772.
+--------------------------------------------------------------------------------
+ 
+jModelTest 2.1.10 v20160303
+Copyright (C) 2011 D. Darriba, G.L. Taboada, R. Doallo and D. Posada
+This program comes with ABSOLUTELY NO WARRANTY
+This is free software, and you are welcome to redistribute it under certain
+conditions
+ 
+Notice: This program may contain errors. Please inspect results carefully.
+ 
+ 
+Arguments = -tr 32 --set-property log-dir=./ -d infile.phy -o output.txt -s 11 -f -i -g 4 -t ML -AIC -BIC -S BEST -p -a -w
+
+Reading data file "infile.phy"... OK.
+  number of sequences: 76
+  number of sites: 2597
+ 
+ 
+---------------------------------------------------------------
+*                                                             *
+*        COMPUTATION OF LIKELIHOOD SCORES WITH PHYML          *
+*                                                             *
+---------------------------------------------------------------
+ 
+::Settings::
+ 
+ Phyml version = 20130103
+ Phyml binary = PhyML_3.0_linux64
+ Phyml path = /expanse/projects/ngbt/opt/expanse/jmodeltest2/2.1.10/exe/phyml/
+ Candidate models = 88
+   number of substitution schemes = 11
+   including models with equal/unequal base frequencies (+F)
+   including models with/without a proportion of invariable sites (+I)
+   including models with/without rate variation among sites (+G) (nCat = 4)
+ Optimized free parameters (K) = substitution parameters + 149 branch lengths + topology 
+ Base tree for likelihood calculations = ML tree
+ Tree topology search operation = BEST
+ 
+ 
+ 
+::Progress::
+ 
+Model 		 Exec. Time 	 Total Time 	 -lnL
+-------------------------------------------------------------------------
+TPM3uf+G	00h:00:41:05	00h:00:41:06	    4227.1762	 (1/88)
+TrN+G		00h:00:41:06	00h:00:41:06	    4225.1230	 (2/88)
+TPM1uf+G	00h:00:41:07	00h:00:41:07	    4227.9211	 (3/88)
+TPM2uf+G	00h:00:41:06	00h:00:41:07	    4228.0096	 (4/88)
+JC+I+G		00h:00:41:07	00h:00:41:07	    4322.1456	 (5/88)
+TIM3+G		00h:00:41:07	00h:00:41:07	    4224.2387	 (6/88)
+TVM+G		00h:00:41:08	00h:00:41:08	    4227.0470	 (7/88)
+HKY+G		00h:00:41:09	00h:00:42:00	    4228.0887	 (8/88)
+TPM3+I+G	00h:00:42:03	00h:00:42:03	    4297.7415	 (9/88)
+K80+I+G		00h:00:42:04	00h:00:42:04	    4297.8019	 (10/88)
+TPM1+I+G	00h:00:42:04	00h:00:42:04	    4297.7022	 (11/88)
+TPM2+I+G	00h:00:42:04	00h:00:42:04	    4297.1347	 (12/88)
+F81+I+G		00h:00:42:04	00h:00:42:05	    4241.0107	 (13/88)
+TVMef+I+G	00h:00:44:02	00h:00:44:02	    4296.9314	 (14/88)
+TPM3uf+I+G	00h:00:44:04	00h:00:44:04	    4214.1740	 (15/88)
+TPM1uf+I+G	00h:00:44:05	00h:00:44:05	    4214.7904	 (16/88)
+TPM2uf+I+G	00h:00:44:05	00h:00:44:05	    4215.0003	 (17/88)
+HKY+I+G		00h:00:44:06	00h:00:44:06	    4215.0891	 (18/88)
+TVM+I+G		00h:00:44:07	00h:00:44:07	    4213.9338	 (19/88)
+F81+G		00h:00:55:05	00h:00:55:05	    4253.2194	 (20/88)
+TIM1+G		00h:00:56:01	00h:00:56:01	    4224.9523	 (21/88)
+TIM2+G		00h:00:56:03	00h:00:56:03	    4225.0506	 (22/88)
+TIM3ef+I+G	00h:00:58:07	00h:00:58:07	    4294.6526	 (23/88)
+TIM1ef+I+G	00h:00:58:07	00h:00:58:07	    4294.6430	 (24/88)
+TIM2ef+I+G	00h:00:58:07	00h:00:58:07	    4294.0397	 (25/88)
+TrNef+I+G	00h:00:58:09	00h:00:58:09	    4294.7420	 (26/88)
+SYM+I+G		00h:00:59:00	00h:00:59:00	    4293.8075	 (27/88)
+TIM1+I+G	00h:00:59:01	00h:00:59:01	    4212.4154	 (28/88)
+TrN+I+G		00h:00:59:03	00h:00:59:03	    4212.7233	 (29/88)
+TIM2+I+G	00h:00:59:05	00h:00:59:05	    4212.6522	 (30/88)
+TIM3+I+G	00h:00:59:06	00h:00:59:06	    4211.8613	 (31/88)
+GTR+I+G		00h:00:59:06	00h:00:59:07	    4211.6413	 (32/88)
+JC+G		00h:00:41:01	00h:01:22:08	    4334.6306	 (33/88)
+TPM3+G		00h:00:41:03	00h:01:23:02	    4311.2602	 (34/88)
+TPM2+G		00h:00:41:05	00h:01:23:03	    4310.8239	 (35/88)
+TPM1+G		00h:00:41:06	00h:01:23:03	    4311.3597	 (36/88)
+K80+G		00h:00:41:07	00h:01:23:04	    4311.3889	 (37/88)
+GTR+G		00h:00:41:07	00h:01:23:04	    4224.1151	 (38/88)
+TrNef+G		00h:00:41:09	00h:01:23:06	    4307.6113	 (39/88)
+TIM1ef+G	00h:00:41:07	00h:01:23:07	    4307.5810	 (40/88)
+TIM2ef+G	00h:00:41:07	00h:01:24:01	    4307.0269	 (41/88)
+TVMef+G		00h:00:41:07	00h:01:24:01	    4310.6696	 (42/88)
+SYM+G		00h:00:41:07	00h:01:24:01	    4306.8602	 (43/88)
+TIM3ef+G	00h:00:41:08	00h:01:24:02	    4307.4718	 (44/88)
+F81+I		00h:00:57:04	00h:01:39:09	    4241.4999	 (45/88)
+TPM3uf+I	00h:00:56:02	00h:01:40:09	    4214.7774	 (46/88)
+F81		00h:00:17:07	00h:01:41:01	    4275.7555	 (47/88)
+TPM1uf		00h:00:17:08	00h:01:41:02	    4250.7323	 (48/88)
+TrN		00h:00:17:09	00h:01:41:03	    4247.8591	 (49/88)
+HKY		00h:00:18:00	00h:01:41:03	    4250.8686	 (50/88)
+HKY+I		00h:00:57:01	00h:01:41:04	    4215.6632	 (51/88)
+TPM2uf		00h:00:17:09	00h:01:41:05	    4250.7895	 (52/88)
+TPM2uf+I	00h:00:57:00	00h:01:41:05	    4215.5469	 (53/88)
+TPM3uf		00h:00:17:08	00h:01:41:06	    4249.9923	 (54/88)
+TrN+I		00h:00:57:06	00h:01:42:00	    4213.2668	 (55/88)
+TIM3		00h:00:17:09	00h:01:42:01	    4246.9899	 (56/88)
+TVM		00h:00:17:09	00h:01:42:02	    4249.8795	 (57/88)
+TIM1+I		00h:00:57:09	00h:01:42:05	    4212.9730	 (58/88)
+TPM1uf+I	00h:01:01:06	00h:01:46:01	    4215.3815	 (59/88)
+TIM1		00h:00:22:01	00h:01:46:01	    4247.7223	 (60/88)
+TIM2		00h:00:22:01	00h:01:46:02	    4247.7811	 (61/88)
+TIM3+I		00h:00:56:05	00h:01:52:06	    4212.4220	 (62/88)
+TIM2+I		00h:00:57:02	00h:01:52:07	    4213.1624	 (63/88)
+TVM+I		00h:00:56:07	00h:01:53:00	    4214.5141	 (64/88)
+TIM2ef+I	00h:00:55:01	00h:01:54:08	    4294.3578	 (65/88)
+JC+I		00h:00:56:07	00h:01:55:05	    4322.5924	 (66/88)
+TrNef+I		00h:00:57:02	00h:01:56:02	    4295.1414	 (67/88)
+GTR+I		00h:00:57:05	00h:01:56:02	    4212.1672	 (68/88)
+TIM3ef+I	00h:00:56:06	00h:01:56:02	    4295.0539	 (69/88)
+TIM1ef+I	00h:00:56:08	00h:01:56:03	    4295.0425	 (70/88)
+GTR		00h:00:17:08	00h:01:57:08	    4246.8780	 (71/88)
+K80+I		00h:00:59:09	00h:01:58:07	    4298.2622	 (72/88)
+JC		00h:00:17:09	00h:01:58:08	    4357.2337	 (73/88)
+TPM2+I		00h:00:59:07	00h:01:58:08	    4297.5255	 (74/88)
+TPM3+I		00h:00:59:06	00h:01:58:09	    4298.2076	 (75/88)
+K80		00h:00:18:00	00h:01:59:01	    4334.2647	 (76/88)
+TPM1		00h:00:17:09	00h:01:59:02	    4334.2458	 (77/88)
+TrNef		00h:00:18:00	00h:01:59:03	    4330.4310	 (78/88)
+TPM2		00h:00:18:00	00h:01:59:04	    4333.7448	 (79/88)
+TPM3		00h:00:18:00	00h:01:59:04	    4334.1146	 (80/88)
+TIM1ef		00h:00:17:09	00h:01:59:04	    4330.4120	 (81/88)
+TIM2ef		00h:00:17:09	00h:01:59:05	    4329.9107	 (82/88)
+TPM1+I		00h:01:00:05	00h:01:59:05	    4298.1662	 (83/88)
+TIM3ef		00h:00:18:01	00h:01:59:07	    4330.2814	 (84/88)
+SYM		00h:00:18:00	00h:02:00:01	    4329.7519	 (85/88)
+TVMef		00h:00:18:00	00h:02:00:01	    4333.5865	 (86/88)
+SYM+I		00h:00:55:09	00h:02:19:00	    4294.1153	 (87/88)
+TVMef+I		00h:00:58:09	00h:02:21:07	    4297.3186	 (88/88)
+ 
+   Model = JC
+   partition = 000000
+   -lnL = 4357.2337
+   K = 150 
+ 
+   Model = JC+I
+   partition = 000000
+   -lnL = 4322.5924
+   K = 151
+   p-inv = 0.9290 
+ 
+   Model = JC+G
+   partition = 000000
+   -lnL = 4334.6306
+   K = 151
+   gamma shape = 0.0210 
+ 
+   Model = JC+I+G
+   partition = 000000
+   -lnL = 4322.1456
+   K = 152
+   p-inv = 0.9000
+   gamma shape = 1.5100 
+ 
+   Model = F81
+   partition = 000000
+   -lnL = 4275.7555
+   K = 153
+   freqA = 0.3172 
+   freqC = 0.1793 
+   freqG = 0.1996 
+   freqT = 0.3039  
+ 
+   Model = F81+I
+   partition = 000000
+   -lnL = 4241.4999
+   K = 154
+   freqA = 0.3172 
+   freqC = 0.1793 
+   freqG = 0.2000 
+   freqT = 0.3036 
+   p-inv = 0.9270 
+ 
+   Model = F81+G
+   partition = 000000
+   -lnL = 4253.2194
+   K = 154
+   freqA = 0.3172 
+   freqC = 0.1793 
+   freqG = 0.1997 
+   freqT = 0.3039 
+   gamma shape = 0.0210 
+ 
+   Model = F81+I+G
+   partition = 000000
+   -lnL = 4241.0107
+   K = 155
+   freqA = 0.3173 
+   freqC = 0.1792 
+   freqG = 0.2000 
+   freqT = 0.3035 
+   p-inv = 0.9000
+   gamma shape = 1.5820 
+ 
+   Model = K80
+   partition = 010010
+   -lnL = 4334.2647
+   K = 151
+   kappa = 4.1533 (ti/tv = 2.0766) 
+ 
+   Model = K80+I
+   partition = 010010
+   -lnL = 4298.2622
+   K = 152
+   kappa = 4.5952 (ti/tv = 2.2976)
+   p-inv = 0.9320 
+ 
+   Model = K80+G
+   partition = 010010
+   -lnL = 4311.3889
+   K = 152
+   kappa = 4.2318 (ti/tv = 2.1159)
+   gamma shape = 0.0210 
+ 
+   Model = K80+I+G
+   partition = 010010
+   -lnL = 4297.8019
+   K = 153
+   kappa = 4.6219 (ti/tv = 2.3109)
+   p-inv = 0.8990
+   gamma shape = 1.2010 
+ 
+   Model = HKY
+   partition = 010010
+   -lnL = 4250.8686
+   K = 154
+   freqA = 0.3176 
+   freqC = 0.1787 
+   freqG = 0.1987 
+   freqT = 0.3050 
+   kappa = 4.4047 (ti/tv = 2.0743) 
+ 
+   Model = HKY+I
+   partition = 010010
+   -lnL = 4215.6632
+   K = 155
+   freqA = 0.3170 
+   freqC = 0.1790 
+   freqG = 0.1987 
+   freqT = 0.3053 
+   kappa = 4.8148 (ti/tv = 2.2678)
+   p-inv = 0.9290 
+ 
+   Model = HKY+G
+   partition = 010010
+   -lnL = 4228.0887
+   K = 155
+   freqA = 0.3175 
+   freqC = 0.1787 
+   freqG = 0.1987 
+   freqT = 0.3051 
+   kappa = 4.4912 (ti/tv = 2.1150)
+   gamma shape = 0.0210 
+ 
+   Model = HKY+I+G
+   partition = 010010
+   -lnL = 4215.0890
+   K = 156
+   freqA = 0.3171 
+   freqC = 0.1790 
+   freqG = 0.1987 
+   freqT = 0.3053 
+   kappa = 4.8616 (ti/tv = 2.2897)
+   p-inv = 0.9000
+   gamma shape = 1.3630 
+ 
+   Model = TrNef
+   partition = 010020
+   -lnL = 4330.4310
+   K = 152
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  5.5267
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  2.6840
+   R(f) [GT] =  1.0000 
+ 
+   Model = TrNef+I
+   partition = 010020
+   -lnL = 4295.1414
+   K = 153
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  6.2502
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  2.8693
+   R(f) [GT] =  1.0000
+   p-inv = 0.9290 
+ 
+   Model = TrNef+G
+   partition = 010020
+   -lnL = 4307.6113
+   K = 153
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  5.7060
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  2.6977
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TrNef+I+G
+   partition = 010020
+   -lnL = 4294.7420
+   K = 154
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  6.2775
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  2.8893
+   R(f) [GT] =  1.0000
+   p-inv = 0.9000
+   gamma shape = 1.4540 
+ 
+   Model = TrN
+   partition = 010020
+   -lnL = 4247.8591
+   K = 155
+   freqA = 0.3157 
+   freqC = 0.1805 
+   freqG = 0.1969 
+   freqT = 0.3068 
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  5.6645
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  2.9592
+   R(f) [GT] =  1.0000 
+ 
+   Model = TrN+I
+   partition = 010020
+   -lnL = 4213.2668
+   K = 156
+   freqA = 0.3154 
+   freqC = 0.1805 
+   freqG = 0.1972 
+   freqT = 0.3068 
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  6.3219
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  3.1705
+   R(f) [GT] =  1.0000
+   p-inv = 0.9260 
+ 
+   Model = TrN+G
+   partition = 010020
+   -lnL = 4225.1230
+   K = 156
+   freqA = 0.3157 
+   freqC = 0.1805 
+   freqG = 0.1969 
+   freqT = 0.3069 
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  5.8582
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  2.9828
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TrN+I+G
+   partition = 010020
+   -lnL = 4212.7233
+   K = 157
+   freqA = 0.3155 
+   freqC = 0.1805 
+   freqG = 0.1971 
+   freqT = 0.3068 
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  6.3950
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  3.1958
+   R(f) [GT] =  1.0000
+   p-inv = 0.9000
+   gamma shape = 1.5620 
+ 
+   Model = TPM1
+   partition = 012210
+   -lnL = 4334.2458
+   K = 152
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  4.0174
+   R(c) [AT] =  0.9325
+   R(d) [CG] =  0.9325
+   R(e) [CT] =  4.0174
+   R(f) [GT] =  1.0000 
+ 
+   Model = TPM1+I
+   partition = 012210
+   -lnL = 4298.1662
+   K = 153
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  4.2242
+   R(c) [AT] =  0.8372
+   R(d) [CG] =  0.8372
+   R(e) [CT] =  4.2242
+   R(f) [GT] =  1.0000
+   p-inv = 0.9320 
+ 
+   Model = TPM1+G
+   partition = 012210
+   -lnL = 4311.3597
+   K = 153
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  4.0479
+   R(c) [AT] =  0.9149
+   R(d) [CG] =  0.9149
+   R(e) [CT] =  4.0479
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TPM1+I+G
+   partition = 012210
+   -lnL = 4297.7022
+   K = 154
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  4.2455
+   R(c) [AT] =  0.8320
+   R(d) [CG] =  0.8320
+   R(e) [CT] =  4.2455
+   R(f) [GT] =  1.0000
+   p-inv = 0.8990
+   gamma shape = 1.1840 
+ 
+   Model = TPM1uf
+   partition = 012210
+   -lnL = 4250.7323
+   K = 155
+   freqA = 0.3176 
+   freqC = 0.1787 
+   freqG = 0.1986 
+   freqT = 0.3051 
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  4.0028
+   R(c) [AT] =  0.8292
+   R(d) [CG] =  0.8292
+   R(e) [CT] =  4.0028
+   R(f) [GT] =  1.0000 
+ 
+   Model = TPM1uf+I
+   partition = 012210
+   -lnL = 4215.3815
+   K = 156
+   freqA = 0.3171 
+   freqC = 0.1789 
+   freqG = 0.1986 
+   freqT = 0.3054 
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  4.1593
+   R(c) [AT] =  0.7375
+   R(d) [CG] =  0.7375
+   R(e) [CT] =  4.1593
+   R(f) [GT] =  1.0000
+   p-inv = 0.9300 
+ 
+   Model = TPM1uf+G
+   partition = 012210
+   -lnL = 4227.9211
+   K = 156
+   freqA = 0.3176 
+   freqC = 0.1787 
+   freqG = 0.1986 
+   freqT = 0.3052 
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  4.0334
+   R(c) [AT] =  0.8066
+   R(d) [CG] =  0.8066
+   R(e) [CT] =  4.0334
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TPM1uf+I+G
+   partition = 012210
+   -lnL = 4214.7904
+   K = 157
+   freqA = 0.3172 
+   freqC = 0.1789 
+   freqG = 0.1985 
+   freqT = 0.3054 
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  4.1766
+   R(c) [AT] =  0.7276
+   R(d) [CG] =  0.7276
+   R(e) [CT] =  4.1766
+   R(f) [GT] =  1.0000
+   p-inv = 0.9000
+   gamma shape = 1.3340 
+ 
+   Model = TPM2
+   partition = 010212
+   -lnL = 4333.7448
+   K = 152
+   R(a) [AC] =  1.4608
+   R(b) [AG] =  5.2148
+   R(c) [AT] =  1.4608
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  5.2148
+   R(f) [GT] =  1.0000 
+ 
+   Model = TPM2+I
+   partition = 010212
+   -lnL = 4297.5255
+   K = 153
+   R(a) [AC] =  1.6422
+   R(b) [AG] =  6.1844
+   R(c) [AT] =  1.6422
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  6.1844
+   R(f) [GT] =  1.0000
+   p-inv = 0.9330 
+ 
+   Model = TPM2+G
+   partition = 010212
+   -lnL = 4310.8238
+   K = 153
+   R(a) [AC] =  1.4961
+   R(b) [AG] =  5.3824
+   R(c) [AT] =  1.4961
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  5.3824
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TPM2+I+G
+   partition = 010212
+   -lnL = 4297.1347
+   K = 154
+   R(a) [AC] =  1.6089
+   R(b) [AG] =  6.1463
+   R(c) [AT] =  1.6089
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  6.1463
+   R(f) [GT] =  1.0000
+   p-inv = 0.8990
+   gamma shape = 1.1970 
+ 
+   Model = TPM2uf
+   partition = 010212
+   -lnL = 4250.7895
+   K = 155
+   freqA = 0.3174 
+   freqC = 0.1787 
+   freqG = 0.1989 
+   freqT = 0.3050 
+   R(a) [AC] =  1.1611
+   R(b) [AG] =  4.8369
+   R(c) [AT] =  1.1611
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  4.8369
+   R(f) [GT] =  1.0000 
+ 
+   Model = TPM2uf+I
+   partition = 010212
+   -lnL = 4215.5469
+   K = 156
+   freqA = 0.3167 
+   freqC = 0.1790 
+   freqG = 0.1990 
+   freqT = 0.3053 
+   R(a) [AC] =  1.2185
+   R(b) [AG] =  5.4462
+   R(c) [AT] =  1.2185
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  5.4462
+   R(f) [GT] =  1.0000
+   p-inv = 0.9290 
+ 
+   Model = TPM2uf+G
+   partition = 010212
+   -lnL = 4228.0096
+   K = 156
+   freqA = 0.3173 
+   freqC = 0.1787 
+   freqG = 0.1989 
+   freqT = 0.3051 
+   R(a) [AC] =  1.1643
+   R(b) [AG] =  4.9351
+   R(c) [AT] =  1.1643
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  4.9351
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TPM2uf+I+G
+   partition = 010212
+   -lnL = 4215.0003
+   K = 157
+   freqA = 0.3168 
+   freqC = 0.1790 
+   freqG = 0.1989 
+   freqT = 0.3053 
+   R(a) [AC] =  1.1928
+   R(b) [AG] =  5.4250
+   R(c) [AT] =  1.1928
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  5.4250
+   R(f) [GT] =  1.0000
+   p-inv = 0.9000
+   gamma shape = 1.3640 
+ 
+   Model = TPM3
+   partition = 012012
+   -lnL = 4334.1146
+   K = 152
+   R(a) [AC] =  1.2163
+   R(b) [AG] =  4.5445
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.2163
+   R(e) [CT] =  4.5445
+   R(f) [GT] =  1.0000 
+ 
+   Model = TPM3+I
+   partition = 012012
+   -lnL = 4298.2076
+   K = 153
+   R(a) [AC] =  1.1452
+   R(b) [AG] =  4.8896
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.1452
+   R(e) [CT] =  4.8896
+   R(f) [GT] =  1.0000
+   p-inv = 0.9320 
+ 
+   Model = TPM3+G
+   partition = 012012
+   -lnL = 4311.2602
+   K = 153
+   R(a) [AC] =  1.2069
+   R(b) [AG] =  4.6096
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.2069
+   R(e) [CT] =  4.6096
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TPM3+I+G
+   partition = 012012
+   -lnL = 4297.7415
+   K = 154
+   R(a) [AC] =  1.1479
+   R(b) [AG] =  4.9275
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.1479
+   R(e) [CT] =  4.9275
+   R(f) [GT] =  1.0000
+   p-inv = 0.8990
+   gamma shape = 1.2110 
+ 
+   Model = TPM3uf
+   partition = 012012
+   -lnL = 4249.9923
+   K = 155
+   freqA = 0.3176 
+   freqC = 0.1781 
+   freqG = 0.1987 
+   freqT = 0.3057 
+   R(a) [AC] =  1.6174
+   R(b) [AG] =  5.4051
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.6174
+   R(e) [CT] =  5.4051
+   R(f) [GT] =  1.0000 
+ 
+   Model = TPM3uf+I
+   partition = 012012
+   -lnL = 4214.7774
+   K = 156
+   freqA = 0.3170 
+   freqC = 0.1781 
+   freqG = 0.1987 
+   freqT = 0.3062 
+   R(a) [AC] =  1.7051
+   R(b) [AG] =  6.0418
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.7051
+   R(e) [CT] =  6.0418
+   R(f) [GT] =  1.0000
+   p-inv = 0.9290 
+ 
+   Model = TPM3uf+G
+   partition = 012012
+   -lnL = 4227.1762
+   K = 156
+   freqA = 0.3175 
+   freqC = 0.1780 
+   freqG = 0.1987 
+   freqT = 0.3059 
+   R(a) [AC] =  1.6555
+   R(b) [AG] =  5.5597
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.6555
+   R(e) [CT] =  5.5597
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TPM3uf+I+G
+   partition = 012012
+   -lnL = 4214.1740
+   K = 157
+   freqA = 0.3171 
+   freqC = 0.1781 
+   freqG = 0.1987 
+   freqT = 0.3062 
+   R(a) [AC] =  1.7233
+   R(b) [AG] =  6.1452
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.7233
+   R(e) [CT] =  6.1452
+   R(f) [GT] =  1.0000
+   p-inv = 0.8990
+   gamma shape = 1.3390 
+ 
+   Model = TIM1ef
+   partition = 012230
+   -lnL = 4330.4120
+   K = 153
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  5.3388
+   R(c) [AT] =  0.9318
+   R(d) [CG] =  0.9318
+   R(e) [CT] =  2.5939
+   R(f) [GT] =  1.0000 
+ 
+   Model = TIM1ef+I
+   partition = 012230
+   -lnL = 4295.0425
+   K = 154
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  5.7580
+   R(c) [AT] =  0.8370
+   R(d) [CG] =  0.8370
+   R(e) [CT] =  2.6375
+   R(f) [GT] =  1.0000
+   p-inv = 0.9290 
+ 
+   Model = TIM1ef+G
+   partition = 012230
+   -lnL = 4307.5810
+   K = 154
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  5.4576
+   R(c) [AT] =  0.9130
+   R(d) [CG] =  0.9130
+   R(e) [CT] =  2.5831
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TIM1ef+I+G
+   partition = 012230
+   -lnL = 4294.6430
+   K = 155
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  5.7698
+   R(c) [AT] =  0.8331
+   R(d) [CG] =  0.8331
+   R(e) [CT] =  2.6530
+   R(f) [GT] =  1.0000
+   p-inv = 0.9000
+   gamma shape = 1.4320 
+ 
+   Model = TIM1
+   partition = 012230
+   -lnL = 4247.7223
+   K = 156
+   freqA = 0.3158 
+   freqC = 0.1805 
+   freqG = 0.1969 
+   freqT = 0.3069 
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  5.1460
+   R(c) [AT] =  0.8274
+   R(d) [CG] =  0.8274
+   R(e) [CT] =  2.6918
+   R(f) [GT] =  1.0000 
+ 
+   Model = TIM1+I
+   partition = 012230
+   -lnL = 4212.9730
+   K = 157
+   freqA = 0.3155 
+   freqC = 0.1805 
+   freqG = 0.1971 
+   freqT = 0.3069 
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  5.4727
+   R(c) [AT] =  0.7344
+   R(d) [CG] =  0.7344
+   R(e) [CT] =  2.7301
+   R(f) [GT] =  1.0000
+   p-inv = 0.9270 
+ 
+   Model = TIM1+G
+   partition = 012230
+   -lnL = 4224.9523
+   K = 157
+   freqA = 0.3158 
+   freqC = 0.1805 
+   freqG = 0.1968 
+   freqT = 0.3069 
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  5.2535
+   R(c) [AT] =  0.8051
+   R(d) [CG] =  0.8051
+   R(e) [CT] =  2.6796
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TIM1+I+G
+   partition = 012230
+   -lnL = 4212.4154
+   K = 158
+   freqA = 0.3157 
+   freqC = 0.1804 
+   freqG = 0.1970 
+   freqT = 0.3069 
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  5.4998
+   R(c) [AT] =  0.7238
+   R(d) [CG] =  0.7238
+   R(e) [CT] =  2.7400
+   R(f) [GT] =  1.0000
+   p-inv = 0.9000
+   gamma shape = 1.5210 
+ 
+   Model = TIM2ef
+   partition = 010232
+   -lnL = 4329.9107
+   K = 153
+   R(a) [AC] =  1.4603
+   R(b) [AG] =  6.9392
+   R(c) [AT] =  1.4603
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  3.3711
+   R(f) [GT] =  1.0000 
+ 
+   Model = TIM2ef+I
+   partition = 010232
+   -lnL = 4294.3578
+   K = 154
+   R(a) [AC] =  1.6829
+   R(b) [AG] =  8.5715
+   R(c) [AT] =  1.6829
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  3.9058
+   R(f) [GT] =  1.0000
+   p-inv = 0.9300 
+ 
+   Model = TIM2ef+G
+   partition = 010232
+   -lnL = 4307.0269
+   K = 154
+   R(a) [AC] =  1.5115
+   R(b) [AG] =  7.3180
+   R(c) [AT] =  1.5115
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  3.4536
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TIM2ef+I+G
+   partition = 010232
+   -lnL = 4294.0396
+   K = 155
+   R(a) [AC] =  1.6440
+   R(b) [AG] =  8.4648
+   R(c) [AT] =  1.6440
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  3.8777
+   R(f) [GT] =  1.0000
+   p-inv = 0.9000
+   gamma shape = 1.4590 
+ 
+   Model = TIM2
+   partition = 010232
+   -lnL = 4247.7811
+   K = 156
+   freqA = 0.3155 
+   freqC = 0.1805 
+   freqG = 0.1971 
+   freqT = 0.3068 
+   R(a) [AC] =  1.1599
+   R(b) [AG] =  6.2159
+   R(c) [AT] =  1.1599
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  3.2507
+   R(f) [GT] =  1.0000 
+ 
+   Model = TIM2+I
+   partition = 010232
+   -lnL = 4213.1623
+   K = 157
+   freqA = 0.3151 
+   freqC = 0.1805 
+   freqG = 0.1975 
+   freqT = 0.3068 
+   R(a) [AC] =  1.2057
+   R(b) [AG] =  7.1097
+   R(c) [AT] =  1.2057
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  3.5622
+   R(f) [GT] =  1.0000
+   p-inv = 0.9260 
+ 
+   Model = TIM2+G
+   partition = 010232
+   -lnL = 4225.0506
+   K = 157
+   freqA = 0.3155 
+   freqC = 0.1805 
+   freqG = 0.1971 
+   freqT = 0.3069 
+   R(a) [AC] =  1.1584
+   R(b) [AG] =  6.4165
+   R(c) [AT] =  1.1584
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  3.2757
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TIM2+I+G
+   partition = 010232
+   -lnL = 4212.6522
+   K = 158
+   freqA = 0.3153 
+   freqC = 0.1805 
+   freqG = 0.1974 
+   freqT = 0.3068 
+   R(a) [AC] =  1.1732
+   R(b) [AG] =  7.0615
+   R(c) [AT] =  1.1732
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  3.5346
+   R(f) [GT] =  1.0000
+   p-inv = 0.9000
+   gamma shape = 1.5680 
+ 
+   Model = TIM3ef
+   partition = 012032
+   -lnL = 4330.2814
+   K = 153
+   R(a) [AC] =  1.2181
+   R(b) [AG] =  6.0513
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.2181
+   R(e) [CT] =  2.9393
+   R(f) [GT] =  1.0000 
+ 
+   Model = TIM3ef+I
+   partition = 012032
+   -lnL = 4295.0539
+   K = 154
+   R(a) [AC] =  1.1766
+   R(b) [AG] =  6.7522
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.1766
+   R(e) [CT] =  3.0861
+   R(f) [GT] =  1.0000
+   p-inv = 0.9290 
+ 
+   Model = TIM3ef+G
+   partition = 012032
+   -lnL = 4307.4718
+   K = 154
+   R(a) [AC] =  1.2139
+   R(b) [AG] =  6.2395
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.2139
+   R(e) [CT] =  2.9501
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TIM3ef+I+G
+   partition = 012032
+   -lnL = 4294.6526
+   K = 155
+   R(a) [AC] =  1.1794
+   R(b) [AG] =  6.7871
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.1794
+   R(e) [CT] =  3.1119
+   R(f) [GT] =  1.0000
+   p-inv = 0.9000
+   gamma shape = 1.4670 
+ 
+   Model = TIM3
+   partition = 012032
+   -lnL = 4246.9899
+   K = 156
+   freqA = 0.3157 
+   freqC = 0.1799 
+   freqG = 0.1969 
+   freqT = 0.3075 
+   R(a) [AC] =  1.6141
+   R(b) [AG] =  6.9408
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.6141
+   R(e) [CT] =  3.6374
+   R(f) [GT] =  1.0000 
+ 
+   Model = TIM3+I
+   partition = 012032
+   -lnL = 4212.4220
+   K = 157
+   freqA = 0.3154 
+   freqC = 0.1798 
+   freqG = 0.1972 
+   freqT = 0.3076 
+   R(a) [AC] =  1.6617
+   R(b) [AG] =  7.8169
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.6617
+   R(e) [CT] =  3.9460
+   R(f) [GT] =  1.0000
+   p-inv = 0.9260 
+ 
+   Model = TIM3+G
+   partition = 012032
+   -lnL = 4224.2387
+   K = 157
+   freqA = 0.3157 
+   freqC = 0.1798 
+   freqG = 0.1969 
+   freqT = 0.3076 
+   R(a) [AC] =  1.6361
+   R(b) [AG] =  7.2155
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.6361
+   R(e) [CT] =  3.6886
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TIM3+I+G
+   partition = 012032
+   -lnL = 4211.8613
+   K = 158
+   freqA = 0.3155 
+   freqC = 0.1797 
+   freqG = 0.1972 
+   freqT = 0.3076 
+   R(a) [AC] =  1.6808
+   R(b) [AG] =  7.9714
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.6808
+   R(e) [CT] =  4.0149
+   R(f) [GT] =  1.0000
+   p-inv = 0.9000
+   gamma shape = 1.5780 
+ 
+   Model = TVMef
+   partition = 012314
+   -lnL = 4333.5865
+   K = 154
+   R(a) [AC] =  1.7354
+   R(b) [AG] =  5.4688
+   R(c) [AT] =  1.3653
+   R(d) [CG] =  1.1117
+   R(e) [CT] =  5.4688
+   R(f) [GT] =  1.0000 
+ 
+   Model = TVMef+I
+   partition = 012314
+   -lnL = 4297.3186
+   K = 155
+   R(a) [AC] =  1.7921
+   R(b) [AG] =  5.8012
+   R(c) [AT] =  1.3370
+   R(d) [CG] =  0.8347
+   R(e) [CT] =  5.8012
+   R(f) [GT] =  1.0000
+   p-inv = 0.9330 
+ 
+   Model = TVMef+G
+   partition = 012314
+   -lnL = 4310.6696
+   K = 155
+   R(a) [AC] =  1.7530
+   R(b) [AG] =  5.5266
+   R(c) [AT] =  1.3637
+   R(d) [CG] =  1.0604
+   R(e) [CT] =  5.5266
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TVMef+I+G
+   partition = 012314
+   -lnL = 4296.9314
+   K = 156
+   R(a) [AC] =  1.7645
+   R(b) [AG] =  5.7787
+   R(c) [AT] =  1.3077
+   R(d) [CG] =  0.8389
+   R(e) [CT] =  5.7787
+   R(f) [GT] =  1.0000
+   p-inv = 0.8990
+   gamma shape = 1.1810 
+ 
+   Model = TVM
+   partition = 012314
+   -lnL = 4249.8795
+   K = 157
+   freqA = 0.3174 
+   freqC = 0.1781 
+   freqG = 0.1989 
+   freqT = 0.3057 
+   R(a) [AC] =  1.8351
+   R(b) [AG] =  5.5872
+   R(c) [AT] =  1.0548
+   R(d) [CG] =  1.4247
+   R(e) [CT] =  5.5872
+   R(f) [GT] =  1.0000 
+ 
+   Model = TVM+I
+   partition = 012314
+   -lnL = 4214.5141
+   K = 158
+   freqA = 0.3167 
+   freqC = 0.1781 
+   freqG = 0.1990 
+   freqT = 0.3062 
+   R(a) [AC] =  1.9873
+   R(b) [AG] =  6.0495
+   R(c) [AT] =  0.9931
+   R(d) [CG] =  1.2643
+   R(e) [CT] =  6.0495
+   R(f) [GT] =  1.0000
+   p-inv = 0.9290 
+ 
+   Model = TVM+G
+   partition = 012314
+   -lnL = 4227.0470
+   K = 158
+   freqA = 0.3173 
+   freqC = 0.1780 
+   freqG = 0.1989 
+   freqT = 0.3059 
+   R(a) [AC] =  1.8759
+   R(b) [AG] =  5.7022
+   R(c) [AT] =  1.0394
+   R(d) [CG] =  1.4142
+   R(e) [CT] =  5.7022
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = TVM+I+G
+   partition = 012314
+   -lnL = 4213.9338
+   K = 159
+   freqA = 0.3168 
+   freqC = 0.1781 
+   freqG = 0.1989 
+   freqT = 0.3062 
+   R(a) [AC] =  1.9686
+   R(b) [AG] =  6.0366
+   R(c) [AT] =  0.9625
+   R(d) [CG] =  1.2634
+   R(e) [CT] =  6.0366
+   R(f) [GT] =  1.0000
+   p-inv = 0.9000
+   gamma shape = 1.3480 
+ 
+   Model = SYM
+   partition = 012345
+   -lnL = 4329.7518
+   K = 155
+   R(a) [AC] =  1.7373
+   R(b) [AG] =  7.2618
+   R(c) [AT] =  1.3643
+   R(d) [CG] =  1.1075
+   R(e) [CT] =  3.5267
+   R(f) [GT] =  1.0000 
+ 
+   Model = SYM+I
+   partition = 012345
+   -lnL = 4294.1153
+   K = 156
+   R(a) [AC] =  1.8899
+   R(b) [AG] =  8.1517
+   R(c) [AT] =  1.3691
+   R(d) [CG] =  0.8504
+   R(e) [CT] =  3.6966
+   R(f) [GT] =  1.0000
+   p-inv = 0.9300 
+ 
+   Model = SYM+G
+   partition = 012345
+   -lnL = 4306.8602
+   K = 156
+   R(a) [AC] =  1.7810
+   R(b) [AG] =  7.5144
+   R(c) [AT] =  1.3727
+   R(d) [CG] =  1.0582
+   R(e) [CT] =  3.5469
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = SYM+I+G
+   partition = 012345
+   -lnL = 4293.8075
+   K = 157
+   R(a) [AC] =  1.8531
+   R(b) [AG] =  8.0609
+   R(c) [AT] =  1.3388
+   R(d) [CG] =  0.8587
+   R(e) [CT] =  3.6798
+   R(f) [GT] =  1.0000
+   p-inv = 0.9000
+   gamma shape = 1.4410 
+ 
+   Model = GTR
+   partition = 012345
+   -lnL = 4246.8780
+   K = 158
+   freqA = 0.3155 
+   freqC = 0.1799 
+   freqG = 0.1971 
+   freqT = 0.3075 
+   R(a) [AC] =  1.8313
+   R(b) [AG] =  7.1836
+   R(c) [AT] =  1.0562
+   R(d) [CG] =  1.4240
+   R(e) [CT] =  3.7565
+   R(f) [GT] =  1.0000 
+ 
+   Model = GTR+I
+   partition = 012345
+   -lnL = 4212.1672
+   K = 159
+   freqA = 0.3151 
+   freqC = 0.1798 
+   freqG = 0.1975 
+   freqT = 0.3076 
+   R(a) [AC] =  1.9250
+   R(b) [AG] =  7.8095
+   R(c) [AT] =  0.9847
+   R(d) [CG] =  1.2343
+   R(e) [CT] =  3.9321
+   R(f) [GT] =  1.0000
+   p-inv = 0.9260 
+ 
+   Model = GTR+G
+   partition = 012345
+   -lnL = 4224.1151
+   K = 159
+   freqA = 0.3155 
+   freqC = 0.1798 
+   freqG = 0.1971 
+   freqT = 0.3076 
+   R(a) [AC] =  1.8447
+   R(b) [AG] =  7.3542
+   R(c) [AT] =  1.0317
+   R(d) [CG] =  1.3951
+   R(e) [CT] =  3.7627
+   R(f) [GT] =  1.0000
+   gamma shape = 0.0210 
+ 
+   Model = GTR+I+G
+   partition = 012345
+   -lnL = 4211.6413
+   K = 160
+   freqA = 0.3153 
+   freqC = 0.1797 
+   freqG = 0.1974 
+   freqT = 0.3076 
+   R(a) [AC] =  1.8881
+   R(b) [AG] =  7.7561
+   R(c) [AT] =  0.9507
+   R(d) [CG] =  1.2343
+   R(e) [CT] =  3.9062
+   R(f) [GT] =  1.0000
+   p-inv = 0.9000
+   gamma shape = 1.5510 
+ 
+  Best-fit models should be reoptimized for comparison with unconstrained likelihood
+ 
+Computation of likelihood scores completed. It took 00h:02:21:07.
+ 
+
+
+
+---------------------------------------------------------------
+*                                                             *
+*             AKAIKE INFORMATION CRITERION (AIC)              *
+*                                                             *
+---------------------------------------------------------------
+ 
+ Model selected: 
+   Model = TrN+I
+   partition = 010020
+   -lnL = 4213.2668
+   K = 156
+   freqA = 0.3154 
+   freqC = 0.1805 
+   freqG = 0.1972 
+   freqT = 0.3068 
+   R(a) [AC] =  1.0000
+   R(b) [AG] =  6.3219
+   R(c) [AT] =  1.0000
+   R(d) [CG] =  1.0000
+   R(e) [CT] =  3.1705
+   R(f) [GT] =  1.0000
+   p-inv = 0.9260 
+
+--
+PAUP* Commands Block:
+ If you want to load the selected model and associated estimates in PAUP*,
+ attach the next block of commands after the data in your PAUP file:
+
+[!
+Likelihood settings from best-fit model (TrN+I) selected by AIC
+with jModeltest 2.1.10 v20160303 on Mon Mar 30 19:52:04 PDT 2026]
+
+BEGIN PAUP;
+Lset base=(0.3154 0.1805 0.1972 ) nst=6  rmat=(1.0000 6.3219 1.0000 1.0000 3.1705) rates=equal pinvar=0.9260;
+END;
+--
+ 
+Tree for the best AIC model = (CP085788.1_Chromosome_:0.00368510,AP019740.1_Chromosome_A.radioresistens_:0.01296399,(CP167783.1_Chromosome_A.radioresistens_:0.01208213,((CP102817.1_Plasmid_:0.00000000,(CP035047.1_Plasmid_:0.00000000,(CP081140.1_Plasmid_:0.00000000,(CP140421.1_Plasmid_:0.00000000,((CP188275.1.C2_Chromosome_:0.00000000,(CP188275.1.C1_Chromosome_:0.00000000,(CP061557.1_Plasmid_A.seifertii_:0.00000000,((CP077849.1_Plasmid_:0.00000000,(CP194387.1.C2_Chromosome_:0.00000000,CP099858.1_Chromosome_:0.00000000):0.00000000):0.00039277,(CP061542.1.C2_Plasmid_:0.00000000,(CP134543.1_Plasmid_:0.00000000,(CP003501.1_Plasmid_:0.00000000,(CP142645.1.C2_Chromosome_:0.00000000,(CP134573.1_Plamid_:0.00000000,(CP096757.1_Chromosome_:0.00000000,(CP061542.1.C1_Plasmid_:0.00000000,CP142635.1_Plasmid_:0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00039479):0.00000000):0.00000000):0.00000000):0.00000000,((CP124678.1.C2_Chromosome_:0.00000000,(CP143348.1_Chromosome_:0.00039531,(CP090607.1.C2_Chromosome_:0.00000000,CP124678.1.C1_Chromosome_:0.00000000):0.00000000):0.00000000):0.00039360,(CP121591.1.C1_Chromosome_:0.00000000,(CP072290.1_Chromosome_:0.00000000,(CP131893.1_Chromosome_:0.00039332,((CP146812.1.C3_Chromosome_:0.00039392,(CP146812.1.C2_Chromosome_:0.00000000,(CP059351.1_Chromosome_:0.00039489,(CP146812.1.C1_Chromosome_:0.00000000,CP035932.1_Plasmid_:0.00000000):0.00000000):0.00000000):0.00000000):0.00039511,(CP184592.1_Plasmid_:0.00000000,(CP091341.1.C1_Chromosome_:0.00000000,(CP099790.1_Chromosome_:0.00000000,(CP033572.1_Chromosome_A.nosocomialis_:0.00000000,((CP040040.1.C1_Chromosome_:0.00000000,(CP121588.1_Chromosome_:0.00161302,CP121604.1_Chromosome_:0.00159956):0.00000000):0.00000000,(MK941846.1_Plasmid_P.mirabilis_:0.00000000,(CP035930.1.C1_Chromosome_:0.00000000,(CP040053.1.C1_Chromosome_:0.00000000,(CP184610.1_Plasmid_:0.00000000,((CP169826.1.C1_Chromosome_:0.00000000,CP169826.1.C2_Chromosome_:0.00000000):0.00000000,(CP035930.1.C2_Chromosome_:0.00000000,(CP184612.1_Plasmid_:0.00000000,(CP151719.1.C2_Chromosome_:0.00000000,CP064292.1.C2_Chromosome_:0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00039293):0.00000000):0.00000000):0.00039382):0.00039187):0.00039186):0.00000000):0.00039282):0.00000000,(EU594641.1_Plasmid_:0.00000000,((CP169829.1_Plasmid_:0.00039550,(KP780408.1.Tn2008_:0.00000000,((CP147864.1_Plasmid_:0.00000000,(CP102820.1_Plasmid_:0.00000000,(CP024578.1_Plasmid_:0.00000000,(LS999838.1.Tn2008_:0.00000000,(CP076812.1_Chromosome_:0.00000000,(CP069840.1_Chromosome_:0.00000000,(CP134570.1_Chromosome_:0.00000000,(CP191611.1_Chromosome_:0.00000000,(CP191641.1_Chromosome_:0.00000000,(CP191616.1.C2_Chromosome_:0.00000000,CP191638.1.C2_Chromosome_:0.00000000):0.00000000):0.00000000):0.00118634):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000,(KU833219.1_Chromosome_A.indicus_:0.00000000,JF731029.1_Plasmid_A.baylyi_:0.00158371):0.00000001):0.00000000):0.00000000):0.00000000,(CP070358.2_Chromosome_:0.00000000,(CP113080.1_Chromosome_:0.00000000,(((CP169776.1_Chromosome_:0.00000000,(CP024576.1.C2_Chromosome_:0.00162533,CP169872.1_Chromosome_:0.00000000):0.00000000):0.00000000,(CP032215.1_Chromosome_:0.00000000,OR492670.1_Plasmid_A.gerneri_:0.00039667):0.00000000):0.00117466,(CP144559.1_Chromosome_:0.00000000,(CP159764.1_Plasmid_:0.00000000,CP070362.2_Chromosome_:0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00078507):0.00000002):0.00000000):0.00236160):0.00394261);
+ 
+ 
+* AIC MODEL SELECTION : Selection uncertainty
+ 
+Model             -lnL    K      AIC       delta       weight   cumWeight
+------------------------------------------------------------------------- 
+TrN+I       4213.26682   156  8738.533640   0.000000    0.167660   0.167660 
+TIM3+I      4212.42201   157  8738.844020   0.310380    0.143559   0.311219 
+TrN+I+G     4212.72330   157  8739.446600   0.912960    0.106214   0.417434 
+TIM3+I+G    4211.86126   158  8739.722520   1.188880    0.092527   0.509960 
+TIM1+I      4212.97300   157  8739.946000   1.412360    0.082745   0.592705 
+TIM2+I      4213.16235   157  8740.324700   1.791060    0.068471   0.661176 
+TIM1+I+G    4212.41535   158  8740.830700   2.297060    0.053165   0.714341 
+TIM2+I+G    4212.65223   158  8741.304460   2.770820    0.041952   0.756293 
+HKY+I       4215.66321   155  8741.326420   2.792780    0.041494   0.797787 
+TPM3uf+I    4214.77738   156  8741.554760   3.021120    0.037017   0.834804 
+HKY+I+G     4215.08905   156  8742.178100   3.644460    0.027105   0.861909 
+GTR+I       4212.16723   159  8742.334460   3.800820    0.025066   0.886975 
+TPM3uf+I+G  4214.17401   157  8742.348020   3.814380    0.024897   0.911872 
+TPM1uf+I    4215.38147   156  8742.762940   4.229300    0.020232   0.932105 
+TPM2uf+I    4215.54688   156  8743.093760   4.560120    0.017148   0.949253 
+GTR+I+G     4211.64133   160  8743.282660   4.749020    0.015602   0.964855 
+TPM1uf+I+G  4214.79044   157  8743.580880   5.047240    0.013441   0.978296 
+TPM2uf+I+G  4215.00026   157  8744.000520   5.466880    0.010897   0.989193 
+TVM+I       4214.51413   158  8745.028260   6.494620    0.006518   0.995712 
+TVM+I+G     4213.93380   159  8745.867600   7.333960    0.004284   0.999996 
+TrN+G       4225.12299   156  8762.245980  23.712340   1.19e-006   0.999997 
+TIM3+G      4224.23872   157  8762.477440  23.943800   1.06e-006   0.999998 
+TIM1+G      4224.95225   157  8763.904500  25.370860   5.19e-007   0.999999 
+TIM2+G      4225.05059   157  8764.101180  25.567540   4.70e-007   0.999999 
+HKY+G       4228.08866   155  8766.177320  27.643680   1.67e-007   1.000000 
+GTR+G       4224.11509   159  8766.230180  27.696540   1.62e-007   1.000000 
+TPM3uf+G    4227.17621   156  8766.352420  27.818780   1.53e-007   1.000000 
+TPM1uf+G    4227.92112   156  8767.842240  29.308600   7.25e-008   1.000000 
+TPM2uf+G    4228.00957   156  8768.019140  29.485500   6.63e-008   1.000000 
+TVM+G       4227.04697   158  8770.093940  31.560300   2.35e-008   1.000000 
+F81+I       4241.49988   154  8790.999760  52.466120   6.79e-013   1.000000 
+F81+I+G     4241.01065   155  8792.021300  53.487660   4.07e-013   1.000000 
+TrN         4247.85906   155  8805.718120  67.184480   4.32e-016   1.000000 
+TIM3        4246.98989   156  8805.979780  67.446140   3.79e-016   1.000000 
+TIM1        4247.72228   156  8807.444560  68.910920   1.82e-016   1.000000 
+TIM2        4247.78114   156  8807.562280  69.028640   1.72e-016   1.000000 
+HKY         4250.86863   154  8809.737260  71.203620   5.79e-017   1.000000 
+GTR         4246.87795   158  8809.755900  71.222260   5.74e-017   1.000000 
+TPM3uf      4249.99234   155  8809.984680  71.451040   5.12e-017   1.000000 
+TPM1uf      4250.73227   155  8811.464540  72.930900   2.44e-017   1.000000 
+TPM2uf      4250.78949   155  8811.578980  73.045340   2.31e-017   1.000000 
+TVM         4249.87945   157  8813.758900  75.225260   7.75e-018   1.000000 
+F81+G       4253.21936   154  8814.438720  75.905080   5.52e-018   1.000000 
+F81         4275.75546   153  8857.510920  118.977280   2.45e-027   1.000000 
+TrNef+I     4295.14142   153  8896.282840  157.749200   9.32e-036   1.000000 
+TIM2ef+I    4294.35776   154  8896.715520  158.181880   7.51e-036   1.000000 
+TrNef+I+G   4294.74197   154  8897.483940  158.950300   5.11e-036   1.000000 
+TIM2ef+I+G  4294.03965   155  8898.079300  159.545660   3.80e-036   1.000000 
+TIM1ef+I    4295.04254   154  8898.085080  159.551440   3.79e-036   1.000000 
+TIM3ef+I    4295.05393   154  8898.107860  159.574220   3.74e-036   1.000000 
+TIM1ef+I+G  4294.64301   155  8899.286020  160.752380   2.08e-036   1.000000 
+TIM3ef+I+G  4294.65258   155  8899.305160  160.771520   2.06e-036   1.000000 
+SYM+I       4294.11529   156  8900.230580  161.696940   1.30e-036   1.000000 
+K80+I       4298.26216   152  8900.524320  161.990680   1.12e-036   1.000000 
+TPM2+I      4297.52552   153  8901.051040  162.517400   8.59e-037   1.000000 
+K80+I+G     4297.80193   153  8901.603860  163.070220   6.52e-037   1.000000 
+SYM+I+G     4293.80754   157  8901.615080  163.081440   6.48e-037   1.000000 
+TPM2+I+G    4297.13468   154  8902.269360  163.735720   4.67e-037   1.000000 
+TPM1+I      4298.16621   153  8902.332420  163.798780   4.53e-037   1.000000 
+TPM3+I      4298.20763   153  8902.415260  163.881620   4.34e-037   1.000000 
+TPM1+I+G    4297.70221   154  8903.404420  164.870780   2.65e-037   1.000000 
+TPM3+I+G    4297.74146   154  8903.482920  164.949280   2.55e-037   1.000000 
+TVMef+I     4297.31862   155  8904.637240  166.103600   1.43e-037   1.000000 
+TVMef+I+G   4296.93136   156  8905.862720  167.329080   7.75e-038   1.000000 
+TrNef+G     4307.61126   153  8921.222520  182.688880   3.58e-041   1.000000 
+TIM2ef+G    4307.02690   154  8922.053800  183.520160   2.36e-041   1.000000 
+TIM3ef+G    4307.47179   154  8922.943580  184.409940   1.51e-041   1.000000 
+TIM1ef+G    4307.58103   154  8923.162060  184.628420   1.36e-041   1.000000 
+SYM+G       4306.86015   156  8925.720300  187.186660   3.78e-042   1.000000 
+K80+G       4311.38888   152  8926.777760  188.244120   2.23e-042   1.000000 
+TPM2+G      4310.82385   153  8927.647700  189.114060   1.44e-042   1.000000 
+TPM3+G      4311.26015   153  8928.520300  189.986660   9.32e-043   1.000000 
+TPM1+G      4311.35973   153  8928.719460  190.185820   8.44e-043   1.000000 
+TVMef+G     4310.66960   155  8931.339200  192.805560   2.28e-043   1.000000 
+JC+I        4322.59238   151  8947.184760  208.651120   8.25e-047   1.000000 
+JC+I+G      4322.14561   152  8948.291220  209.757580   4.74e-047   1.000000 
+TrNef       4330.43100   152  8964.862000  226.328360   1.20e-050   1.000000 
+TIM2ef      4329.91068   153  8965.821360  227.287720   7.41e-051   1.000000 
+TIM3ef      4330.28144   153  8966.562880  228.029240   5.11e-051   1.000000 
+TIM1ef      4330.41197   153  8966.823940  228.290300   4.49e-051   1.000000 
+SYM         4329.75185   155  8969.503700  230.970060   1.17e-051   1.000000 
+K80         4334.26465   151  8970.529300  231.995660   7.03e-052   1.000000 
+JC+G        4334.63061   151  8971.261220  232.727580   4.88e-052   1.000000 
+TPM2        4333.74481   152  8971.489620  232.955980   4.35e-052   1.000000 
+TPM3        4334.11460   152  8972.229200  233.695560   3.01e-052   1.000000 
+TPM1        4334.24582   152  8972.491640  233.958000   2.64e-052   1.000000 
+TVMef       4333.58654   154  8975.173080  236.639440   6.90e-053   1.000000 
+JC          4357.23365   150  9014.467300  275.933660   2.02e-061   1.000000
+-------------------------------------------------------------------------
+-lnL:	negative log likelihod
+ K:	number of estimated parameters
+ AIC:	Akaike Information Criterion
+ delta:	AIC difference
+ weight:	AIC weight
+ cumWeight:	cumulative AIC weight
+ 
+ 
+* AIC MODEL SELECTION : Confidence interval
+ 
+There are 88 models in the 100% confidence interval: [ TrN+I TIM3+I TrN+I+G TIM3+I+G TIM1+I TIM2+I TIM1+I+G TIM2+I+G HKY+I TPM3uf+I HKY+I+G GTR+I TPM3uf+I+G TPM1uf+I TPM2uf+I GTR+I+G TPM1uf+I+G TPM2uf+I+G TVM+I TVM+I+G TrN+G TIM3+G TIM1+G TIM2+G HKY+G GTR+G TPM3uf+G TPM1uf+G TPM2uf+G TVM+G F81+I F81+I+G TrN TIM3 TIM1 TIM2 HKY GTR TPM3uf TPM1uf TPM2uf TVM F81+G F81 TrNef+I TIM2ef+I TrNef+I+G TIM2ef+I+G TIM1ef+I TIM3ef+I TIM1ef+I+G TIM3ef+I+G SYM+I K80+I TPM2+I K80+I+G SYM+I+G TPM2+I+G TPM1+I TPM3+I TPM1+I+G TPM3+I+G TVMef+I TVMef+I+G TrNef+G TIM2ef+G TIM3ef+G TIM1ef+G SYM+G K80+G TPM2+G TPM3+G TPM1+G TVMef+G JC+I JC+I+G TrNef TIM2ef TIM3ef TIM1ef SYM K80 JC+G TPM2 TPM3 TPM1 TVMef JC ] 
+ 
+ 
+* AIC MODEL SELECTION : Parameter importance
+ 
+Parameter   Importance
+----------------------
+fA	    1.0000
+fC	    1.0000
+fG	    1.0000
+fT	    1.0000
+kappa	    0.0686
+titv	    0.0686
+rAC	    0.4879
+rAG	    0.9314
+rAT	    0.3595
+rCG	    0.5191
+rCT	    0.9314
+rGT	    0.9314
+pinv(I)	    0.6099
+alpha(G)	    0.0000
+pinv(IG)	    0.3901
+alpha(IG)	    0.3901
+----------------------
+Values have been rounded.
+ (I):  considers only +I models.
+ (G):  considers only +G models.
+ (IG): considers only +I+G models.
+ 
+ 
+* AIC MODEL SELECTION : Best Model's command line
+ 
+phyml  -i /tmp/jmodeltest17089113958499597026.phy -d nt -n 1 -b 0 --run_id TrN+I -m 010020 -f m -v e -c 1 --no_memory_check -o tlr -s BEST
+ 
+ 
+ 
+---------------------------------------------------------------
+*                                                             *
+*                    MODEL AVERAGED PHYLOGENY                 *
+*                                                             *
+---------------------------------------------------------------
+ 
+Selection criterion: . . . . AIC
+Confidence interval: . . . . 1.00
+Consensus type:. . . . . . . 50% majority rule
+ 
+ 
+Using 88 models in the 1.00 confidence interval = TrN+I TIM3+I TrN+I+G TIM3+I+G TIM1+I TIM2+I TIM1+I+G TIM2+I+G HKY+I TPM3uf+I HKY+I+G GTR+I TPM3uf+I+G TPM1uf+I TPM2uf+I GTR+I+G TPM1uf+I+G TPM2uf+I+G TVM+I TVM+I+G TrN+G TIM3+G TIM1+G TIM2+G HKY+G GTR+G TPM3uf+G TPM1uf+G TPM2uf+G TVM+G F81+I F81+I+G TrN TIM3 TIM1 TIM2 HKY GTR TPM3uf TPM1uf TPM2uf TVM F81+G F81 TrNef+I TIM2ef+I TrNef+I+G TIM2ef+I+G TIM1ef+I TIM3ef+I TIM1ef+I+G TIM3ef+I+G SYM+I K80+I TPM2+I K80+I+G SYM+I+G TPM2+I+G TPM1+I TPM3+I TPM1+I+G TPM3+I+G TVMef+I TVMef+I+G TrNef+G TIM2ef+G TIM3ef+G TIM1ef+G SYM+G K80+G TPM2+G TPM3+G TPM1+G TVMef+G JC+I JC+I+G TrNef TIM2ef TIM3ef TIM1ef SYM K80 JC+G TPM2 TPM3 TPM1 TVMef JC  
+ 
+Species in order:
+ 
+    1. CP085788.1_Chromosome_
+    2. AP019740.1_Chromosome_A.radioresistens_
+    3. CP167783.1_Chromosome_A.radioresistens_
+    4. CP102817.1_Plasmid_
+    5. CP035047.1_Plasmid_
+    6. CP081140.1_Plasmid_
+    7. CP140421.1_Plasmid_
+    8. CP188275.1.C2_Chromosome_
+    9. CP188275.1.C1_Chromosome_
+    10. CP061557.1_Plasmid_A.seifertii_
+    11. CP077849.1_Plasmid_
+    12. CP194387.1.C2_Chromosome_
+    13. CP099858.1_Chromosome_
+    14. CP061542.1.C2_Plasmid_
+    15. CP134543.1_Plasmid_
+    16. CP003501.1_Plasmid_
+    17. CP142645.1.C2_Chromosome_
+    18. CP134573.1_Plamid_
+    19. CP096757.1_Chromosome_
+    20. CP061542.1.C1_Plasmid_
+    21. CP142635.1_Plasmid_
+    22. CP124678.1.C2_Chromosome_
+    23. CP143348.1_Chromosome_
+    24. CP090607.1.C2_Chromosome_
+    25. CP124678.1.C1_Chromosome_
+    26. CP121591.1.C1_Chromosome_
+    27. CP072290.1_Chromosome_
+    28. CP131893.1_Chromosome_
+    29. CP146812.1.C3_Chromosome_
+    30. CP146812.1.C2_Chromosome_
+    31. CP059351.1_Chromosome_
+    32. CP146812.1.C1_Chromosome_
+    33. CP035932.1_Plasmid_
+    34. CP184592.1_Plasmid_
+    35. CP091341.1.C1_Chromosome_
+    36. CP099790.1_Chromosome_
+    37. CP033572.1_Chromosome_A.nosocomialis_
+    38. CP040040.1.C1_Chromosome_
+    39. CP121588.1_Chromosome_
+    40. CP121604.1_Chromosome_
+    41. MK941846.1_Plasmid_P.mirabilis_
+    42. CP035930.1.C1_Chromosome_
+    43. CP040053.1.C1_Chromosome_
+    44. CP184610.1_Plasmid_
+    45. CP169826.1.C1_Chromosome_
+    46. CP169826.1.C2_Chromosome_
+    47. CP035930.1.C2_Chromosome_
+    48. CP184612.1_Plasmid_
+    49. CP151719.1.C2_Chromosome_
+    50. CP064292.1.C2_Chromosome_
+    51. EU594641.1_Plasmid_
+    52. CP169829.1_Plasmid_
+    53. KP780408.1.Tn2008_
+    54. CP147864.1_Plasmid_
+    55. CP102820.1_Plasmid_
+    56. CP024578.1_Plasmid_
+    57. LS999838.1.Tn2008_
+    58. CP076812.1_Chromosome_
+    59. CP069840.1_Chromosome_
+    60. CP134570.1_Chromosome_
+    61. CP191611.1_Chromosome_
+    62. CP191641.1_Chromosome_
+    63. CP191616.1.C2_Chromosome_
+    64. CP191638.1.C2_Chromosome_
+    65. KU833219.1_Chromosome_A.indicus_
+    66. JF731029.1_Plasmid_A.baylyi_
+    67. CP070358.2_Chromosome_
+    68. CP113080.1_Chromosome_
+    69. CP169776.1_Chromosome_
+    70. CP024576.1.C2_Chromosome_
+    71. CP169872.1_Chromosome_
+    72. CP032215.1_Chromosome_
+    73. OR492670.1_Plasmid_A.gerneri_
+    74. CP144559.1_Chromosome_
+    75. CP159764.1_Plasmid_
+    76. CP070362.2_Chromosome_
+ 
+Bipartitions included in the consensus tree
+ 
+    1234567891111111111222222222233333333334444444444555555555566666666667777777
+             0123456789012345678901234567890123456789012345678901234567890123456
+    **************************************************************************** ( 1.0 )
+    --************************************************************************** ( 1.0 )
+    ---************************************************************************* ( 1.0 )
+    ----**********************************************-------------------------- ( 0.93153 )
+    ----**---------------------------------------------------------------------- ( 0.72936 )
+    ------********************************************-------------------------- ( 0.89452 )
+    -------*******************************************-------------------------- ( 0.93792 )
+    -------***---*************************************-------------------------- ( 0.51733 )
+    ----------***--------------------------------------------------------------- ( 1.0 )
+    -------------********------------------------------------------------------- ( 1.0 )
+    ------------------***------------------------------------------------------- ( 0.57798 )
+    -------------------**------------------------------------------------------- ( 0.57798 )
+    ---------------------*****************************-------------------------- ( 1.0 )
+    ---------------------****--------------------------------------------------- ( 1.0 )
+    ----------------------***--------------------------------------------------- ( 0.82796 )
+    -------------------------*************************-------------------------- ( 0.61948 )
+    -------------------------**------------------------------------------------- ( 0.57514 )
+    ---------------------------***********************-------------------------- ( 1.0 )
+    ----------------------------*****------------------------------------------- ( 1.0 )
+    ----------------------------**-**------------------------------------------- ( 0.59881 )
+    -------------------------------**------------------------------------------- ( 0.63662 )
+    -----------------------------------------*********-------------------------- ( 0.57799 )
+    ------------------------------------------********-------------------------- ( 0.57799 )
+    -------------------------------------------*******-------------------------- ( 0.57799 )
+    --------------------------------------------******-------------------------- ( 0.57799 )
+    --------------------------------------------**------------------------------ ( 0.57799 )
+    ----------------------------------------------****-------------------------- ( 0.57799 )
+    -----------------------------------------------***-------------------------- ( 0.57799 )
+    ------------------------------------------------**-------------------------- ( 0.57799 )
+    --------------------------------------------------------********------------ ( 0.57798 )
+    ---------------------------------------------------------*******------------ ( 0.57798 )
+    -----------------------------------------------------------*****------------ ( 0.57798 )
+    ------------------------------------------------------------****------------ ( 1.0 )
+    ------------------------------------------------------------**-*------------ ( 0.74695 )
+    ------------------------------------------------------------*--*------------ ( 0.81211 )
+    ----------------------------------------------------------------**---------- ( 0.57798 )
+    --------------------------------------------------------------------*****--- ( 0.57798 )
+    --------------------------------------------------------------------*-**---- ( 0.81211 )
+
+ 
+                        +--76 CP032215.1_Chromosome_
+                        |
+                        +--75 CP169872.1_Chromosome_
+                    +-110
+                    |   +--74 CP169776.1_Chromosome_
+                    |
+                    +--73 OR492670.1_Plasmid_A.gerneri_
+                +-111
+                |   +--72 CP024576.1.C2_Chromosome_
+                |
+                |                       +--71 CP191638.1.C2_Chromosome_
+                |                   +-104
+                |                   |   +--70 CP191611.1_Chromosome_
+                |               +-105
+                |               |   +--69 CP191641.1_Chromosome_
+                |           +-106
+                |           |   +--68 CP191616.1.C2_Chromosome_
+                |       +-107
+                |       |   +--67 CP134570.1_Chromosome_
+                |       |
+                |       +--66 CP069840.1_Chromosome_
+                |   +-108
+                |   |   +--65 CP076812.1_Chromosome_
+                +-109
+                |   +--64 LS999838.1.Tn2008_
+                |
+                |   +--63 JF731029.1_Plasmid_A.baylyi_
+                +-103
+                |   +--62 KU833219.1_Chromosome_A.indicus_
+                |
+                |       +--61 CP081140.1_Plasmid_
+                |   +-101
+                |   |   +--60 CP035047.1_Plasmid_
+                +-102
+                |   |                       +--59 CP072290.1_Chromosome_
+                |   |                   +--95
+                |   |                   |   +--58 CP121591.1.C1_Chromosome_
+                |   |               +--96
+                |   |               |   |                               +--57 CP064292.1.C2_Chromosome_
+                |   |               |   |                           +--87
+                |   |               |   |                           |   +--56 CP151719.1.C2_Chromosome_
+                |   |               |   |                       +--88
+                |   |               |   |                       |   +--55 CP184612.1_Plasmid_
+                |   |               |   |                   +--89
+                |   |               |   |                   |   +--54 CP035930.1.C2_Chromosome_
+                |   |               |   |               +--90
+                |   |               |   |               |   |   +--53 CP169826.1.C2_Chromosome_
+                |   |               |   |               |   +--86
+                |   |               |   |               |       +--52 CP169826.1.C1_Chromosome_
+                |   |               |   |           +--91
+                |   |               |   |           |   +--51 CP184610.1_Plasmid_
+                |   |               |   |       +--92
+                |   |               |   |       |   +--50 CP040053.1.C1_Chromosome_
+                |   |               |   |   +--93
+                |   |               |   |   |   +--49 CP035930.1.C1_Chromosome_
+                |   |               |   |   |
+                |   |               |   |   |           +--48 CP035932.1_Plasmid_
+                |   |               |   |   |       +--83
+                |   |               |   |   |       |   +--47 CP146812.1.C1_Chromosome_
+                |   |               |   |   |       |
+                |   |               |   |   |       +--46 CP146812.1.C2_Chromosome_
+                |   |               |   |   |   +--84
+                |   |               |   |   |   |   +--45 CP146812.1.C3_Chromosome_
+                |   |               |   |   +--85
+                |   |               |   |   |   +--44 CP059351.1_Chromosome_
+                |   |               |   |   |
+                |   |               |   |   +--43 MK941846.1_Plasmid_P.mirabilis_
+                |   |               |   |   |
+                |   |               |   |   +--42 CP121604.1_Chromosome_
+                |   |               |   |   |
+                |   |               |   |   +--41 CP121588.1_Chromosome_
+                |   |               |   |   |
+                |   |               |   |   +--40 CP040040.1.C1_Chromosome_
+                |   |               |   +--94
+                |   |               |       +--39 CP033572.1_Chromosome_A.nosocomialis_
+                |   |               |       |
+                |   |               |       +--38 CP099790.1_Chromosome_
+                |   |               |       |
+                |   |               |       +--37 CP091341.1.C1_Chromosome_
+                |   |               |       |
+                |   |               |       +--36 CP184592.1_Plasmid_
+                |   |               |       |
+                |   |               |       +--35 CP131893.1_Chromosome_
+                |   |           +--97
+                |   |           |   |       +--34 CP124678.1.C1_Chromosome_
+                |   |           |   |       |
+                |   |           |   |       +--33 CP090607.1.C2_Chromosome_
+                |   |           |   |   +--81
+                |   |           |   |   |   +--32 CP143348.1_Chromosome_
+                |   |           |   +--82
+                |   |           |       +--31 CP124678.1.C2_Chromosome_
+                |   |           |
+                |   |           |           +--30 CP142635.1_Plasmid_
+                |   |           |       +--78
+                |   |           |       |   +--29 CP061542.1.C1_Plasmid_
+                |   |           |   +--79
+                |   |           |   |   +--28 CP096757.1_Chromosome_
+                |   |           |   |
+                |   |           |   +--27 CP134573.1_Plamid_
+                |   |           |   |
+                |   |           |   +--26 CP142645.1.C2_Chromosome_
+                |   |           +--80
+                |   |           |   +--25 CP003501.1_Plasmid_
+                |   |           |   |
+                |   |           |   +--24 CP134543.1_Plasmid_
+                |   |           |   |
+                |   |           |   +--23 CP061542.1.C2_Plasmid_
+                |   |           |
+                |   |           +--22 CP061557.1_Plasmid_A.seifertii_
+                |   |       +--98
+                |   |       |   +--21 CP188275.1.C1_Chromosome_
+                |   |       |   |
+                |   |       |   +--20 CP188275.1.C2_Chromosome_
+                |   |   +--99
+                |   |   |   |   +--19 CP099858.1_Chromosome_
+                |   |   |   |   |
+                |   |   |   |   +--18 CP194387.1.C2_Chromosome_
+                |   |   |   +--77
+                |   |   |       +--17 CP077849.1_Plasmid_
+                |   +-100
+                |       +--16 CP140421.1_Plasmid_
+                |
+                +--15 CP070362.2_Chromosome_
+                |
+                +--14 CP159764.1_Plasmid_
+                |
+                +--13 CP144559.1_Chromosome_
+                |
+                +--12 CP113080.1_Chromosome_
+          +---112
+          |     +--11 CP070358.2_Chromosome_
+          |     |
+          |     +--10 CP024578.1_Plasmid_
+          |     |
+          |     +---9 CP102820.1_Plasmid_
+          |     |
+          |     +---8 CP147864.1_Plasmid_
+          |     |
+          |     +---7 KP780408.1.Tn2008_
+          |     |
+          |     +---6 CP169829.1_Plasmid_
+          |     |
+          |     +---5 EU594641.1_Plasmid_
+          |     |
+          |     +---4 CP102817.1_Plasmid_
++-------113
+|         +-------------------------------3 CP167783.1_Chromosome_A.radioresistens_
+|
++---------------------------------2 AP019740.1_Chromosome_A.radioresistens_
+|
++--------1 CP085788.1_Chromosome_
+
+ 
+(CP085788.1_Chromosome_:0.0037290600,AP019740.1_Chromosome_A.radioresistens_:0.0129639900,(CP167783.1_Chromosome_A.radioresistens_:0.0122054200,(CP102817.1_Plasmid_:0.0000000000,EU594641.1_Plasmid_:0.0000000000,CP169829.1_Plasmid_:0.0003955000,KP780408.1.Tn2008_:0.0000000000,CP147864.1_Plasmid_:0.0000000000,CP102820.1_Plasmid_:0.0000000000,CP024578.1_Plasmid_:0.0000000000,CP070358.2_Chromosome_:0.0000000000,CP113080.1_Chromosome_:0.0000000000,CP144559.1_Chromosome_:0.0000000000,CP159764.1_Plasmid_:0.0000000000,CP070362.2_Chromosome_:0.0000000000,((CP140421.1_Plasmid_:0.0000000000,((CP077849.1_Plasmid_:0.0000000000,CP194387.1.C2_Chromosome_:0.0000000000,CP099858.1_Chromosome_:0.0000000000):1.0000:0.0003933800,(CP188275.1.C2_Chromosome_:0.0000000000,CP188275.1.C1_Chromosome_:0.0000000000,CP061557.1_Plasmid_A.seifertii_:0.0000000000,(CP061542.1.C2_Plasmid_:0.0000000000,CP134543.1_Plasmid_:0.0000000000,CP003501.1_Plasmid_:0.0000000000,CP142645.1.C2_Chromosome_:0.0000000000,CP134573.1_Plamid_:0.0000000000,(CP096757.1_Chromosome_:0.0000000000,(CP061542.1.C1_Plasmid_:0.0000000000,CP142635.1_Plasmid_:0.0000000000):0.5780:0.0000000000):0.5780:0.0000000000):1.0000:0.0003961000,((CP124678.1.C2_Chromosome_:0.0000000000,(CP143348.1_Chromosome_:0.0003958700,CP090607.1.C2_Chromosome_:0.0000000000,CP124678.1.C1_Chromosome_:0.0000000000):0.8280:0.0000000000):1.0000:0.0003941900,((CP131893.1_Chromosome_:0.0003941200,CP184592.1_Plasmid_:0.0000000000,CP091341.1.C1_Chromosome_:0.0000000000,CP099790.1_Chromosome_:0.0000000000,CP033572.1_Chromosome_A.nosocomialis_:0.0000000000,CP040040.1.C1_Chromosome_:0.0000000000,CP121588.1_Chromosome_:0.0016159600,CP121604.1_Chromosome_:0.0016030400,MK941846.1_Plasmid_P.mirabilis_:0.0000000000,(CP059351.1_Chromosome_:0.0003958100,(CP146812.1.C3_Chromosome_:0.0003947100,CP146812.1.C2_Chromosome_:0.0000000000,(CP146812.1.C1_Chromosome_:0.0000000000,CP035932.1_Plasmid_:0.0000000000):0.6366:0.0000000000):0.5988:0.0000000200):1.0000:0.0003963700,(CP035930.1.C1_Chromosome_:0.0000000000,(CP040053.1.C1_Chromosome_:0.0000000000,(CP184610.1_Plasmid_:0.0000000000,((CP169826.1.C1_Chromosome_:0.0000000000,CP169826.1.C2_Chromosome_:0.0000000000):0.5780:0.0000000000,(CP035930.1.C2_Chromosome_:0.0000000000,(CP184612.1_Plasmid_:0.0000000000,(CP151719.1.C2_Chromosome_:0.0000000000,CP064292.1.C2_Chromosome_:0.0000000000):0.5780:0.0000000000):0.5780:0.0000000000):0.5780:0.0000000000):0.5780:0.0000000000):0.5780:0.0000000000):0.5780:0.0000000000):0.5780:0.0000000000):1.0000:0.0003933300,(CP121591.1.C1_Chromosome_:0.0000000000,CP072290.1_Chromosome_:0.0000000000):0.5751:0.0000000000):0.6195:0.0000000000):1.0000:0.0003945700):0.5173:0.0000000000):0.9379:0.0003923500):0.8945:0.0003926000,(CP035047.1_Plasmid_:0.0000000000,CP081140.1_Plasmid_:0.0000000000):0.7294:0.0000000000):0.9315:0.0003942100,(KU833219.1_Chromosome_A.indicus_:0.0000000000,JF731029.1_Plasmid_A.baylyi_:0.0015902000):0.5780:0.0000001000,(LS999838.1.Tn2008_:0.0000000000,(CP076812.1_Chromosome_:0.0000000000,CP069840.1_Chromosome_:0.0000000000,(CP134570.1_Chromosome_:0.0000000000,(CP191616.1.C2_Chromosome_:0.0000000000,(CP191641.1_Chromosome_:0.0000000000,(CP191611.1_Chromosome_:0.0000000000,CP191638.1.C2_Chromosome_:0.0000000000):0.8121:0.0000000000):0.7469:0.0000000000):1.0000:0.0011896200):0.5780:0.0000000000):0.5780:0.0000000000):0.5780:0.0000000000,(CP024576.1.C2_Chromosome_:0.0016312900,OR492670.1_Plasmid_A.gerneri_:0.0003979100,(CP169776.1_Chromosome_:0.0000000000,CP169872.1_Chromosome_:0.0000000000,CP032215.1_Chromosome_:0.0000000000):0.8121:0.0011502000):0.5780:0.0000014600):1.0000:0.0023325500):1.0000:0.0039449100);
+ 
+Note: this tree is unrooted. Branch lengths are the expected number of substitutions per site. Labels next to parentheses represent phylogenetic uncertainty due to model selection (see documentation)
+
+
+
+---------------------------------------------------------------
+*                                                             *
+*             BAYESIAN INFORMATION CRITERION (BIC)            *
+*                                                             *
+---------------------------------------------------------------
+ 
+ Sample size: 2597.0
+ 
+ Model selected: 
+   Model = HKY+I
+   partition = 010010
+   -lnL = 4215.6632
+   K = 155
+   freqA = 0.3170 
+   freqC = 0.1790 
+   freqG = 0.1987 
+   freqT = 0.3053 
+   kappa = 4.8148 (ti/tv = 2.2678)
+   p-inv = 0.9290 
+
+--
+PAUP* Commands Block:
+ If you want to load the selected model and associated estimates in PAUP*,
+ attach the next block of commands after the data in your PAUP file:
+
+[!
+Likelihood settings from best-fit model (HKY+I) selected by BIC
+with jModeltest 2.1.10 v20160303 on Mon Mar 30 19:52:05 PDT 2026]
+
+BEGIN PAUP;
+Lset base=(0.3170 0.1790 0.1987 ) nst=2 tratio=2.2678 rates=equal pinvar=0.9290;
+END;
+--
+ 
+Tree for the best BIC model = (CP085788.1_Chromosome_:0.00371944,AP019740.1_Chromosome_A.radioresistens_:0.01275309,(CP167783.1_Chromosome_A.radioresistens_:0.01215319,((KU833219.1_Chromosome_A.indicus_:0.00000000,((CP070362.2_Chromosome_:0.00000000,(CP144559.1_Chromosome_:0.00000000,(CP169829.1_Plasmid_:0.00039556,(CP032215.1_Chromosome_:0.00000000,(CP169776.1_Chromosome_:0.00000000,CP169872.1_Chromosome_:0.00000000):0.00000001):0.00095256):0.00023137):0.00000000):0.00000001,(CP024576.1.C2_Chromosome_:0.00163293,(CP070358.2_Chromosome_:0.00000000,CP113080.1_Chromosome_:0.00000000):0.00000000):0.00000000):0.00078969):0.00000003,(JF731029.1_Plasmid_A.baylyi_:0.00159727,((OR492670.1_Plasmid_A.gerneri_:0.00039925,((CP191611.1_Chromosome_:0.00000000,CP191638.1.C2_Chromosome_:0.00000000):0.00000000,(CP191641.1_Chromosome_:0.00000000,CP191616.1.C2_Chromosome_:0.00000000):0.00000000):0.00119655):0.00000001,(CP102820.1_Plasmid_:0.00000000,(CP024578.1_Plasmid_:0.00000000,(KP780408.1.Tn2008_:0.00000000,(CP134570.1_Chromosome_:0.00000000,((EU594641.1_Plasmid_:0.00000000,(CP159764.1_Plasmid_:0.00000000,CP102817.1_Plasmid_:0.00000000):0.00000000):0.00000000,(CP147864.1_Plasmid_:0.00000000,((LS999838.1.Tn2008_:0.00000000,(CP069840.1_Chromosome_:0.00000000,CP076812.1_Chromosome_:0.00000000):0.00000000):0.00000000,((CP081140.1_Plasmid_:0.00000000,CP035047.1_Plasmid_:0.00000000):0.00000000,(CP140421.1_Plasmid_:0.00000003,(((CP142645.1.C2_Chromosome_:0.00000000,(CP096757.1_Chromosome_:0.00000000,(CP061542.1.C1_Plasmid_:0.00000000,(CP134573.1_Plamid_:0.00000000,(CP061542.1.C2_Plasmid_:0.00000000,(CP134543.1_Plasmid_:0.00000000,(CP003501.1_Plasmid_:0.00000000,CP142635.1_Plasmid_:0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00039728,(CP188275.1.C1_Chromosome_:0.00000000,(CP188275.1.C2_Chromosome_:0.00000000,(CP061557.1_Plasmid_A.seifertii_:0.00000000,((CP143348.1_Chromosome_:0.00039811,(CP090607.1.C2_Chromosome_:0.00000000,(CP124678.1.C1_Chromosome_:0.00000000,CP124678.1.C2_Chromosome_:0.00000000):0.00000000):0.00000000):0.00039577,((CP072290.1_Chromosome_:0.00000000,CP121591.1.C1_Chromosome_:0.00000000):0.00000000,((CP131893.1_Chromosome_:0.00039568,(CP121588.1_Chromosome_:0.00161690,(CP169826.1.C2_Chromosome_:0.00000000,(CP151719.1.C2_Chromosome_:0.00000000,(CP184612.1_Plasmid_:0.00000000,(CP035930.1.C2_Chromosome_:0.00000000,(CP169826.1.C1_Chromosome_:0.00000000,(CP184610.1_Plasmid_:0.00000000,(CP040053.1.C1_Chromosome_:0.00000000,(CP035930.1.C1_Chromosome_:0.00000000,(MK941846.1_Plasmid_P.mirabilis_:0.00000000,(CP033572.1_Chromosome_A.nosocomialis_:0.00000000,(CP099790.1_Chromosome_:0.00000000,(CP091341.1.C1_Chromosome_:0.00000000,(CP184592.1_Plasmid_:0.00000000,(CP064292.1.C2_Chromosome_:0.00000000,(CP121604.1_Chromosome_:0.00160399,CP040040.1.C1_Chromosome_:0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000001):0.00000001,(CP059351.1_Chromosome_:0.00039581,(CP146812.1.C2_Chromosome_:0.00000000,(CP146812.1.C3_Chromosome_:0.00039504,(CP146812.1.C1_Chromosome_:0.00000000,CP035932.1_Plasmid_:0.00000000):0.00000000):0.00000000):0.00000001):0.00039654):0.00039498):0.00000000):0.00039650):0.00000000):0.00000000):0.00000000):0.00000003,(CP099858.1_Chromosome_:0.00000000,(CP077849.1_Plasmid_:0.00000000,CP194387.1.C2_Chromosome_:0.00000000):0.00000000):0.00039569):0.00039500):0.00039499):0.00039574):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00000000):0.00238083):0.00389706);
+ 
+ 
+* BIC MODEL SELECTION : Selection uncertainty
+ 
+Model             -lnL    K      BIC       delta       weight   cumWeight
+------------------------------------------------------------------------- 
+HKY+I       4215.66321   155  9649.953813   0.000000    0.725899   0.725899 
+TrN+I       4213.26682   156  9653.023145   3.069332    0.156451   0.882350 
+TPM3uf+I    4214.77738   156  9656.044265   6.090452    0.034542   0.916892 
+HKY+I+G     4215.08905   156  9656.667605   6.713792    0.025293   0.942185 
+TPM1uf+I    4215.38147   156  9657.252445   7.298632    0.018880   0.961065 
+TPM2uf+I    4215.54688   156  9657.583265   7.629452    0.016002   0.977066 
+TIM3+I      4212.42201   157  9659.195637   9.241824    0.007146   0.984212 
+TrN+I+G     4212.72330   157  9659.798217   9.844404    0.005287   0.989498 
+TIM1+I      4212.97300   157  9660.297617  10.343804    0.004119   0.993617 
+TIM2+I      4213.16235   157  9660.676317  10.722504    0.003408   0.997025 
+TPM3uf+I+G  4214.17401   157  9662.699637  12.745824    0.001239   0.998264 
+TPM1uf+I+G  4214.79044   157  9663.932497  13.978684    0.000669   0.998933 
+TPM2uf+I+G  4215.00026   157  9664.352137  14.398324    0.000542   0.999476 
+TIM3+I+G    4211.86126   158  9665.936249  15.982437    0.000246   0.999721 
+TIM1+I+G    4212.41535   158  9667.044429  17.090617    0.000141   0.999863 
+TIM2+I+G    4212.65223   158  9667.518189  17.564377    0.000111   0.999974 
+TVM+I       4214.51413   158  9671.241989  21.288177   1.73e-005   0.999991 
+GTR+I       4212.16723   159  9674.410302  24.456489   3.55e-006   0.999995 
+HKY+G       4228.08866   155  9674.804713  24.850900   2.91e-006   0.999998 
+TrN+G       4225.12299   156  9676.735485  26.781672   1.11e-006   0.999999 
+TVM+I+G     4213.93380   159  9677.943442  27.989629   6.07e-007   1.000000 
+TPM3uf+G    4227.17621   156  9680.841925  30.888112   1.42e-007   1.000000 
+GTR+I+G     4211.64133   160  9681.220614  31.266801   1.18e-007   1.000000 
+TPM1uf+G    4227.92112   156  9682.331745  32.377932   6.76e-008   1.000000 
+TPM2uf+G    4228.00957   156  9682.508645  32.554832   6.19e-008   1.000000 
+TIM3+G      4224.23872   157  9682.829057  32.875244   5.27e-008   1.000000 
+TIM1+G      4224.95225   157  9684.256117  34.302304   2.58e-008   1.000000 
+TIM2+G      4225.05059   157  9684.452797  34.498984   2.34e-008   1.000000 
+F81+I       4241.49988   154  9693.765041  43.811228   2.23e-010   1.000000 
+TVM+G       4227.04697   158  9696.307669  46.353857   6.24e-011   1.000000 
+GTR+G       4224.11509   159  9698.306022  48.352209   2.30e-011   1.000000 
+F81+I+G     4241.01065   155  9700.648693  50.694880   7.12e-012   1.000000 
+HKY         4250.86863   154  9712.502541  62.548728   1.90e-014   1.000000 
+TrN         4247.85906   155  9714.345513  64.391700   7.56e-015   1.000000 
+F81+G       4253.21936   154  9717.204001  67.250188   1.81e-015   1.000000 
+TPM3uf      4249.99234   155  9718.612073  68.658260   8.95e-016   1.000000 
+TPM1uf      4250.73227   155  9720.091933  70.138120   4.27e-016   1.000000 
+TPM2uf      4250.78949   155  9720.206373  70.252560   4.03e-016   1.000000 
+TIM3        4246.98989   156  9720.469285  70.515472   3.54e-016   1.000000 
+TIM1        4247.72228   156  9721.934065  71.980252   1.70e-016   1.000000 
+TIM2        4247.78114   156  9722.051785  72.097972   1.60e-016   1.000000 
+TVM         4249.87945   157  9734.110517  84.156704   3.86e-019   1.000000 
+GTR         4246.87795   158  9735.969629  86.015817   1.52e-019   1.000000 
+F81         4275.75546   153  9754.414088  104.460276   1.51e-023   1.000000 
+K80+I       4298.26216   152  9791.565376  141.611563   1.29e-031   1.000000 
+TrNef+I     4295.14142   153  9793.186008  143.232196   5.73e-032   1.000000 
+TPM2+I      4297.52552   153  9797.954208  148.000396   5.28e-033   1.000000 
+K80+I+G     4297.80193   153  9798.507028  148.553216   4.01e-033   1.000000 
+TPM1+I      4298.16621   153  9799.235588  149.281776   2.78e-033   1.000000 
+TPM3+I      4298.20763   153  9799.318428  149.364616   2.67e-033   1.000000 
+TIM2ef+I    4294.35776   154  9799.480801  149.526988   2.46e-033   1.000000 
+TrNef+I+G   4294.74197   154  9800.249221  150.295408   1.68e-033   1.000000 
+TIM1ef+I    4295.04254   154  9800.850361  150.896548   1.24e-033   1.000000 
+TIM3ef+I    4295.05393   154  9800.873141  150.919328   1.23e-033   1.000000 
+TPM2+I+G    4297.13468   154  9805.034641  155.080828   1.53e-034   1.000000 
+TPM1+I+G    4297.70221   154  9806.169701  156.215888   8.69e-035   1.000000 
+TPM3+I+G    4297.74146   154  9806.248201  156.294388   8.36e-035   1.000000 
+TIM2ef+I+G  4294.03965   155  9806.706693  156.752880   6.64e-035   1.000000 
+TIM1ef+I+G  4294.64301   155  9807.913413  157.959600   3.63e-035   1.000000 
+TIM3ef+I+G  4294.65258   155  9807.932553  157.978740   3.60e-035   1.000000 
+TVMef+I     4297.31862   155  9813.264633  163.310820   2.50e-036   1.000000 
+SYM+I       4294.11529   156  9814.720085  164.766272   1.21e-036   1.000000 
+K80+G       4311.38888   152  9817.818816  167.865003   2.57e-037   1.000000 
+TrNef+G     4307.61126   153  9818.125688  168.171876   2.20e-037   1.000000 
+TVMef+I+G   4296.93136   156  9820.352225  170.398412   7.23e-038   1.000000 
+SYM+I+G     4293.80754   157  9821.966697  172.012884   3.23e-038   1.000000 
+TPM2+G      4310.82385   153  9824.550868  174.597056   8.86e-039   1.000000 
+TIM2ef+G    4307.02690   154  9824.819081  174.865268   7.75e-039   1.000000 
+TPM3+G      4311.26015   153  9825.423468  175.469656   5.73e-039   1.000000 
+TPM1+G      4311.35973   153  9825.622628  175.668816   5.19e-039   1.000000 
+TIM3ef+G    4307.47179   154  9825.708861  175.755048   4.97e-039   1.000000 
+TIM1ef+G    4307.58103   154  9825.927341  175.973528   4.45e-039   1.000000 
+JC+I        4322.59238   151  9832.363704  182.409891   1.78e-040   1.000000 
+JC+I+G      4322.14561   152  9839.332276  189.378463   5.47e-042   1.000000 
+TVMef+G     4310.66960   155  9839.966593  190.012780   3.98e-042   1.000000 
+SYM+G       4306.86015   156  9840.209805  190.255992   3.53e-042   1.000000 
+K80         4334.26465   151  9855.708244  205.754431   1.52e-045   1.000000 
+TrNef       4330.43100   152  9855.903056  205.949243   1.38e-045   1.000000 
+JC+G        4334.63061   151  9856.440164  206.486351   1.05e-045   1.000000 
+TPM2        4333.74481   152  9862.530676  212.576863   5.02e-047   1.000000 
+TIM2ef      4329.91068   153  9862.724528  212.770716   4.55e-047   1.000000 
+TPM3        4334.11460   152  9863.270256  213.316443   3.47e-047   1.000000 
+TIM3ef      4330.28144   153  9863.466048  213.512236   3.14e-047   1.000000 
+TPM1        4334.24582   152  9863.532696  213.578883   3.04e-047   1.000000 
+TIM1ef      4330.41197   153  9863.727108  213.773296   2.76e-047   1.000000 
+TVMef       4333.58654   154  9877.938361  227.984548   2.26e-050   1.000000 
+SYM         4329.75185   155  9878.131093  228.177280   2.05e-050   1.000000 
+JC          4357.23365   150  9893.784132  243.830319   8.20e-054   1.000000
+-------------------------------------------------------------------------
+-lnL:	negative log likelihod
+K:	number of estimated parameters
+BIC:	Bayesian Information Criterion
+delta:	BIC difference
+weight:	BIC weight
+cumWeight:	cumulative BIC weight
+ 
+ 
+* BIC MODEL SELECTION : Confidence interval
+ 
+There are 88 models in the 100% confidence interval: [ HKY+I TrN+I TPM3uf+I HKY+I+G TPM1uf+I TPM2uf+I TIM3+I TrN+I+G TIM1+I TIM2+I TPM3uf+I+G TPM1uf+I+G TPM2uf+I+G TIM3+I+G TIM1+I+G TIM2+I+G TVM+I GTR+I HKY+G TrN+G TVM+I+G TPM3uf+G GTR+I+G TPM1uf+G TPM2uf+G TIM3+G TIM1+G TIM2+G F81+I TVM+G GTR+G F81+I+G HKY TrN F81+G TPM3uf TPM1uf TPM2uf TIM3 TIM1 TIM2 TVM GTR F81 K80+I TrNef+I TPM2+I K80+I+G TPM1+I TPM3+I TIM2ef+I TrNef+I+G TIM1ef+I TIM3ef+I TPM2+I+G TPM1+I+G TPM3+I+G TIM2ef+I+G TIM1ef+I+G TIM3ef+I+G TVMef+I SYM+I K80+G TrNef+G TVMef+I+G SYM+I+G TPM2+G TIM2ef+G TPM3+G TPM1+G TIM3ef+G TIM1ef+G JC+I JC+I+G TVMef+G SYM+G K80 TrNef JC+G TPM2 TIM2ef TPM3 TIM3ef TPM1 TIM1ef TVMef SYM JC ] 
+ 
+ 
+* BIC MODEL SELECTION : Parameter importance
+ 
+Parameter   Importance
+----------------------
+fA	    1.0000
+fC	    1.0000
+fG	    1.0000
+fT	    1.0000
+kappa	    0.7512
+titv	    0.7512
+rAC	    0.0633
+rAG	    0.2488
+rAT	    0.0439
+rCG	    0.0670
+rCT	    0.2488
+rGT	    0.2488
+pinv(I)	    0.9665
+alpha(G)	    0.0000
+pinv(IG)	    0.0335
+alpha(IG)	    0.0335
+----------------------
+Values have been rounded.
+ (I):  considers only +I models.
+ (G):  considers only +G models.
+ (IG): considers only +I+G models.
+ 
+ 
+* BIC MODEL SELECTION : Best Model's command line
+ 
+phyml  -i /tmp/jmodeltest17089113958499597026.phy -d nt -n 1 -b 0 --run_id HKY+I -m 010010 -f m -v e -c 1 --no_memory_check -o tlr -s BEST
+ 
+ 
+ 
+---------------------------------------------------------------
+*                                                             *
+*                    MODEL AVERAGED PHYLOGENY                 *
+*                                                             *
+---------------------------------------------------------------
+ 
+Selection criterion: . . . . BIC
+Confidence interval: . . . . 1.00
+Consensus type:. . . . . . . 50% majority rule
+ 
+ 
+Using 88 models in the 1.00 confidence interval = HKY+I TrN+I TPM3uf+I HKY+I+G TPM1uf+I TPM2uf+I TIM3+I TrN+I+G TIM1+I TIM2+I TPM3uf+I+G TPM1uf+I+G TPM2uf+I+G TIM3+I+G TIM1+I+G TIM2+I+G TVM+I GTR+I HKY+G TrN+G TVM+I+G TPM3uf+G GTR+I+G TPM1uf+G TPM2uf+G TIM3+G TIM1+G TIM2+G F81+I TVM+G GTR+G F81+I+G HKY TrN F81+G TPM3uf TPM1uf TPM2uf TIM3 TIM1 TIM2 TVM GTR F81 K80+I TrNef+I TPM2+I K80+I+G TPM1+I TPM3+I TIM2ef+I TrNef+I+G TIM1ef+I TIM3ef+I TPM2+I+G TPM1+I+G TPM3+I+G TIM2ef+I+G TIM1ef+I+G TIM3ef+I+G TVMef+I SYM+I K80+G TrNef+G TVMef+I+G SYM+I+G TPM2+G TIM2ef+G TPM3+G TPM1+G TIM3ef+G TIM1ef+G JC+I JC+I+G TVMef+G SYM+G K80 TrNef JC+G TPM2 TIM2ef TPM3 TIM3ef TPM1 TIM1ef TVMef SYM JC  
+ 
+Species in order:
+ 
+    1. CP085788.1_Chromosome_
+    2. AP019740.1_Chromosome_A.radioresistens_
+    3. CP167783.1_Chromosome_A.radioresistens_
+    4. KU833219.1_Chromosome_A.indicus_
+    5. CP070362.2_Chromosome_
+    6. CP144559.1_Chromosome_
+    7. CP169829.1_Plasmid_
+    8. CP032215.1_Chromosome_
+    9. CP169776.1_Chromosome_
+    10. CP169872.1_Chromosome_
+    11. CP024576.1.C2_Chromosome_
+    12. CP070358.2_Chromosome_
+    13. CP113080.1_Chromosome_
+    14. JF731029.1_Plasmid_A.baylyi_
+    15. OR492670.1_Plasmid_A.gerneri_
+    16. CP191611.1_Chromosome_
+    17. CP191638.1.C2_Chromosome_
+    18. CP191641.1_Chromosome_
+    19. CP191616.1.C2_Chromosome_
+    20. CP102820.1_Plasmid_
+    21. CP024578.1_Plasmid_
+    22. KP780408.1.Tn2008_
+    23. CP134570.1_Chromosome_
+    24. EU594641.1_Plasmid_
+    25. CP159764.1_Plasmid_
+    26. CP102817.1_Plasmid_
+    27. CP147864.1_Plasmid_
+    28. LS999838.1.Tn2008_
+    29. CP069840.1_Chromosome_
+    30. CP076812.1_Chromosome_
+    31. CP081140.1_Plasmid_
+    32. CP035047.1_Plasmid_
+    33. CP140421.1_Plasmid_
+    34. CP142645.1.C2_Chromosome_
+    35. CP096757.1_Chromosome_
+    36. CP061542.1.C1_Plasmid_
+    37. CP134573.1_Plamid_
+    38. CP061542.1.C2_Plasmid_
+    39. CP134543.1_Plasmid_
+    40. CP003501.1_Plasmid_
+    41. CP142635.1_Plasmid_
+    42. CP188275.1.C1_Chromosome_
+    43. CP188275.1.C2_Chromosome_
+    44. CP061557.1_Plasmid_A.seifertii_
+    45. CP143348.1_Chromosome_
+    46. CP090607.1.C2_Chromosome_
+    47. CP124678.1.C1_Chromosome_
+    48. CP124678.1.C2_Chromosome_
+    49. CP072290.1_Chromosome_
+    50. CP121591.1.C1_Chromosome_
+    51. CP131893.1_Chromosome_
+    52. CP121588.1_Chromosome_
+    53. CP169826.1.C2_Chromosome_
+    54. CP151719.1.C2_Chromosome_
+    55. CP184612.1_Plasmid_
+    56. CP035930.1.C2_Chromosome_
+    57. CP169826.1.C1_Chromosome_
+    58. CP184610.1_Plasmid_
+    59. CP040053.1.C1_Chromosome_
+    60. CP035930.1.C1_Chromosome_
+    61. MK941846.1_Plasmid_P.mirabilis_
+    62. CP033572.1_Chromosome_A.nosocomialis_
+    63. CP099790.1_Chromosome_
+    64. CP091341.1.C1_Chromosome_
+    65. CP184592.1_Plasmid_
+    66. CP064292.1.C2_Chromosome_
+    67. CP121604.1_Chromosome_
+    68. CP040040.1.C1_Chromosome_
+    69. CP059351.1_Chromosome_
+    70. CP146812.1.C2_Chromosome_
+    71. CP146812.1.C3_Chromosome_
+    72. CP146812.1.C1_Chromosome_
+    73. CP035932.1_Plasmid_
+    74. CP099858.1_Chromosome_
+    75. CP077849.1_Plasmid_
+    76. CP194387.1.C2_Chromosome_
+ 
+Bipartitions included in the consensus tree
+ 
+    1234567891111111111222222222233333333334444444444555555555566666666667777777
+             0123456789012345678901234567890123456789012345678901234567890123456
+    **************************************************************************** ( 1.0 )
+    --************************************************************************** ( 1.0 )
+    ---************************************************************************* ( 1.0 )
+    ---**********--------------------------------------------------------------- ( 0.74192 )
+    ----*********--------------------------------------------------------------- ( 0.74192 )
+    ----******------------------------------------------------------------------ ( 0.77646 )
+    -----*****------------------------------------------------------------------ ( 0.77646 )
+    ------****------------------------------------------------------------------ ( 0.77987 )
+    -------***------------------------------------------------------------------ ( 0.82467 )
+    --------**------------------------------------------------------------------ ( 0.79114 )
+    ----------***--------------------------------------------------------------- ( 0.77646 )
+    -----------**--------------------------------------------------------------- ( 0.77646 )
+    -------------*************************************************************** ( 0.74192 )
+    --------------************************************************************** ( 0.74192 )
+    --------------*****--------------------------------------------------------- ( 0.74192 )
+    ---------------****--------------------------------------------------------- ( 1.0 )
+    ---------------**----------------------------------------------------------- ( 0.82467 )
+    -----------------**--------------------------------------------------------- ( 0.74192 )
+    -------------------********************************************************* ( 0.74192 )
+    --------------------******************************************************** ( 0.74192 )
+    ---------------------******************************************************* ( 0.74192 )
+    ----------------------****************************************************** ( 0.74192 )
+    -----------------------***************************************************** ( 0.74192 )
+    -----------------------***-------------------------------------------------- ( 0.74192 )
+    ------------------------**-------------------------------------------------- ( 0.74192 )
+    --------------------------************************************************** ( 0.74192 )
+    ---------------------------************************************************* ( 0.74192 )
+    ---------------------------***---------------------------------------------- ( 0.74907 )
+    ----------------------------**---------------------------------------------- ( 0.78702 )
+    ------------------------------********************************************** ( 0.9966 )
+    ------------------------------**-------------------------------------------- ( 0.82055 )
+    --------------------------------******************************************** ( 0.96205 )
+    ---------------------------------******************************************* ( 0.96546 )
+    ---------------------------------****************************************--- ( 0.81 )
+    ---------------------------------********----------------------------------- ( 1.0 )
+    ----------------------------------*******----------------------------------- ( 0.78702 )
+    -----------------------------------******----------------------------------- ( 0.78702 )
+    ------------------------------------*****----------------------------------- ( 0.78702 )
+    -------------------------------------****----------------------------------- ( 0.78702 )
+    --------------------------------------***----------------------------------- ( 0.78702 )
+    ---------------------------------------**----------------------------------- ( 0.78702 )
+    -----------------------------------------********************************--- ( 0.74191 )
+    ------------------------------------------*******************************--- ( 0.74602 )
+    -------------------------------------------******************************--- ( 0.74191 )
+    --------------------------------------------*****************************--- ( 1.0 )
+    --------------------------------------------****---------------------------- ( 1.0 )
+    ---------------------------------------------***---------------------------- ( 0.72932 )
+    ----------------------------------------------**---------------------------- ( 0.7259 )
+    ------------------------------------------------*************************--- ( 0.93476 )
+    ------------------------------------------------**-------------------------- ( 0.76658 )
+    --------------------------------------------------***********************--- ( 1.0 )
+    --------------------------------------------------******************-------- ( 0.72931 )
+    ---------------------------------------------------*****************-------- ( 0.90838 )
+    ----------------------------------------------------****************-------- ( 0.73307 )
+    -----------------------------------------------------***************-------- ( 0.7259 )
+    ------------------------------------------------------**************-------- ( 0.7259 )
+    -------------------------------------------------------*************-------- ( 0.7259 )
+    --------------------------------------------------------************-------- ( 0.7259 )
+    ---------------------------------------------------------***********-------- ( 0.7259 )
+    ----------------------------------------------------------**********-------- ( 0.7259 )
+    -----------------------------------------------------------*********-------- ( 0.7259 )
+    ------------------------------------------------------------********-------- ( 0.7259 )
+    -------------------------------------------------------------*******-------- ( 0.7259 )
+    --------------------------------------------------------------******-------- ( 0.7259 )
+    ---------------------------------------------------------------*****-------- ( 0.7259 )
+    ----------------------------------------------------------------****-------- ( 0.7259 )
+    -----------------------------------------------------------------***-------- ( 0.7259 )
+    ------------------------------------------------------------------**-------- ( 0.74478 )
+    --------------------------------------------------------------------*****--- ( 1.0 )
+    ---------------------------------------------------------------------****--- ( 0.7826 )
+    ----------------------------------------------------------------------***--- ( 0.74191 )
+    -----------------------------------------------------------------------**--- ( 0.95077 )
+    -------------------------------------------------------------------------*** ( 1.0 )
+    --------------------------------------------------------------------------** ( 0.74945 )
+
+ 
+                                                            +--76 CP076812.1_Chromosome_
+                                                        +-137
+                                                        |   +--75 CP069840.1_Chromosome_
+                                                    +-138
+                                                    |   +--74 LS999838.1.Tn2008_
+                                                +-139
+                                                |   |       +--73 CP035047.1_Plasmid_
+                                                |   |   +-135
+                                                |   |   |   +--72 CP081140.1_Plasmid_
+                                                |   +-136
+                                                |       |                                   +--71 CP121591.1.C1_Chromosome_
+                                                |       |                               +-126
+                                                |       |                               |   +--70 CP072290.1_Chromosome_
+                                                |       |                           +-127
+                                                |       |                           |   |                                                                       +--69 CP040040.1.C1_Chromosome_
+                                                |       |                           |   |                                                                   +-108
+                                                |       |                           |   |                                                                   |   +--68 CP121604.1_Chromosome_
+                                                |       |                           |   |                                                               +-109
+                                                |       |                           |   |                                                               |   +--67 CP064292.1.C2_Chromosome_
+                                                |       |                           |   |                                                           +-110
+                                                |       |                           |   |                                                           |   +--66 CP184592.1_Plasmid_
+                                                |       |                           |   |                                                       +-111
+                                                |       |                           |   |                                                       |   +--65 CP091341.1.C1_Chromosome_
+                                                |       |                           |   |                                                   +-112
+                                                |       |                           |   |                                                   |   +--64 CP099790.1_Chromosome_
+                                                |       |                           |   |                                               +-113
+                                                |       |                           |   |                                               |   +--63 CP033572.1_Chromosome_A.nosocomialis_
+                                                |       |                           |   |                                           +-114
+                                                |       |                           |   |                                           |   +--62 MK941846.1_Plasmid_P.mirabilis_
+                                                |       |                           |   |                                       +-115
+                                                |       |                           |   |                                       |   +--61 CP035930.1.C1_Chromosome_
+                                                |       |                           |   |                                   +-116
+                                                |       |                           |   |                                   |   +--60 CP040053.1.C1_Chromosome_
+                                                |       |                           |   |                               +-117
+                                                |       |                           |   |                               |   +--59 CP184610.1_Plasmid_
+                                                |       |                           |   |                           +-118
+                                                |       |                           |   |                           |   +--58 CP169826.1.C1_Chromosome_
+                                                |       |                           |   |                       +-119
+                                                |       |                           |   |                       |   +--57 CP035930.1.C2_Chromosome_
+                                                |       |                           |   |                   +-120
+                                                |       |                           |   |                   |   +--56 CP184612.1_Plasmid_
+                                                |       |                           |   |               +-121
+                                                |       |                           |   |               |   +--55 CP151719.1.C2_Chromosome_
+                                                |       |                           |   |           +-122
+                                                |       |                           |   |           |   +--54 CP169826.1.C2_Chromosome_
+                                                |       |                           |   |       +-123
+                                                |       |                           |   |       |   +--53 CP121588.1_Chromosome_
+                                                |       |                           |   |   +-124
+                                                |       |                           |   |   |   +--52 CP131893.1_Chromosome_
+                                                |       |                           |   +-125
+                                                |       |                           |       |               +--51 CP035932.1_Plasmid_
+                                                |       |                           |       |           +-104
+                                                |       |                           |       |           |   +--50 CP146812.1.C1_Chromosome_
+                                                |       |                           |       |       +-105
+                                                |       |                           |       |       |   +--49 CP146812.1.C3_Chromosome_
+                                                |       |                           |       |   +-106
+                                                |       |                           |       |   |   +--48 CP146812.1.C2_Chromosome_
+                                                |       |                           |       +-107
+                                                |       |                           |           +--47 CP059351.1_Chromosome_
+                                                |       |                       +-128
+                                                |       |                       |   |           +--46 CP124678.1.C2_Chromosome_
+                                                |       |                       |   |       +-101
+                                                |       |                       |   |       |   +--45 CP124678.1.C1_Chromosome_
+                                                |       |                       |   |   +-102
+                                                |       |                       |   |   |   +--44 CP090607.1.C2_Chromosome_
+                                                |       |                       |   +-103
+                                                |       |                       |       +--43 CP143348.1_Chromosome_
+                                                |       |                   +-129
+                                                |       |                   |   +--42 CP061557.1_Plasmid_A.seifertii_
+                                                |       |               +-130
+                                                |       |               |   +--41 CP188275.1.C2_Chromosome_
+                                                |       |           +-131
+                                                |       |           |   +--40 CP188275.1.C1_Chromosome_
+                                                |       |       +-132
+                                                |       |       |   |                           +--39 CP142635.1_Plasmid_
+                                                |       |       |   |                       +--94
+                                                |       |       |   |                       |   +--38 CP003501.1_Plasmid_
+                                                |       |       |   |                   +--95
+                                                |       |       |   |                   |   +--37 CP134543.1_Plasmid_
+                                                |       |       |   |               +--96
+                                                |       |       |   |               |   +--36 CP061542.1.C2_Plasmid_
+                                                |       |       |   |           +--97
+                                                |       |       |   |           |   +--35 CP134573.1_Plamid_
+                                                |       |       |   |       +--98
+                                                |       |       |   |       |   +--34 CP061542.1.C1_Plasmid_
+                                                |       |       |   |   +--99
+                                                |       |       |   |   |   +--33 CP096757.1_Chromosome_
+                                                |       |       |   +-100
+                                                |       |       |       +--32 CP142645.1.C2_Chromosome_
+                                                |       |   +-133
+                                                |       |   |   |       +--31 CP194387.1.C2_Chromosome_
+                                                |       |   |   |   +--92
+                                                |       |   |   |   |   +--30 CP077849.1_Plasmid_
+                                                |       |   |   +--93
+                                                |       |   |       +--29 CP099858.1_Chromosome_
+                                                |       +-134
+                                                |           +--28 CP140421.1_Plasmid_
+                                            +-140
+                                            |   +--27 CP147864.1_Plasmid_
+                                        +-141
+                                        |   |       +--26 CP102817.1_Plasmid_
+                                        |   |   +--90
+                                        |   |   |   +--25 CP159764.1_Plasmid_
+                                        |   +--91
+                                        |       +--24 EU594641.1_Plasmid_
+                                    +-142
+                                    |   +--23 CP134570.1_Chromosome_
+                                +-143
+                                |   +--22 KP780408.1.Tn2008_
+                            +-144
+                            |   +--21 CP024578.1_Plasmid_
+                        +-145
+                        |   +--20 CP102820.1_Plasmid_
+                    +-146
+                    |   |           +--19 CP191616.1.C2_Chromosome_
+                    |   |       +--87
+                    |   |       |   +--18 CP191641.1_Chromosome_
+                    |   |   +--88
+                    |   |   |   |   +--17 CP191638.1.C2_Chromosome_
+                    |   |   |   +--86
+                    |   |   |       +--16 CP191611.1_Chromosome_
+                    |   +--89
+                    |       +--15 OR492670.1_Plasmid_A.gerneri_
+                +-147
+                |   +--14 JF731029.1_Plasmid_A.baylyi_
+          +---148
+          |     |               +--13 CP113080.1_Chromosome_
+          |     |           +--82
+          |     |           |   +--12 CP070358.2_Chromosome_
+          |     |       +--83
+          |     |       |   +--11 CP024576.1.C2_Chromosome_
+          |     |   +--84
+          |     |   |   |                   +--10 CP169872.1_Chromosome_
+          |     |   |   |               +--77
+          |     |   |   |               |   +---9 CP169776.1_Chromosome_
+          |     |   |   |           +--78
+          |     |   |   |           |   +---8 CP032215.1_Chromosome_
+          |     |   |   |       +--79
+          |     |   |   |       |   +---7 CP169829.1_Plasmid_
+          |     |   |   |   +--80
+          |     |   |   |   |   +---6 CP144559.1_Chromosome_
+          |     |   |   +--81
+          |     |   |       +---5 CP070362.2_Chromosome_
+          |     +--85
+          |         +---4 KU833219.1_Chromosome_A.indicus_
++-------149
+|         +-------------------------------3 CP167783.1_Chromosome_A.radioresistens_
+|
++--------------------------------2 AP019740.1_Chromosome_A.radioresistens_
+|
++--------1 CP085788.1_Chromosome_
+
+ 
+(CP085788.1_Chromosome_:0.0037194400,AP019740.1_Chromosome_A.radioresistens_:0.0127530900,(CP167783.1_Chromosome_A.radioresistens_:0.0121531900,((KU833219.1_Chromosome_A.indicus_:0.0000000000,((CP070362.2_Chromosome_:0.0000000000,(CP144559.1_Chromosome_:0.0000000000,(CP169829.1_Plasmid_:0.0003955600,(CP032215.1_Chromosome_:0.0000000000,(CP169776.1_Chromosome_:0.0000000000,CP169872.1_Chromosome_:0.0000000000):0.7911:0.0000000100):0.8247:0.0009525600):0.7799:0.0002313700):0.7765:0.0000000000):0.7765:0.0000000100,(CP024576.1.C2_Chromosome_:0.0016329300,(CP070358.2_Chromosome_:0.0000000000,CP113080.1_Chromosome_:0.0000000000):0.7765:0.0000000000):0.7765:0.0000000000):0.7419:0.0007896900):0.7419:0.0000000300,(JF731029.1_Plasmid_A.baylyi_:0.0015972700,((OR492670.1_Plasmid_A.gerneri_:0.0003992500,((CP191611.1_Chromosome_:0.0000000000,CP191638.1.C2_Chromosome_:0.0000000000):0.8247:0.0000000000,(CP191641.1_Chromosome_:0.0000000000,CP191616.1.C2_Chromosome_:0.0000000000):0.7419:0.0000000000):1.0000:0.0011965500):0.7419:0.0000000100,(CP102820.1_Plasmid_:0.0000000000,(CP024578.1_Plasmid_:0.0000000000,(KP780408.1.Tn2008_:0.0000000000,(CP134570.1_Chromosome_:0.0000000000,((EU594641.1_Plasmid_:0.0000000000,(CP159764.1_Plasmid_:0.0000000000,CP102817.1_Plasmid_:0.0000000000):0.7419:0.0000000000):0.7419:0.0000000000,(CP147864.1_Plasmid_:0.0000000000,(((CP140421.1_Plasmid_:0.0000000300,((CP099858.1_Chromosome_:0.0000000000,(CP077849.1_Plasmid_:0.0000000000,CP194387.1.C2_Chromosome_:0.0000000000):0.7494:0.0000000000):1.0000:0.0003956900,((CP142645.1.C2_Chromosome_:0.0000000000,(CP096757.1_Chromosome_:0.0000000000,(CP061542.1.C1_Plasmid_:0.0000000000,(CP134573.1_Plamid_:0.0000000000,(CP061542.1.C2_Plasmid_:0.0000000000,(CP134543.1_Plasmid_:0.0000000000,(CP003501.1_Plasmid_:0.0000000000,CP142635.1_Plasmid_:0.0000000000):0.7870:0.0000000000):0.7870:0.0000000000):0.7870:0.0000000000):0.7870:0.0000000000):0.7870:0.0000000000):0.7870:0.0000000000):1.0000:0.0003972800,(CP188275.1.C1_Chromosome_:0.0000000000,(CP188275.1.C2_Chromosome_:0.0000000000,(CP061557.1_Plasmid_A.seifertii_:0.0000000000,((CP143348.1_Chromosome_:0.0003981100,(CP090607.1.C2_Chromosome_:0.0000000000,(CP124678.1.C1_Chromosome_:0.0000000000,CP124678.1.C2_Chromosome_:0.0000000000):0.7259:0.0000000000):0.7293:0.0000000000):1.0000:0.0003957700,(((CP059351.1_Chromosome_:0.0003958100,(CP146812.1.C2_Chromosome_:0.0000000000,(CP146812.1.C3_Chromosome_:0.0003950400,(CP146812.1.C1_Chromosome_:0.0000000000,CP035932.1_Plasmid_:0.0000000000):0.9508:0.0000000000):0.7419:0.0000000000):0.7826:0.0000000100):1.0000:0.0003965400,(CP131893.1_Chromosome_:0.0003956800,(CP121588.1_Chromosome_:0.0016169000,(CP169826.1.C2_Chromosome_:0.0000000000,(CP151719.1.C2_Chromosome_:0.0000000000,(CP184612.1_Plasmid_:0.0000000000,(CP035930.1.C2_Chromosome_:0.0000000000,(CP169826.1.C1_Chromosome_:0.0000000000,(CP184610.1_Plasmid_:0.0000000000,(CP040053.1.C1_Chromosome_:0.0000000000,(CP035930.1.C1_Chromosome_:0.0000000000,(MK941846.1_Plasmid_P.mirabilis_:0.0000000000,(CP033572.1_Chromosome_A.nosocomialis_:0.0000000000,(CP099790.1_Chromosome_:0.0000000000,(CP091341.1.C1_Chromosome_:0.0000000000,(CP184592.1_Plasmid_:0.0000000000,(CP064292.1.C2_Chromosome_:0.0000000000,(CP121604.1_Chromosome_:0.0016039900,CP040040.1.C1_Chromosome_:0.0000000000):0.7448:0.0000000000):0.7259:0.0000000000):0.7259:0.0000000000):0.7259:0.0000000000):0.7259:0.0000000000):0.7259:0.0000000000):0.7259:0.0000000000):0.7259:0.0000000000):0.7259:0.0000000000):0.7259:0.0000000000):0.7259:0.0000000000):0.7259:0.0000000000):0.7259:0.0000000000):0.7259:0.0000000000):0.7331:0.0000000000):0.9084:0.0000000100):0.7293:0.0000000100):1.0000:0.0003949800,(CP072290.1_Chromosome_:0.0000000000,CP121591.1.C1_Chromosome_:0.0000000000):0.7666:0.0000000000):0.9348:0.0000000000):1.0000:0.0003965000):0.7419:0.0000000000):0.7460:0.0000000000):0.7419:0.0000000000):0.8100:0.0000000300):0.9655:0.0003950000):0.9620:0.0003949900,(CP081140.1_Plasmid_:0.0000000000,CP035047.1_Plasmid_:0.0000000000):0.8205:0.0000000000):0.9966:0.0003957400,(LS999838.1.Tn2008_:0.0000000000,(CP069840.1_Chromosome_:0.0000000000,CP076812.1_Chromosome_:0.0000000000):0.7870:0.0000000000):0.7491:0.0000000000):0.7419:0.0000000000):0.7419:0.0000000000):0.7419:0.0000000000):0.7419:0.0000000000):0.7419:0.0000000000):0.7419:0.0000000000):0.7419:0.0000000000):0.7419:0.0000000000):0.7419:0.0000000000):1.0000:0.0023808300):1.0000:0.0038970600);
+ 
+Note: this tree is unrooted. Branch lengths are the expected number of substitutions per site. Labels next to parentheses represent phylogenetic uncertainty due to model selection (see documentation)
+ 
+ 
+ 
+---------------------------------------------------------------
+*                                                             *
+*                    SELECTION SUMMARY                        *
+*                                                             *
+---------------------------------------------------------------
+
+::Optimized Topologies Summary::
+
+There are 45 different topologies.
+
+Topology Id: 1
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	  1	 16.77%		  0	0.00e+00	0.00e+00
+BIC	 23	 15.65%		116	5.46e-03	0.00e+00
+Models supporting:   1
+                     TrN+I 
+
+Topology Id: 2
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	  2	  2.02%		  2	3.22e-03	0.00e+00
+BIC	 20	  1.89%		114	5.48e-03	0.00e+00
+Models supporting:   1
+                     TPM1uf+I 
+
+Topology Id: 3
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	  3	  0.00%		  8	4.41e-03	0.00e+00
+BIC	 22	  0.00%		116	5.60e-03	0.00e+00
+Models supporting:   1
+                     F81+I 
+
+Topology Id: 4
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	  4	  0.00%		 22	1.59e-03	0.00e+00
+BIC	 26	  0.00%		118	5.53e-03	0.00e+00
+Models supporting:   1
+                     TIM1ef+I 
+
+Topology Id: 5
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	  5	  0.00%		 36	4.59e-03	0.00e+00
+BIC	 25	  0.00%		116	5.70e-03	0.00e+00
+Models supporting:   1
+                     SYM+I 
+
+Topology Id: 6
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	  6	  0.00%		 50	3.55e-03	0.00e+00
+BIC	 42	  0.00%		126	5.56e-03	0.00e+00
+Models supporting:   1
+                     TPM3+I 
+
+Topology Id: 7
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	  7	  0.00%		 58	5.54e-03	0.00e+00
+BIC	 40	  0.00%		126	5.59e-03	0.00e+00
+Models supporting:   1
+                     JC+I 
+
+Topology Id: 8
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	  8	  0.00%		 66	5.40e-03	0.00e+00
+BIC	 21	  0.00%		114	5.58e-03	0.00e+00
+Models supporting:   1
+                     TIM2ef+I 
+
+Topology Id: 9
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	  9	  0.00%		 84	6.40e-03	5.58e-10
+BIC	 29	  0.00%		122	6.06e-03	5.95e-10
+Models supporting:   8
+                     HKY TrN TPM1uf TPM2uf TPM3uf TIM3 TVM GTR 
+
+Topology Id: 10
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 10	  0.00%		 84	5.86e-03	3.44e-11
+BIC	 30	  0.00%		122	5.87e-03	3.12e-11
+Models supporting:   7
+                     HKY+G TPM1uf+G TPM2uf+G TPM3uf+G TIM3+G TVM+G GTR+G 
+
+Topology Id: 11
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 11	  0.00%		 84	5.42e-03	0.00e+00
+BIC	 31	  0.00%		122	5.40e-03	0.00e+00
+Models supporting:   1
+                     TrN+G 
+
+Topology Id: 12
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 12	 39.01%		 86	5.30e-03	3.54e-10
+BIC	  7	  3.35%		106	4.95e-03	2.19e-10
+Models supporting:   10
+                     HKY+I+G TrN+I+G TPM1uf+I+G TPM2uf+I+G TPM3uf+I+G TIM1+I+G TIM2+I+G TIM3+I+G TVM+I+G 
+                     GTR+I+G 
+
+Topology Id: 13
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 13	  0.00%		 90	6.53e-03	0.00e+00
+BIC	 39	  0.00%		124	6.11e-03	0.00e+00
+Models supporting:   1
+                     SYM 
+
+Topology Id: 14
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 14	  0.00%		 92	5.76e-03	0.00e+00
+BIC	 38	  0.00%		124	5.87e-03	0.00e+00
+Models supporting:   1
+                     TPM3+G 
+
+Topology Id: 15
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 15	  0.00%		 96	6.40e-03	0.00e+00
+BIC	 45	  0.00%		128	6.00e-03	0.00e+00
+Models supporting:   1
+                     TPM3 
+
+Topology Id: 16
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 16	  0.00%		 98	5.99e-03	3.86e-08
+BIC	 28	  0.00%		122	6.35e-03	3.01e-08
+Models supporting:   3
+                     F81 F81+G TIM2 
+
+Topology Id: 17
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 17	  0.00%		 98	5.86e-03	9.29e-11
+BIC	 35	  0.00%		124	5.86e-03	7.64e-11
+Models supporting:   7
+                     K80+G TrNef+G TPM1+G TIM1ef+G TIM2ef+G TIM3ef+G SYM+G 
+
+Topology Id: 18
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 18	  0.00%		 98	6.49e-03	4.65e-10
+BIC	 36	  0.00%		124	6.09e-03	5.39e-10
+Models supporting:   4
+                     TrNef TIM1ef TIM2ef TIM3ef 
+
+Topology Id: 19
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 19	  0.00%		 98	6.48e-03	0.00e+00
+BIC	 44	  0.00%		128	6.03e-03	0.00e+00
+Models supporting:   1
+                     TPM2 
+
+Topology Id: 20
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 20	  0.00%		 98	5.78e-03	9.18e-11
+BIC	 37	  0.00%		124	5.89e-03	7.56e-11
+Models supporting:   2
+                     TPM2+G TVMef+G 
+
+Topology Id: 21
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 21	  0.00%		 98	5.87e-03	0.00e+00
+BIC	 34	  0.00%		122	5.40e-03	0.00e+00
+Models supporting:   1
+                     TIM2+G 
+
+Topology Id: 22
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 22	  0.00%		100	5.20e-03	0.00e+00
+BIC	 13	  0.00%		110	4.21e-03	0.00e+00
+Models supporting:   1
+                     JC+I+G 
+
+Topology Id: 23
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 23	  0.00%		100	5.74e-03	0.00e+00
+BIC	 10	  0.00%		108	4.97e-03	0.00e+00
+Models supporting:   1
+                     F81+I+G 
+
+Topology Id: 24
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 24	  0.00%		100	5.23e-03	8.68e-11
+BIC	 15	  0.00%		110	4.29e-03	1.91e-11
+Models supporting:   2
+                     K80+I+G SYM+I+G 
+
+Topology Id: 25
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 25	  0.00%		100	5.21e-03	6.01e-10
+BIC	 16	  0.00%		110	4.26e-03	6.05e-10
+Models supporting:   5
+                     TrNef+I+G TPM3+I+G TIM1ef+I+G TIM2ef+I+G TIM3ef+I+G 
+
+Topology Id: 26
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 26	  0.00%		100	5.26e-03	0.00e+00
+BIC	 17	  0.00%		110	4.32e-03	0.00e+00
+Models supporting:   1
+                     TPM1+I+G 
+
+Topology Id: 27
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 27	  0.00%		102	5.25e-03	4.40e-10
+BIC	 18	  0.00%		110	4.31e-03	7.04e-10
+Models supporting:   2
+                     TPM2+I+G TVMef+I+G 
+
+Topology Id: 28
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 28	  0.00%		102	6.15e-03	0.00e+00
+BIC	 32	  0.00%		122	6.42e-03	0.00e+00
+Models supporting:   1
+                     TIM1 
+
+Topology Id: 29
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 29	  0.00%		102	5.63e-03	0.00e+00
+BIC	 33	  0.00%		122	5.94e-03	0.00e+00
+Models supporting:   1
+                     TIM1+G 
+
+Topology Id: 30
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 30	  0.00%		104	6.42e-03	1.25e-10
+BIC	 43	  0.00%		128	6.02e-03	1.35e-10
+Models supporting:   4
+                     JC K80 TPM1 TVMef 
+
+Topology Id: 31
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 31	  0.00%		104	6.03e-03	0.00e+00
+BIC	 41	  0.00%		126	5.64e-03	0.00e+00
+Models supporting:   1
+                     JC+G 
+
+Topology Id: 32
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 32	  0.00%		108	5.59e-03	0.00e+00
+BIC	  8	  0.00%		106	5.42e-03	0.00e+00
+Models supporting:   1
+                     TIM3ef+I 
+
+Topology Id: 33
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 33	 14.36%		108	5.57e-03	0.00e+00
+BIC	  4	  0.71%		 90	5.09e-03	0.00e+00
+Models supporting:   1
+                     TIM3+I 
+
+Topology Id: 34
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 34	  0.00%		114	5.57e-03	0.00e+00
+BIC	 12	  0.00%		108	5.41e-03	0.00e+00
+Models supporting:   1
+                     TPM2+I 
+
+Topology Id: 35
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 35	  4.15%		116	5.46e-03	0.00e+00
+BIC	  1	 72.59%		  0	0.00e+00	0.00e+00
+Models supporting:   1
+                     HKY+I 
+
+Topology Id: 36
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 36	  0.00%		118	5.66e-03	0.00e+00
+BIC	 11	  0.00%		108	5.37e-03	0.00e+00
+Models supporting:   1
+                     TrNef+I 
+
+Topology Id: 37
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 37	  1.71%		118	5.46e-03	0.00e+00
+BIC	  2	  1.60%		 42	2.40e-03	0.00e+00
+Models supporting:   1
+                     TPM2uf+I 
+
+Topology Id: 38
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 38	  8.27%		118	5.51e-03	0.00e+00
+BIC	 19	  0.41%		112	4.81e-03	0.00e+00
+Models supporting:   1
+                     TIM1+I 
+
+Topology Id: 39
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 39	  0.00%		120	5.40e-03	0.00e+00
+BIC	 24	  0.00%		116	5.64e-03	0.00e+00
+Models supporting:   1
+                     TVMef+I 
+
+Topology Id: 40
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 40	  0.65%		120	5.54e-03	0.00e+00
+BIC	  3	  0.00%		 50	3.64e-03	0.00e+00
+Models supporting:   1
+                     TVM+I 
+
+Topology Id: 41
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 41	  2.51%		120	5.65e-03	0.00e+00
+BIC	  9	  0.00%		106	5.17e-03	0.00e+00
+Models supporting:   1
+                     GTR+I 
+
+Topology Id: 42
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 42	  0.00%		122	5.08e-03	0.00e+00
+BIC	 14	  0.00%		110	5.48e-03	0.00e+00
+Models supporting:   1
+                     K80+I 
+
+Topology Id: 43
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 43	  6.85%		122	5.61e-03	0.00e+00
+BIC	  6	  0.34%		 96	5.12e-03	0.00e+00
+Models supporting:   1
+                     TIM2+I 
+
+Topology Id: 44
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 44	  3.70%		124	4.94e-03	0.00e+00
+BIC	  5	  3.45%		 92	5.49e-03	0.00e+00
+Models supporting:   1
+                     TPM3uf+I 
+
+Topology Id: 45
+	Rank	Weight		 RF	AvgEucl		VarEucl
+AIC	 45	  0.00%		130	5.65e-03	0.00e+00
+BIC	 27	  0.00%		120	5.24e-03	0.00e+00
+Models supporting:   1
+                     TPM1+I 
+
+ 
+ 
+ 
+::Best Models::
+ 
+	Model 		f(a) 	f(c) 	f(g) 	f(t) 	kappa 	titv 	Ra	Rb	Rc	Rd	Re	Rf	pInv 	gamma
+----------------------------------------------------------------------------------------------------------------------------------------
+AIC 	TrN+I		0.32	0.18	0.20	0.31	0.00	0.00	  1.000   6.322   1.000   1.000   3.170   1.000    0.93	N/A
+BIC 	HKY+I		0.32	0.18	0.20	0.31	4.81	2.27	  1.000   4.815   1.000   1.000   4.815   1.000    0.93	N/A
