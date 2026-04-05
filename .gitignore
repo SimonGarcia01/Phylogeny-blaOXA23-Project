@@ -416,3 +416,9 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Stuff in the datamodeler git ignores
+**/*.localz
+**/*.local
+**/*.git
+**/*.DS_Store
