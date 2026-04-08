@@ -397,7 +397,78 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # VS Code files for those working on multiple tools
-.vscode/*
+.vscode/
+
+# Java / Spring Boot
+*.class
+*.jar
+*.war
+*.ear
+target/
+build/
+out/
+logs/
+*.log
+hs_err_pid*
+
+# Maven
+/.mvn/
+mvnw
+mvnw.cmd
+dependency-reduced-pom.xml
+release.properties
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+buildNumber
+target/
+
+# Gradle
+/.gradle/
+gradle-app.setting
+gradlew
+gradlew.bat
+gradle-wrapper.jar
+gradle-wrapper.properties
+/.gradle/
+**/build/
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# VS Code Java settings
+/.settings/
+
+# Spring Boot specific
+# Ignore embedded keystore and config overrides
+keystore.jks
+*.keystore
+application-*.yml
+application-*.yaml
+application-*.properties
+
+# Sensitive files
+*.env
+secrets.properties
+
+# Test output
+/test-output/
+
+# OS files
+.DS_Store
+Thumbs.db
+
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
