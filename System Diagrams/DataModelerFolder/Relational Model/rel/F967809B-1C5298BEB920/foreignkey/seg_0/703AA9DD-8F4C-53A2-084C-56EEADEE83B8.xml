@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="703AA9DD-8F4C-53A2-084C-56EEADEE83B8" containerWithKeyObject="F8139FBC-9701-2AF2-4043-8598A52B9AB4" localFKIndex="A8EFEF1D-8E03-63DF-2DB2-F21EB887E838" name="VISUALIZATIONS_MATRICES_FK">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:48:51 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<referredTableLongName>MATRICES</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>7EC065E2-48EB-0396-0421-9FB429114AA4</referredTableID>
+<keyObject>514ABEF8-F521-932A-FE9D-999809951BBF</keyObject>
+<referredKeyID>514ABEF8-F521-932A-FE9D-999809951BBF</referredKeyID>
+<mandatory>false</mandatory>
+<refColNames>id</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

@@ -1,0 +1,136 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="F8139FBC-9701-2AF2-4043-8598A52B9AB4" name="VISUALIZATIONS">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:09:12 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<ordsAlias>table_3</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="1794EE27-4649-0DF7-049B-0525B1082B63">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:48:32 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="name" id="51469E6A-DB2D-3FE7-900A-EAF56CE4CE54">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:48:32 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="description" id="A1242C37-66E1-62D3-0808-B1924987E51C">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:48:32 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>1000</dataTypeSize>
+<ownDataTypeParameters>1000,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="created_at" id="70146666-1542-1FA5-CEAB-F41B1B6A8570">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:48:32 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="visualization" id="F0B590E0-4368-846A-1204-2F522846C478">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:48:32 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LogDes-7DD553FD-11E8-61FA-399D-2E531FB621D0@LOGDT10034</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="USERS_id" id="D95FF8F2-D0C9-C37F-58CF-DDC7BE2B15B6">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:48:44 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="6C53C156-388E-D1EA-A688-E3C4111BB1D8" referredColumn="55B67DD0-6087-5737-ED69-AEB0AC543510"/>
+</associations>
+</Column>
+<Column name="MATRICES_id" id="BA4FB14F-2694-847F-6B93-2DDA3121E674">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:48:51 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="703AA9DD-8F4C-53A2-084C-56EEADEE83B8" referredColumn="F97E13A4-CE1F-C094-B82D-3CAACCD5885F"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="805C243A-002B-26EB-0B34-87A4E61A1360" name="VISUALIZATIONS_PK">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:53:52 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="1794EE27-4649-0DF7-049B-0525B1082B63"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="21B9E6A6-3B5C-5434-2D3C-B6A50E30502B" name="VISUALIZATIONS__UN">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:49:09 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="BA4FB14F-2694-847F-6B93-2DDA3121E674"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="E2B6CCF9-354E-F377-42E1-F4B10C0102D3" name="VISUALIZATIONS_USERS_FK">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:48:44 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="D95FF8F2-D0C9-C37F-58CF-DDC7BE2B15B6"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="A8EFEF1D-8E03-63DF-2DB2-F21EB887E838" name="VISUALIZATIONS_MATRICES_FK">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:48:51 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="BA4FB14F-2694-847F-6B93-2DDA3121E674"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

@@ -1,0 +1,113 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="2C7621DB-2786-1CCD-919E-D6A1FFBEC803" name="MATRIX_REQUESTS">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:09:22 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<ordsAlias>table_4</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="E687667C-B6B0-8C9F-1BFD-764597F02976">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:51:26 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="name" id="28FFA82D-ADD5-E4CE-B212-FC45CC960766">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:51:26 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="requested_at" id="D490643E-3DC0-1DC2-AF89-00AEF34A73FB">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 23:00:37 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="finished_at" id="D01ABED0-6906-68E7-EDC8-A8B2D7F42813">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 23:00:37 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="status" id="088EE98B-59BD-5C77-766D-665AB0F208A4">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 23:00:37 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>15</dataTypeSize>
+<ownDataTypeParameters>15,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MATRICES_id" id="BEE8627E-0FBD-60B8-9FCF-7B06893F01B6">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:51:53 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="182B47DC-6DBC-B5D0-DF6A-BBC7B7485D5B" referredColumn="F97E13A4-CE1F-C094-B82D-3CAACCD5885F"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="F1B0E25B-A337-D12E-1EDA-F514C1FDFB54" name="MATRIX_REQUESTS_PK">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:51:26 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="E687667C-B6B0-8C9F-1BFD-764597F02976"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="A4524497-39BA-DE14-F27E-ECA01A82BA3D" name="MATRIX_REQUESTS__UN">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:53:09 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="BEE8627E-0FBD-60B8-9FCF-7B06893F01B6"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="C57BDB46-6538-766C-9711-0BB9932CD3F2" name="MATRIX_REQUESTS_MATRICES_FK">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:51:53 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="BEE8627E-0FBD-60B8-9FCF-7B06893F01B6"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

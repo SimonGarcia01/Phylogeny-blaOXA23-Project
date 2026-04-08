@@ -1,0 +1,89 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="A7279E9B-E72D-C24C-8600-5A7CEE175145" name="USERS">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:03:28 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<ordsAlias>table_1</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="55B67DD0-6087-5737-ED69-AEB0AC543510">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:43:41 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="first_name" id="17938B39-C572-F2D2-D491-764C407EBAB2">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:43:41 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="last_name" id="0B0F7411-E3E0-4F64-1C93-293C0F2141A9">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:43:41 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="email" id="C547E939-5F4E-9B79-F3A8-6367C46C7BFD">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:43:41 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<ownDataTypeParameters>50,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="encrypted_password" id="6A1C55C6-05B5-46FF-7932-6629D313CABC">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:43:41 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="AE861954-B618-B4D4-23D4-A1E071A82A0E" name="USERS_PK">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:43:41 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="55B67DD0-6087-5737-ED69-AEB0AC543510"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="72476FBD-D5DE-E97B-B747-1D5E3FFF2CB3" name="USERS__UN">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:43:50 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C547E939-5F4E-9B79-F3A8-6367C46C7BFD"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

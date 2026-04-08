@@ -1,0 +1,102 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="7EC065E2-48EB-0396-0421-9FB429114AA4" name="MATRICES">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:03:34 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<ordsAlias>table_2</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="F97E13A4-CE1F-C094-B82D-3CAACCD5885F">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:46:25 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="name" id="A02B8079-69B5-23BE-4CA8-F746F9F2428B">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:46:25 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="description" id="1AD8CF59-CE02-C452-FEC1-7AB54BF52CA7">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:46:25 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="uploaded_at" id="68C349C4-74D9-65DC-508A-E4EC92B38909">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:46:25 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="matrix" id="9E183C50-63AE-7AE8-5FA3-3206F73805EA">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:46:25 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="USERS_id" id="FA3B82EF-3D12-389F-7014-1F1EA42BC03B">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:48:37 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="8FB199F4-D3E7-8557-7639-3BE24CC92028" referredColumn="55B67DD0-6087-5737-ED69-AEB0AC543510"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="514ABEF8-F521-932A-FE9D-999809951BBF" name="MATRICES_PK">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:46:25 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F97E13A4-CE1F-C094-B82D-3CAACCD5885F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="D540CC1D-B57A-4F1E-1DC6-908DF8FA77BF" name="MATRICES_USERS_FK">
+<createdBy>kracr</createdBy>
+<createdTime>2026-04-08 22:48:37 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FA3B82EF-3D12-389F-7014-1F1EA42BC03B"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>
