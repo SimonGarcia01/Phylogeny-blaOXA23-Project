@@ -1,6 +1,17 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    OneToOne,
+    OneToMany,
+} from 'typeorm';
 
 import { User } from 'src/users/entities/user.entity';
+import { Visualization } from 'src/visualizations/entities/visualization.entity';
+import { MatrixRequest } from 'src/matrix-requests/entities/matrix-request.entity';
 
 @Entity('matrices')
 export class Matrix {
@@ -30,7 +41,13 @@ export class Matrix {
     @CreateDateColumn({ name: 'uploaded_at', type: 'timestamp' })
     uploadedAt!: Date;
 
-    @ManyToOne(() => User, (user) => user.matrices, { eager: false })
+    @ManyToOne(() => User, (user) => user.matrices, { nullable: false })
     @JoinColumn({ name: 'user_id' })
     user!: User;
+
+    @OneToOne(() => Visualization, (visualization) => visualization.matrix, { nullable: true })
+    visualization?: Visualization;
+
+    @OneToMany(() => MatrixRequest, (matrixRequest) => matrixRequest.matrix)
+    matrixRequests!: MatrixRequest[];
 }

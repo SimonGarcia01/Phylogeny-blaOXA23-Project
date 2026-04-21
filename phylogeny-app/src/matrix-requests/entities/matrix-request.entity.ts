@@ -1,1 +1,32 @@
-export class MatrixRequest {}
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Matrix } from 'src/matrices/entities/matrix.entity';
+
+export enum MatrixRequestStatus {
+    PENDING = 'pending',
+    PROCESSING = 'processing',
+    COMPLETED = 'completed',
+    FAILED = 'failed',
+}
+
+@Entity('matrix_requests')
+export class MatrixRequest {
+    @PrimaryGeneratedColumn()
+    id!: number;
+
+    @Column({ name: 'name', length: 30, nullable: false })
+    name!: string;
+
+    @CreateDateColumn({ name: 'requested_at', type: 'timestamp', nullable: false })
+    requestedAt!: Date;
+
+    @Column({ name: 'finished_at', type: 'timestamp', nullable: true })
+    finishedAt?: Date;
+
+    @Column({ name: 'status', type: 'enum', enum: MatrixRequestStatus, nullable: false })
+    status!: MatrixRequestStatus;
+
+    @ManyToOne(() => Matrix, (matrix) => matrix.matrixRequests, { nullable: false })
+    @JoinColumn({ name: 'matrix_id' })
+    matrix?: Matrix;
+}
