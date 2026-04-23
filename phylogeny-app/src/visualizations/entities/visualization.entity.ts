@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { User } from 'src/users/entities/user.entity';
+import { User } from 'src/auth/users/entities/user.entity';
 import { Matrix } from 'src/matrices/entities/matrix.entity';
 
 @Entity('visualizations')
@@ -16,6 +16,15 @@ export class Visualization {
 
     @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
     createdAt!: Date;
+
+    @Column({ name: 'object_key', type: 'text', nullable: false })
+    objectKey!: string;
+
+    @Column({ name: 'file_size', type: 'int', nullable: true })
+    fileSize?: number;
+
+    @Column({ name: 'mime_type', length: 50, nullable: true })
+    mimeType?: string;
 
     @ManyToOne(() => User, (user) => user.visualizations, { nullable: false })
     @JoinColumn({ name: 'user_id' })

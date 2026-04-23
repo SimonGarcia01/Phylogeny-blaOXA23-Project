@@ -9,7 +9,7 @@ import {
     OneToMany,
 } from 'typeorm';
 
-import { User } from 'src/users/entities/user.entity';
+import { User } from 'src/auth/users/entities/user.entity';
 import { Visualization } from 'src/visualizations/entities/visualization.entity';
 import { MatrixRequest } from 'src/matrix-requests/entities/matrix-request.entity';
 

@@ -4,10 +4,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
 import { MatricesModule } from './matrices/matrices.module';
 import { VisualizationsModule } from './visualizations/visualizations.module';
 import { MatrixRequestsModule } from './matrix-requests/matrix-requests.module';
+import { AuthModule } from './auth/auth.module';
 
 //Define the supported db types for the application
 type SupportedDbTypes = 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mongodb' | 'oracle';
@@ -29,10 +29,10 @@ type SupportedDbTypes = 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mongodb' 
                 synchronize: configService.get<boolean>('DB_SYNCHRONIZE') ?? false,
             }),
         }),
-        UsersModule,
         MatricesModule,
         VisualizationsModule,
         MatrixRequestsModule,
+        AuthModule,
     ],
     controllers: [AppController],
     providers: [AppService],
