@@ -10,7 +10,7 @@ async function bootstrap() {
     //Whitelist : True = automatically remove properties that do not have any decorators in the DTOs.
     //forbidNonWhitelisted : True = throw an error if non-whitelisted properties are present in the request.
     app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }));
-    await app.listen(process.env.PORT ?? 3000);
+    await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap().catch((error) => {
     console.error('Error starting the application:', error);
