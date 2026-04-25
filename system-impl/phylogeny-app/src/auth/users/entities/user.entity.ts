@@ -17,12 +17,12 @@ export class User {
     @Column({ name: 'email', length: 50, nullable: false, unique: true })
     email!: string;
 
-    @Column({ name: 'encrypted_password', length: 100, nullable: false })
+    @Column({ name: 'encrypted_password', length: 255, nullable: false })
     encryptedPassword!: string;
 
-    @OneToMany(() => Matrix, (matrix) => matrix.user, { eager: true, onDelete: 'CASCADE' })
+    @OneToMany(() => Matrix, (matrix) => matrix.user, { eager: false, onDelete: 'CASCADE' })
     matrices!: Matrix[];
 
-    @OneToMany(() => Visualization, (visualization) => visualization.user, { eager: true, onDelete: 'CASCADE' })
+    @OneToMany(() => Visualization, (visualization) => visualization.user, { eager: false, onDelete: 'CASCADE' })
     visualizations!: Visualization[];
 }
