@@ -4,37 +4,49 @@ library(phangorn)
 bootreps <- read.tree(file="infile.txt.raxml.bootstraps",
                       keep.multi = TRUE)
 
-# todos los árboles deben estar sin enraizar
+#All trees in the list should be unrooted
 sum(is.rooted.multiPhylo(bootreps))
-# todos están sin enraizar
 
+#Get the best tree from the RAxML output
 tree <- read.tree(file="infile.txt.raxml.bestTree")
+#Should be unrooted too
 is.rooted(tree)
 plot(tree)
 
-#enraizar con la especie 7, pq es la 7 que aparece en el formato newick
-tree_root <- root(tree, outgroup = 7, resolve.root = TRUE) 
+#look for the outgroup, in this case, we will use the A. radioresistens
+#This returns the position in the format
+# Returned: 40
+which(tree$tip.label == "AP019740.1_Chromosome_A.radior")
+
+#Root the tree using species 40
+tree_root <- root(tree, outgroup = 7, resolve.root = TRUE)
+
+#Other way to do it is use the name:
+#tree_root <- root(tree, outgroup = "AP019740.1_Chromosome_A.radior", resolve.root = TRUE)
+
+#Check the best tree is rooted now
 is.rooted(tree_root)
-plot(tree_root, main = "Arbol Anolis")
+#Added a title to the plot
+plot(tree_root, main = "Gene Bla-OXA23")
 
+# The tip labels of the best tree and the boostrap trees should be the same
+#Here we use the setequal function to check if the tip labels are the same (order does not matter)
+#Just comparing with the first bootstrap tree should be enough
+setequal(tree_root$tip.label, bootreps[[1]]$tip.label)
 
-# los tiplabels de ambos sets de árboles deben ser lo mismo
-setequal(tree_root$tip.label, bootreps[[1]]$tip.label) # aqui lo comparo con el primer árbol de los bootstraps
+#Give more space to the plot
+par(mar=c(1,1,3,1))
+plot(tree_root, cex = 0.3, main = "Gene Bla-OXA23")
 
-par(mar=c(1,1,3,1)) # para ampliar los márgenes
-plot(tree_root, cex = 0.6)
-
+#This function will add the node labels to the plot
 #nodelabels() 
-# esto permite saber el número del nodo
 
+#This will add the bootstrap values to the plot
+#At this point, the node labels are bootstrap values, raging from 0 to 1
+plotBS(tree_root, bootreps, p=0, type="phylogram", cex=0.4, bs.col="red")
 
-plotBS(tree_root, bootreps, p=0, type="phylogram", cex=0.6, bs.col="black") # aqui me aparecen como valores de 0-1
-
-# aqui multiplico por 100 los node labels
+#Now multiply the bootstrap values by 100 to get the percentages
 tre_bs <- plotBS(tree_root, bootreps, p=50, type="p", digits = 3)
 tre_bs$node.label <- as.numeric(tre_bs$node.label) * 100
-plot(tre_bs, cex=0.8)
-nodelabels(tre_bs$node.label, frame="none", cex=0.7)
-
-plotBS(tre1_root, bootreps, )
-
+plot(tre_bs, cex=0.5)
+nodelabels(tre_bs$node.label, frame="none", cex=0.5, col = "red")

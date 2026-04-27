@@ -3,8 +3,8 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
-import { ResponseMessage } from 'src/common/dtos/response-message';
 
+import { ResponseMessage } from 'src/common/dtos/response-message';
 import { DbIntegrityException } from 'src/common/exceptions/db-integrity-exception';
 
 import { CreateUserDto } from './dto/create-user.dto';
