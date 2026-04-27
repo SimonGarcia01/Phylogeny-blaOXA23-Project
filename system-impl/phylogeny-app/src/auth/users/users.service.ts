@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
@@ -46,28 +46,43 @@ export class UsersService {
         const users: User[] = await this.userRepository.find();
 
         return users.map((user) => {
-            const responseUserDto: ResponseUserDto = new ResponseUserDto();
-            responseUserDto.id = user.id;
-            responseUserDto.email = user.email;
-            responseUserDto.firstName = user.firstName;
-            responseUserDto.lastName = user.lastName;
-            return responseUserDto;
+            return new ResponseUserDto(user.email, user.firstName, user.lastName);
         });
     }
 
-    async findOne(userId: number) {
-        return await this.userRepository.findOneBy({ id: userId });
+    async findOne(userId: number): Promise<ResponseUserDto | null> {
+        const user: User | null = await this.userRepository.findOneBy({ id: userId });
+
+        if (!user) throw new NotFoundException(`The entered user with ID ${userId} wasn't found.`);
+
+        return new ResponseUserDto(user.email, user.firstName, user.lastName);
     }
 
-    async findByEmail(userEmail: string) {
-        return await this.userRepository.findOneBy({ email: userEmail });
+    async findByEmail(userEmail: string): Promise<User | null> {
+        const user: User | null = await this.userRepository.findOneBy({ email: userEmail });
+
+        if (!user) throw new NotFoundException(`The entered user email ${userEmail} wasn't found.`);
+
+        return user;
     }
 
     async update(userId: number, updateUserDto: UpdateUserDto) {
-        return await this.userRepository.update(userId, updateUserDto);
+        const user: User | null = await this.userRepository.findOneBy({ id: userId });
+
+        if (!user) throw new NotFoundException(`The entered user ID ${userId} wasn't found.`);
+
+        await this.userRepository.update(userId, updateUserDto);
+
+        return new ResponseMessage(`The user with the email ${user.email} has been updated successfully.`);
     }
 
     async remove(userId: number) {
-        return await this.userRepository.delete(userId);
+        const user: User | null = await this.userRepository.findOneBy({ id: userId });
+
+        if (!user) throw new NotFoundException(`The entered user ID ${userId} wasn't found.`);
+
+        await this.userRepository.delete(userId);
+
+        return new ResponseMessage(`The user wiyh email ${user.email} was deleted successfuly.`);
     }
 }
