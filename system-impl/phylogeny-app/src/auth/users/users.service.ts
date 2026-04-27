@@ -3,13 +3,14 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
+import { ResponseMessage } from 'src/common/dtos/response-message';
 
 import { DbIntegrityException } from 'src/common/exceptions/db-integrity-exception';
-import { ResponseMessage } from 'src/common/dtos/response-message';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { ResponseUserDto } from './dto/response-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -37,12 +38,21 @@ export class UsersService {
         const responseMessage: ResponseMessage = new ResponseMessage(
             `User with email ${savedUser.email} created successfully.`,
         );
-        responseMessage.data = savedUser;
+
         return responseMessage;
     }
 
-    async findAll() {
-        return await this.userRepository.find();
+    async findAll(): Promise<ResponseUserDto[]> {
+        const users: User[] = await this.userRepository.find();
+
+        return users.map((user) => {
+            const responseUserDto: ResponseUserDto = new ResponseUserDto();
+            responseUserDto.id = user.id;
+            responseUserDto.email = user.email;
+            responseUserDto.firstName = user.firstName;
+            responseUserDto.lastName = user.lastName;
+            return responseUserDto;
+        });
     }
 
     async findOne(userId: number) {

@@ -1,6 +1,5 @@
-export class ResponseMessage<T = unknown> {
+export class ResponseMessage {
     message!: string;
-    data?: T;
 
     constructor(message: string) {
         this.message = message;
