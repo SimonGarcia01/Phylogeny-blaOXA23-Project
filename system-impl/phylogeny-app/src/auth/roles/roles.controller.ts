@@ -1,34 +1,41 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+
+import { ResponseMessage } from 'src/common/dtos/response-message';
+
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { ResponseRoleDto } from './dto/response-role.dto';
 
 @Controller('roles')
 export class RolesController {
-  constructor(private readonly rolesService: RolesService) {}
+    constructor(private readonly rolesService: RolesService) {}
 
-  @Post()
-  create(@Body() createRoleDto: CreateRoleDto) {
-    return this.rolesService.create(createRoleDto);
-  }
+    @Post()
+    async create(@Body() createRoleDto: CreateRoleDto): Promise<ResponseMessage> {
+        return await this.rolesService.create(createRoleDto);
+    }
 
-  @Get()
-  findAll() {
-    return this.rolesService.findAll();
-  }
+    @Get()
+    async findAll(): Promise<ResponseRoleDto[]> {
+        return await this.rolesService.findAll();
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.rolesService.findOne(+id);
-  }
+    @Get(':id')
+    async findOne(@Param('id', ParseIntPipe) id: number): Promise<ResponseRoleDto> {
+        return await this.rolesService.findOne(id);
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
-    return this.rolesService.update(+id, updateRoleDto);
-  }
+    @Patch(':id')
+    async update(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() updateRoleDto: UpdateRoleDto,
+    ): Promise<ResponseMessage> {
+        return await this.rolesService.update(id, updateRoleDto);
+    }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.rolesService.remove(+id);
-  }
+    @Delete(':id')
+    async remove(@Param('id', ParseIntPipe) id: number): Promise<ResponseMessage> {
+        return await this.rolesService.remove(id);
+    }
 }

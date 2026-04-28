@@ -1,9 +1,10 @@
-import { IsOptional, IsString, Length, MaxLength } from 'class-validator';
+import { IsOptional, IsEnum, IsString, MaxLength } from 'class-validator';
+
+import { RoleName } from '../entities/role.entity';
 
 export class CreateRoleDto {
-    @IsString({ message: 'Name must be a string' })
-    @Length(2, 50, { message: 'Name must be between 2 and 50 characters' })
-    name!: string;
+    @IsEnum(RoleName, { message: 'Name must be a valid role name' })
+    name!: RoleName;
 
     @IsString({ message: 'Description must be a string' })
     @MaxLength(255, { message: 'Description must be at most 255 characters' })

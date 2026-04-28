@@ -1,26 +1,123 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+
+import { ResponseMessage } from 'src/common/dtos/response-message';
+import { DbIntegrityException } from 'src/common/exceptions/db-integrity-exception';
+import { RolesService } from 'src/auth/roles/roles.service';
+import { PermissionsService } from 'src/auth/permissions/permissions.service';
+import { Role } from 'src/auth/roles/entities/role.entity';
+import { Permission } from 'src/auth/permissions/entities/permission.entity';
+
 import { CreateRolesPermissionDto } from './dto/create-roles-permission.dto';
 import { UpdateRolesPermissionDto } from './dto/update-roles-permission.dto';
+import { RolesPermission } from './entities/roles-permission.entity';
+import { ResponseRolesPermissionDto } from './dto/response-roles-permission.dto';
 
 @Injectable()
 export class RolesPermissionsService {
-  create(createRolesPermissionDto: CreateRolesPermissionDto) {
-    return 'This action adds a new rolesPermission';
-  }
+    constructor(
+        @InjectRepository(RolesPermission) private readonly rolesPermissionRepository: Repository<RolesPermission>,
+        private readonly rolesService: RolesService,
+        private readonly permissionsService: PermissionsService,
+    ) {}
 
-  findAll() {
-    return `This action returns all rolesPermissions`;
-  }
+    async create(createRolesPermissionDto: CreateRolesPermissionDto): Promise<ResponseMessage> {
+        const { roleId, permissionId } = createRolesPermissionDto;
 
-  findOne(id: number) {
-    return `This action returns a #${id} rolesPermission`;
-  }
+        //Do both lookups in parallel since they are independent
+        await Promise.all([this.rolesService.ensureExists(roleId), this.permissionsService.ensureExists(permissionId)]);
 
-  update(id: number, updateRolesPermissionDto: UpdateRolesPermissionDto) {
-    return `This action updates a #${id} rolesPermission`;
-  }
+        //Check if that mapping already exists to prevent duplicates
+        const existing = await this.rolesPermissionRepository.findOne({
+            where: {
+                role: { id: roleId },
+                permission: { id: permissionId },
+            },
+        });
 
-  remove(id: number) {
-    return `This action removes a #${id} rolesPermission`;
-  }
+        if (existing) throw new DbIntegrityException('This role-permission mapping already exists.');
+
+        const newMapping = this.rolesPermissionRepository.create({
+            role: { id: roleId },
+            permission: { id: permissionId },
+        });
+
+        await this.rolesPermissionRepository.save(newMapping);
+
+        return new ResponseMessage('Role-permission mapping created successfully.');
+    }
+
+    async findAll(): Promise<ResponseRolesPermissionDto[]> {
+        const mappings = await this.rolesPermissionRepository.find({ relations: ['role', 'permission'] });
+
+        return mappings.map((m) => new ResponseRolesPermissionDto(m.id, m.role?.id, m.permission?.id));
+    }
+
+    async findOne(id: number): Promise<ResponseRolesPermissionDto> {
+        const mapping = await this.rolesPermissionRepository.findOne({
+            where: { id },
+            relations: ['role', 'permission'],
+        });
+
+        if (!mapping) throw new NotFoundException(`The entered roles-permission ID ${id} wasn't found.`);
+
+        return new ResponseRolesPermissionDto(mapping.id, mapping.role?.id, mapping.permission?.id);
+    }
+
+    async update(id: number, updateRolesPermissionDto: UpdateRolesPermissionDto) {
+        const mapping = await this.rolesPermissionRepository.findOne({
+            where: { id },
+            relations: ['role', 'permission'],
+        });
+
+        if (!mapping) throw new NotFoundException(`The entered roles-permission ID ${id} wasn't found.`);
+
+        const newRoleId = updateRolesPermissionDto.roleId ?? mapping.role?.id;
+        const newPermissionId = updateRolesPermissionDto.permissionId ?? mapping.permission?.id;
+
+        // validate referenced entities if they are changing
+        if (updateRolesPermissionDto.roleId && updateRolesPermissionDto.roleId !== mapping.role?.id) {
+            await this.rolesService.findOne(updateRolesPermissionDto.roleId);
+        }
+
+        if (updateRolesPermissionDto.permissionId && updateRolesPermissionDto.permissionId !== mapping.permission?.id) {
+            await this.permissionsService.findOne(updateRolesPermissionDto.permissionId);
+        }
+
+        // check duplicates
+        const duplicate = await this.rolesPermissionRepository.findOne({
+            where: {
+                role: { id: newRoleId } as unknown as Role,
+                permission: { id: newPermissionId } as unknown as Permission,
+            },
+            relations: ['role', 'permission'],
+        });
+
+        if (duplicate && duplicate.id !== id) {
+            throw new DbIntegrityException(
+                'A roles-permission mapping with the provided role and permission already exists.',
+            );
+        }
+
+        mapping.role = { id: newRoleId } as Role;
+        mapping.permission = { id: newPermissionId } as Permission;
+
+        await this.rolesPermissionRepository.save(mapping);
+
+        return new ResponseMessage('Role-permission mapping updated successfully.');
+    }
+
+    async remove(id: number) {
+        const mapping = await this.rolesPermissionRepository.findOne({
+            where: { id },
+            relations: ['role', 'permission'],
+        });
+
+        if (!mapping) throw new NotFoundException(`The entered roles-permission ID ${id} wasn't found.`);
+
+        await this.rolesPermissionRepository.delete(id);
+
+        return new ResponseMessage('Role-permission mapping deleted successfully.');
+    }
 }

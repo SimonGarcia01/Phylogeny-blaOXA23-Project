@@ -3,13 +3,18 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from 'src/auth/users/entities/user.entity';
 import { RolesPermission } from 'src/auth/roles-permissions/entities/roles-permission.entity';
 
+export enum RoleName {
+    ADMIN = 'Admin',
+    RESEARCHER = 'Researcher',
+}
+
 @Entity('roles')
 export class Role {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ name: 'name', length: 50, nullable: false, unique: true })
-    name!: string;
+    @Column({ type: 'enum', enum: RoleName, name: 'name', nullable: false, unique: true })
+    name!: RoleName;
 
     @Column({ name: 'description', length: 255, nullable: true })
     description!: string;

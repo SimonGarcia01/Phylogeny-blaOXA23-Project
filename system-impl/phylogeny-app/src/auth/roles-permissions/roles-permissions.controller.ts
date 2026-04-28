@@ -1,34 +1,41 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+
+import { ResponseMessage } from 'src/common/dtos/response-message';
+
 import { RolesPermissionsService } from './roles-permissions.service';
 import { CreateRolesPermissionDto } from './dto/create-roles-permission.dto';
 import { UpdateRolesPermissionDto } from './dto/update-roles-permission.dto';
+import { ResponseRolesPermissionDto } from './dto/response-roles-permission.dto';
 
 @Controller('roles-permissions')
 export class RolesPermissionsController {
-  constructor(private readonly rolesPermissionsService: RolesPermissionsService) {}
+    constructor(private readonly rolesPermissionsService: RolesPermissionsService) {}
 
-  @Post()
-  create(@Body() createRolesPermissionDto: CreateRolesPermissionDto) {
-    return this.rolesPermissionsService.create(createRolesPermissionDto);
-  }
+    @Post()
+    async create(@Body() createRolesPermissionDto: CreateRolesPermissionDto): Promise<ResponseMessage> {
+        return await this.rolesPermissionsService.create(createRolesPermissionDto);
+    }
 
-  @Get()
-  findAll() {
-    return this.rolesPermissionsService.findAll();
-  }
+    @Get()
+    async findAll(): Promise<ResponseRolesPermissionDto[]> {
+        return await this.rolesPermissionsService.findAll();
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.rolesPermissionsService.findOne(+id);
-  }
+    @Get(':id')
+    async findOne(@Param('id', ParseIntPipe) id: number): Promise<ResponseRolesPermissionDto> {
+        return await this.rolesPermissionsService.findOne(+id);
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRolesPermissionDto: UpdateRolesPermissionDto) {
-    return this.rolesPermissionsService.update(+id, updateRolesPermissionDto);
-  }
+    @Patch(':id')
+    async update(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() updateRolesPermissionDto: UpdateRolesPermissionDto,
+    ): Promise<ResponseMessage> {
+        return await this.rolesPermissionsService.update(id, updateRolesPermissionDto);
+    }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.rolesPermissionsService.remove(+id);
-  }
+    @Delete(':id')
+    async remove(@Param('id', ParseIntPipe) id: number): Promise<ResponseMessage> {
+        return await this.rolesPermissionsService.remove(id);
+    }
 }
