@@ -1,7 +1,8 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Matrix } from 'src/matrices/entities/matrix.entity';
 import { Visualization } from 'src/visualizations/entities/visualization.entity';
+import { Role } from 'src/auth/roles/entities/role.entity';
 
 @Entity('users')
 export class User {
@@ -25,4 +26,8 @@ export class User {
 
     @OneToMany(() => Visualization, (visualization) => visualization.user, { eager: false, onDelete: 'CASCADE' })
     visualizations!: Visualization[];
+
+    @OneToOne(() => Role, (role) => role.users, { eager: true, onDelete: 'SET NULL' })
+    @JoinColumn({ name: 'role_id' })
+    role!: Role;
 }
