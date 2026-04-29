@@ -25,15 +25,13 @@ export class AuthService {
         return user;
     }
 
-    async login(userLoginDto: UserLoginDto): Promise<string> {
+    async login(userLoginDto: UserLoginDto): Promise<{ accessToken: string }> {
         const user: User = await this.validateUser(userLoginDto.email, userLoginDto.password);
 
         const permissions = user.role.rolesPermissions.map((rp) => rp.permission.name);
 
         const payload = { sub: user.id, email: user.email, permissions };
 
-        const accessToken = this.jwtService.sign(payload);
-
-        return accessToken;
+        return { accessToken: this.jwtService.sign(payload) };
     }
 }

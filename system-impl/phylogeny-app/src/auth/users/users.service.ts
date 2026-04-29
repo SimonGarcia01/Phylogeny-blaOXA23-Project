@@ -50,12 +50,25 @@ export class UsersService {
         });
     }
 
-    async findOne(userId: number): Promise<ResponseUserDto> {
+    async findOneDto(userId: number): Promise<ResponseUserDto> {
         const user: User | null = await this.userRepository.findOneBy({ id: userId });
 
         if (!user) throw new NotFoundException(`The entered user with ID ${userId} wasn't found.`);
 
         return new ResponseUserDto(user.email, user.firstName, user.lastName);
+    }
+
+    async findOneUser(userId: number): Promise<User> {
+        //This one is for internal use only, so we return the full user
+        //We include the permissions for the JWT strategy
+        const user: User | null = await this.userRepository.findOne({
+            where: { id: userId },
+            relations: ['role', 'role.rolesPermissions', 'role.rolesPermissions.permission'],
+        });
+
+        if (!user) throw new NotFoundException(`The entered user with ID ${userId} wasn't found.`);
+
+        return user;
     }
 
     async findByEmail(userEmail: string): Promise<User> {
