@@ -50,7 +50,7 @@ export class UsersService {
         });
     }
 
-    async findOne(userId: number): Promise<ResponseUserDto | null> {
+    async findOne(userId: number): Promise<ResponseUserDto> {
         const user: User | null = await this.userRepository.findOneBy({ id: userId });
 
         if (!user) throw new NotFoundException(`The entered user with ID ${userId} wasn't found.`);
@@ -58,7 +58,7 @@ export class UsersService {
         return new ResponseUserDto(user.email, user.firstName, user.lastName);
     }
 
-    async findByEmail(userEmail: string): Promise<User | null> {
+    async findByEmail(userEmail: string): Promise<User> {
         const user: User | null = await this.userRepository.findOneBy({ email: userEmail });
 
         if (!user) throw new NotFoundException(`The entered user email ${userEmail} wasn't found.`);
@@ -66,7 +66,7 @@ export class UsersService {
         return user;
     }
 
-    async update(userId: number, updateUserDto: UpdateUserDto) {
+    async update(userId: number, updateUserDto: UpdateUserDto): Promise<ResponseMessage> {
         const user: User | null = await this.userRepository.findOneBy({ id: userId });
 
         if (!user) throw new NotFoundException(`The entered user ID ${userId} wasn't found.`);
@@ -76,13 +76,13 @@ export class UsersService {
         return new ResponseMessage(`The user with the email ${user.email} has been updated successfully.`);
     }
 
-    async remove(userId: number) {
+    async remove(userId: number): Promise<ResponseMessage> {
         const user: User | null = await this.userRepository.findOneBy({ id: userId });
 
         if (!user) throw new NotFoundException(`The entered user ID ${userId} wasn't found.`);
 
         await this.userRepository.delete(userId);
 
-        return new ResponseMessage(`The user wiyh email ${user.email} was deleted successfuly.`);
+        return new ResponseMessage(`The user with email ${user.email} was deleted successfully.`);
     }
 }

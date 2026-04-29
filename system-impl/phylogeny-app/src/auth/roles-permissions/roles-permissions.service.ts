@@ -65,7 +65,7 @@ export class RolesPermissionsService {
         return new ResponseRolesPermissionDto(mapping.id, mapping.role?.id, mapping.permission?.id);
     }
 
-    async update(id: number, updateRolesPermissionDto: UpdateRolesPermissionDto) {
+    async update(id: number, updateRolesPermissionDto: UpdateRolesPermissionDto): Promise<ResponseMessage> {
         const mapping = await this.rolesPermissionRepository.findOne({
             where: { id },
             relations: ['role', 'permission'],
@@ -108,7 +108,7 @@ export class RolesPermissionsService {
         return new ResponseMessage('Role-permission mapping updated successfully.');
     }
 
-    async remove(id: number) {
+    async remove(id: number): Promise<ResponseMessage> {
         const mapping = await this.rolesPermissionRepository.findOne({
             where: { id },
             relations: ['role', 'permission'],

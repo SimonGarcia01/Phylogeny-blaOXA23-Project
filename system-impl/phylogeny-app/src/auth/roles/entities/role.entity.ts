@@ -23,5 +23,5 @@ export class Role {
     users!: User;
 
     @OneToMany(() => RolesPermission, (rolesPermission) => rolesPermission.role, { eager: false, onDelete: 'CASCADE' })
-    rolesPermission!: RolesPermission[];
+    rolesPermissions!: RolesPermission[];
 }

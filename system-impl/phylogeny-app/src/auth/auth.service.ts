@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import { UsersService } from './users/users.service';
 import { UserLoginDto } from './dto/user-login.dto';
-import { ResponseUserDto } from './users/dto/response-user.dto';
+import { User } from './users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -13,22 +13,27 @@ export class AuthService {
         private jwtService: JwtService,
     ) {}
 
-    async validateUser(email: string, password: string) {
-        const user = await this.userService.findByEmail(email); // Asegúrate de tener un método `findByEmail` en tu servicio de usuarios
-        if (!user) throw new NotFoundException('User not found');
+    async validateUser(email: string, password: string): Promise<User> {
+        const user: User | null = await this.userService.findByEmail(email);
+
+        if (!user) throw new NotFoundException(`User with email ${email} not found.`);
 
         const matches = await bcrypt.compare(password, user.encryptedPassword);
+
         if (!matches) throw new UnauthorizedException('Invalid credentials');
 
-        return new ResponseUserDto(user.email, user.firstName, user.lastName);
+        return user;
     }
 
-    async login(userLoginDto: UserLoginDto) {
-        // Asegúrate de tener un DTO para el login que contenga email y password
-        const user = await this.validateUser(userLoginDto.email, userLoginDto.password);
+    async login(userLoginDto: UserLoginDto): Promise<string> {
+        const user: User = await this.validateUser(userLoginDto.email, userLoginDto.password);
 
-        const permissions = user.role.rolePermissions.map((rp) => rp.permission.name);
+        const permissions = user.role.rolesPermissions.map((rp) => rp.permission.name);
+
         const payload = { sub: user.id, email: user.email, permissions };
-        return { access_token: this.jwtService.sign(payload) };
+
+        const accessToken = this.jwtService.sign(payload);
+
+        return accessToken;
     }
 }

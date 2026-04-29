@@ -17,5 +17,5 @@ export class Permission {
         eager: false,
         onDelete: 'CASCADE',
     })
-    rolesPermission!: RolesPermission[];
+    rolesPermissions!: RolesPermission[];
 }

@@ -9,11 +9,11 @@ export class RolesPermission {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @ManyToOne(() => Role, (role) => role.rolesPermission, { eager: false, onDelete: 'CASCADE' })
+    @ManyToOne(() => Role, (role) => role.rolesPermissions, { eager: false, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'role_id' })
     role!: Role;
 
-    @ManyToOne(() => Permission, (permission) => permission.rolesPermission, { eager: false, onDelete: 'CASCADE' })
+    @ManyToOne(() => Permission, (permission) => permission.rolesPermissions, { eager: false, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'permission_id' })
     permission!: Permission;
 }
