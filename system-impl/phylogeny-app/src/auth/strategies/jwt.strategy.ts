@@ -5,9 +5,10 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { UsersService } from '../users/users.service';
 import { JwtPayload } from '../dto/jwt-payload.dto';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     constructor(
         private config: ConfigService,
         private userService: UsersService,
@@ -23,8 +24,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             secretOrKey: jwtSecret,
         });
     }
-
-    async validate(payload: JwtPayload) {
+    //This method is called by the passport after it verifies the token's signature
+    //The payload is the decoded JWT payload (with the ID, email and permissions)
+    //If the user is found, it returns the user object, and it is attached to the request as request.user
+    async validate(payload: JwtPayload): Promise<User> {
         const user = await this.userService.findOneUser(payload.sub);
         if (!user) throw new NotFoundException('User not found');
         return user;
