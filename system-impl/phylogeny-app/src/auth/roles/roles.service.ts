@@ -7,7 +7,7 @@ import { DbIntegrityException } from 'src/common/exceptions/db-integrity-excepti
 
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
-import { Role } from './entities/role.entity';
+import { Role, RoleName } from './entities/role.entity';
 import { ResponseRoleDto } from './dto/response-role.dto';
 
 @Injectable()
@@ -70,5 +70,11 @@ export class RolesService {
     async ensureExists(roleId: number): Promise<void> {
         const role: Role | null = await this.roleRepository.findOneBy({ id: roleId });
         if (!role) throw new NotFoundException(`The entered role ID ${roleId} wasn't found.`);
+    }
+
+    async findOneByName(roleName: RoleName): Promise<Role> {
+        const role: Role | null = await this.roleRepository.findOneBy({ name: roleName });
+        if (!role) throw new NotFoundException(`The role with name ${roleName} wasn't found.`);
+        return role;
     }
 }

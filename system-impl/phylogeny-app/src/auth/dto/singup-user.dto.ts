@@ -1,8 +1,6 @@
-import { IsEmail, IsEnum, IsString, Length, MaxLength } from 'class-validator';
+import { IsEmail, IsString, Length, MaxLength } from 'class-validator';
 
-import { RoleName } from 'src/auth/roles/entities/role.entity';
-
-export class CreateUserDto {
+export class SignUpUserDto {
     @IsString({ message: 'firstName must be a string' })
     @Length(1, 20, { message: 'firstName must be between 1 and 20 characters long' })
     firstName!: string;
@@ -18,7 +16,4 @@ export class CreateUserDto {
     @IsString({ message: 'password must be a string' })
     @Length(8, 30, { message: 'password must be between 8 and 30 characters long' })
     password!: string;
-
-    @IsEnum(RoleName, { message: `role must be a valid role name: ${Object.values(RoleName).join(', ')}` })
-    role!: RoleName;
 }

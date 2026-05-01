@@ -6,6 +6,9 @@ import * as bcrypt from 'bcrypt';
 
 import { ResponseMessage } from 'src/common/dtos/response-message';
 import { DbIntegrityException } from 'src/common/exceptions/db-integrity-exception';
+import { RolesService } from 'src/auth/roles/roles.service';
+
+import { Role } from '../roles/entities/role.entity';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -17,6 +20,7 @@ export class UsersService {
     constructor(
         @InjectRepository(User) private readonly userRepository: Repository<User>,
         private readonly configService: ConfigService,
+        private readonly roleService: RolesService,
     ) {}
 
     async create(createUserDto: CreateUserDto): Promise<ResponseMessage> {
@@ -28,18 +32,19 @@ export class UsersService {
 
         const encryptedPassword: string = await bcrypt.hash(createUserDto.password, saltRounds);
 
+        const role: Role = await this.roleService.findOneByName(createUserDto.role);
+
         const newUser: User = this.userRepository.create({
-            ...createUserDto,
+            firstName: createUserDto.firstName,
+            lastName: createUserDto.lastName,
+            email: createUserDto.email,
             encryptedPassword: encryptedPassword,
+            role: role,
         });
 
         const savedUser: User = await this.userRepository.save(newUser);
 
-        const responseMessage: ResponseMessage = new ResponseMessage(
-            `User with email ${savedUser.email} created successfully.`,
-        );
-
-        return responseMessage;
+        return new ResponseMessage(`User with email ${savedUser.email} created successfully.`);
     }
 
     async findAll(): Promise<ResponseUserDto[]> {
@@ -71,11 +76,8 @@ export class UsersService {
         return user;
     }
 
-    async findByEmail(userEmail: string): Promise<User> {
+    async findByEmail(userEmail: string): Promise<User | null> {
         const user: User | null = await this.userRepository.findOneBy({ email: userEmail });
-
-        if (!user) throw new NotFoundException(`The entered user email ${userEmail} wasn't found.`);
-
         return user;
     }
 
@@ -84,7 +86,21 @@ export class UsersService {
 
         if (!user) throw new NotFoundException(`The entered user ID ${userId} wasn't found.`);
 
-        await this.userRepository.update(userId, updateUserDto);
+        //Remove the role from the updateUserDto since it's a string and the update expects a Role entity
+        const { role, ...rest } = updateUserDto;
+
+        //If role does exist in the updateUserDto, we find it and include it in the update
+        if (role) {
+            const updateRole = await this.roleService.findOneByName(role);
+
+            await this.userRepository.update(userId, {
+                ...rest,
+                role: updateRole,
+            });
+        } else {
+            //Make an update here without changing the role
+            await this.userRepository.update(userId, rest);
+        }
 
         return new ResponseMessage(`The user with the email ${user.email} has been updated successfully.`);
     }
