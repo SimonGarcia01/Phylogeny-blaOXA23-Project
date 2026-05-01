@@ -76,8 +76,12 @@ export class UsersService {
         return user;
     }
 
+    //This method is use by the AuthService, so it also needs the permissions for the JWT strategy
     async findByEmail(userEmail: string): Promise<User | null> {
-        const user: User | null = await this.userRepository.findOneBy({ email: userEmail });
+        const user: User | null = await this.userRepository.findOne({
+            where: { email: userEmail },
+            relations: ['role', 'role.rolesPermissions', 'role.rolesPermissions.permission'],
+        });
         return user;
     }
 
