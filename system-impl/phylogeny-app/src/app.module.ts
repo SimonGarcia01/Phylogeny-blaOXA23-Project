@@ -8,6 +8,7 @@ import { MatricesModule } from './matrices/matrices.module';
 import { VisualizationsModule } from './visualizations/visualizations.module';
 import { MatrixRequestsModule } from './matrix-requests/matrix-requests.module';
 import { AuthModule } from './auth/auth.module';
+import { SeedModule } from './seed/seed.module';
 
 //Define the supported db types for the application
 type SupportedDbTypes = 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mongodb' | 'oracle';
@@ -33,6 +34,7 @@ type SupportedDbTypes = 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mongodb' 
         VisualizationsModule,
         MatrixRequestsModule,
         AuthModule,
+        SeedModule,
     ],
     controllers: [AppController],
     providers: [AppService],
