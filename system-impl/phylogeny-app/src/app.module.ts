@@ -8,7 +8,8 @@ import { MatricesModule } from './matrices/matrices.module';
 import { VisualizationsModule } from './visualizations/visualizations.module';
 import { MatrixRequestsModule } from './matrix-requests/matrix-requests.module';
 import { AuthModule } from './auth/auth.module';
-import { SeedModule } from './seed/seed.module';
+import { SeedModule } from './utils/seed/seed.module';
+import { MinioModule } from './utils/minio/minio.module';
 
 //Define the supported db types for the application
 type SupportedDbTypes = 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mongodb' | 'oracle';
@@ -35,6 +36,7 @@ type SupportedDbTypes = 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mongodb' 
         MatrixRequestsModule,
         AuthModule,
         SeedModule,
+        MinioModule,
     ],
     controllers: [AppController],
     providers: [AppService],
