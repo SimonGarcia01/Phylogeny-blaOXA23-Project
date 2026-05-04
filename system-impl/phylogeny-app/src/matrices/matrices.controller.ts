@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 
 import { MatricesService } from './matrices.service';
 import { CreateMatrixDto } from './dto/create-matrix.dto';
@@ -19,17 +19,17 @@ export class MatricesController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.matricesService.findOne(+id);
+    findOne(@Param('id', ParseUUIDPipe) id: string) {
+        return this.matricesService.findOne(id);
     }
 
     @Patch(':id')
-    update(@Param('id') id: string, @Body() updateMatrixDto: UpdateMatrixDto) {
-        return this.matricesService.update(+id, updateMatrixDto);
+    update(@Param('id', ParseUUIDPipe) id: string, @Body() updateMatrixDto: UpdateMatrixDto) {
+        return this.matricesService.update(id, updateMatrixDto);
     }
 
     @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.matricesService.remove(+id);
+    remove(@Param('id', ParseUUIDPipe) id: string) {
+        return this.matricesService.remove(id);
     }
 }

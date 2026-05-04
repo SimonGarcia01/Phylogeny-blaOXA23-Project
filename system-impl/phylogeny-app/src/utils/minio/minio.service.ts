@@ -77,7 +77,7 @@ export class MinioService implements OnModuleInit {
             throw new Error(`Object "${fileName}" does not exist in bucket "${bucket}".`);
         }
 
-        //Get the object as a stream and collect it into a buffer
+        //Get the object as a readable stream
         const dataStream: Stream.Readable = await client.getObject(bucket, fileName);
 
         return dataStream;
