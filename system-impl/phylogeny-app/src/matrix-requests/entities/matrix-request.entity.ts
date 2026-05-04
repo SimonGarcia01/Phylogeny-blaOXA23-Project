@@ -20,7 +20,7 @@ export class MatrixRequest {
     @CreateDateColumn({ name: 'requested_at', type: 'timestamp', nullable: false })
     requestedAt!: Date;
 
-    @Column({ name: 'finished_at', type: 'timestamp', nullable: true })
+    @CreateDateColumn({ name: 'finished_at', type: 'timestamp', nullable: true })
     finishedAt?: Date;
 
     @Column({ name: 'status', type: 'enum', enum: MatrixRequestStatus, nullable: false })

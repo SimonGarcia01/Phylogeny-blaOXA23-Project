@@ -18,8 +18,8 @@ export class Matrix {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    // Public identifier (used in APIs)
-    @Column({ name: 'matrix_id', length: 20, nullable: false, unique: true })
+    // Public identifier
+    @Column({ name: 'matrix_id', type: 'uuid', nullable: false, unique: true })
     matrixId!: string;
 
     @Column({ name: 'name', length: 100, nullable: false })

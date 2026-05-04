@@ -8,10 +8,14 @@ export class Visualization {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ name: 'name', length: 30, nullable: false })
+    //Public identifier
+    @Column({ name: 'visualization_id', type: 'uuid', nullable: false, unique: true })
+    visualizationId!: string;
+
+    @Column({ name: 'name', length: 100, nullable: false })
     name!: string;
 
-    @Column({ name: 'description', length: 100, nullable: true })
+    @Column({ name: 'description', length: 255, nullable: true })
     description?: string;
 
     @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
@@ -30,7 +34,7 @@ export class Visualization {
     @JoinColumn({ name: 'user_id' })
     user!: User;
 
-    @OneToOne(() => Matrix, (matrix) => matrix.visualization, { nullable: true, onDelete: 'SET NULL' })
+    @OneToOne(() => Matrix, (matrix) => matrix.visualization, { nullable: false, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'matrix_id' })
-    matrix?: Matrix;
+    matrix!: Matrix;
 }
