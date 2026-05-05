@@ -4,6 +4,7 @@ import { ResponseMessage } from 'src/common/dtos/response-message';
 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { ResponseUserDto } from './dto/response-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -15,7 +16,7 @@ export class UsersController {
     }
 
     @Get()
-    async findAll() {
+    async findAll(): Promise<ResponseUserDto[]> {
         return await this.usersService.findAll();
     }
 

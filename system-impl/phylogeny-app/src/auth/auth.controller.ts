@@ -12,13 +12,13 @@ export class AuthController {
 
     @Public()
     @Post('login')
-    async login(@Body() userLoginDto: UserLoginDto) {
+    async login(@Body() userLoginDto: UserLoginDto): Promise<{ accessToken: string }> {
         return this.authService.login(userLoginDto);
     }
 
     @Public()
     @Post('signup')
-    async signup(@Body() createUserDto: CreateUserDto) {
+    async signup(@Body() createUserDto: CreateUserDto): Promise<{ accessToken: string }> {
         return this.authService.signup(createUserDto);
     }
 }
