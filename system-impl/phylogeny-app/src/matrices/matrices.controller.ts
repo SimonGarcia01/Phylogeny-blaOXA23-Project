@@ -3,33 +3,34 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from
 import { MatricesService } from './matrices.service';
 import { CreateMatrixDto } from './dto/create-matrix.dto';
 import { UpdateMatrixDto } from './dto/update-matrix.dto';
+import { ResponseMatrixListItemDto } from './dto/response-matrix-list-item.dto';
 
 @Controller('matrices')
 export class MatricesController {
     constructor(private readonly matricesService: MatricesService) {}
 
     @Post()
-    create(@Body() createMatrixDto: CreateMatrixDto) {
-        return this.matricesService.create(createMatrixDto);
+    async create(@Body() createMatrixDto: CreateMatrixDto) {
+        return await this.matricesService.create(createMatrixDto);
     }
 
     @Get()
-    findAll() {
-        return this.matricesService.findAll();
+    async findAll(): Promise<ResponseMatrixListItemDto[]> {
+        return await this.matricesService.findAll();
     }
 
     @Get(':id')
-    findOne(@Param('id', ParseUUIDPipe) id: string) {
-        return this.matricesService.findOne(id);
+    async findOne(@Param('id', ParseUUIDPipe) id: string) {
+        return await this.matricesService.findOne(id);
     }
 
     @Patch(':id')
-    update(@Param('id', ParseUUIDPipe) id: string, @Body() updateMatrixDto: UpdateMatrixDto) {
-        return this.matricesService.update(id, updateMatrixDto);
+    async update(@Param('id', ParseUUIDPipe) id: string, @Body() updateMatrixDto: UpdateMatrixDto) {
+        return await this.matricesService.update(id, updateMatrixDto);
     }
 
     @Delete(':id')
-    remove(@Param('id', ParseUUIDPipe) id: string) {
-        return this.matricesService.remove(id);
+    async remove(@Param('id', ParseUUIDPipe) id: string) {
+        return await this.matricesService.remove(id);
     }
 }
