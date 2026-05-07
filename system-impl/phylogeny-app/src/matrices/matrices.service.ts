@@ -6,6 +6,9 @@ import { MinioService } from 'src/utils/minio/minio.service';
 import { UsersService } from 'src/auth/users/users.service';
 import { ResponseMessage } from 'src/common/dtos/response-message';
 import { User } from 'src/auth/users/entities/user.entity';
+import { ResponseGeneratedUrlDto } from 'src/common/dtos/response-generate-url.dto';
+import { RequestGenerateUrlDto } from 'src/common/dtos/request-generate-url.dto';
+import { BusinessRuleViolationException } from 'src/common/exceptions/business-rule-violation-exception';
 
 import { CreateMatrixDto } from './dto/create-matrix.dto';
 import { UpdateMatrixDto } from './dto/update-matrix.dto';
@@ -21,40 +24,59 @@ export class MatricesService {
         private readonly minioService: MinioService,
     ) {}
 
-    async create(user: User, createMatrixDto: CreateMatrixDto, file: Express.Multer.File): Promise<ResponseMessage> {
-        if (!file) throw new BadRequestException('No file provided. Please include a file.');
+    async generateUploadUrl(user: User, generateUrlDto: RequestGenerateUrlDto): Promise<ResponseGeneratedUrlDto> {
+        const { fileName, fileSize, fileType } = generateUrlDto;
 
-        if (!file.originalname.toLowerCase().endsWith('.nex')) {
-            throw new BadRequestException('Invalid file type. Only .nex files are allowed.');
+        if (fileSize > 10 * 1024 * 1024) {
+            throw new BadRequestException('File size exceeds the 10MB limit.');
         }
 
-        const mimeType: string = file.mimetype || 'application/octet-stream';
+        const matrixNameExist: Matrix | null = await this.matrixRepository.findOne({
+            where: {
+                name: fileName,
+                user: { id: user.id },
+            },
+        });
 
-        const randomUUID: string = crypto.randomUUID();
+        if (matrixNameExist) {
+            throw new BusinessRuleViolationException('A matrix with the same name already exists.');
+        }
 
-        //Object key to store in minIO, structured as users/{userId}/matrices/{matrixId}/{originalFileName}
-        const objectKey: string = `users/${user.id}/matrices/${randomUUID}/${file.originalname}`;
+        if (!fileType.toLowerCase().includes('.nex')) {
+            throw new BusinessRuleViolationException('Only .nex files are allowed.');
+        }
 
-        //Make sure the bucket exists, if it doesn't create it
-        await this.minioService.ensureBucket('matrices');
+        let randomUUID: string = crypto.randomUUID();
 
-        //Upload the file to minIO
-        await this.minioService.uploadFile('matrices', objectKey, file);
+        let objectKey: string = `users/${user.id}/matrices/${randomUUID}`;
 
+        //Should never happen, but just in case, regenerate it once
+        if (await this.objectKeyExists(objectKey)) {
+            randomUUID = crypto.randomUUID();
+            objectKey = `users/${user.id}/matrices/${randomUUID}`;
+        }
+
+        const presignedUrl: string = await this.minioService.generatePresignedPutUrl('matrices', objectKey);
+
+        return new ResponseGeneratedUrlDto(randomUUID, objectKey, presignedUrl);
+    }
+
+    async objectKeyExists(objectKey: string): Promise<boolean> {
+        const matrix: Matrix | null = await this.matrixRepository.findOneBy({ objectKey: objectKey });
+        return !!matrix;
+    }
+
+    async create(user: User, createMatrixDto: CreateMatrixDto): Promise<ResponseMessage> {
         const newMatrix: Matrix = this.matrixRepository.create({
             ...createMatrixDto,
-            matrixId: randomUUID,
             user: user,
-            objectKey: objectKey,
-            fileSize: file.size,
-            mimeType: file.mimetype || 'application/octet-stream',
             uploadedAt: new Date(),
         });
 
         await this.matrixRepository.save(newMatrix);
 
         return new ResponseMessage(
-            `The matrix ${createMatrixDto.name} has been uploaded successfully (ID: ${randomUUID}).`,
+            `The matrix ${createMatrixDto.name} has been uploaded successfully (ID: ${createMatrixDto.matrixId}).`,
         );
     }
 

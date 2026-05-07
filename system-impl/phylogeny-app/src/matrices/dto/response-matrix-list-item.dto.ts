@@ -1,5 +1,5 @@
 export class ResponseMatrixListItemDto {
-    matrixId!: string;
+    matrixId: string;
     name?: string;
     uploadedAt?: Date;
 

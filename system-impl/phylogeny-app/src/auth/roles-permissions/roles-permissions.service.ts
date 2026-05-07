@@ -51,7 +51,7 @@ export class RolesPermissionsService {
     async findAll(): Promise<ResponseRolesPermissionDto[]> {
         const mappings = await this.rolesPermissionRepository.find({ relations: ['role', 'permission'] });
 
-        return mappings.map((m) => new ResponseRolesPermissionDto(m.id, m.role?.id, m.permission?.id));
+        return mappings.map((m) => new ResponseRolesPermissionDto(m.role?.id, m.permission?.id));
     }
 
     async findOne(id: number): Promise<ResponseRolesPermissionDto> {
@@ -62,7 +62,7 @@ export class RolesPermissionsService {
 
         if (!mapping) throw new NotFoundException(`The entered roles-permission ID ${id} wasn't found.`);
 
-        return new ResponseRolesPermissionDto(mapping.id, mapping.role?.id, mapping.permission?.id);
+        return new ResponseRolesPermissionDto(mapping.role?.id, mapping.permission?.id);
     }
 
     async update(id: number, updateRolesPermissionDto: UpdateRolesPermissionDto): Promise<ResponseMessage> {

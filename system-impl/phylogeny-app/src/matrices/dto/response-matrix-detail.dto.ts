@@ -1,5 +1,5 @@
 export class ResponseMatrixDetailDto {
-    matrixId!: string;
+    matrixId: string;
     name?: string;
     description?: string;
     uploadedAt?: Date;

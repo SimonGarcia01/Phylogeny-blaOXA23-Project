@@ -48,20 +48,31 @@ export class MinioService implements OnModuleInit {
         }
     }
 
+    //This will generate a presigned URL for uploading a file to the minIO server
+    async generatePresignedPutUrl(bucket: string, objectKey: string): Promise<string> {
+        const client = this.getClient();
+
+        return await client.presignedPutObject(
+            bucket,
+            objectKey,
+            60 * 60, // 1 hour expiration
+        );
+    }
+
     //Function to upload a file to the minio server.
     //Takes in the file name and bucket name
-    async uploadFile(bucket: string, objectKey: string, file: Express.Multer.File): Promise<boolean> {
-        const client: Minio.Client = this.getClient();
-        const result = await client.putObject(bucket, objectKey, file.buffer, file.size, {
-            'Content-Type': file.mimetype || 'application/octet-stream',
-        });
+    // async uploadFile(bucket: string, objectKey: string, file: Express.Multer.File): Promise<boolean> {
+    //     const client: Minio.Client = this.getClient();
+    //     const result = await client.putObject(bucket, objectKey, file.buffer, file.size, {
+    //         'Content-Type': file.mimetype || 'application/octet-stream',
+    //     });
 
-        if (!result) {
-            throw new Error(`Failed to upload file "${objectKey}" to bucket "${bucket}".`);
-        }
+    //     if (!result) {
+    //         throw new Error(`Failed to upload file "${objectKey}" to bucket "${bucket}".`);
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
     //Function to download a file from the minIO server
     async getFile(bucket: string, fileName: string): Promise<Stream.Readable> {

@@ -7,6 +7,7 @@ import {
     CreateDateColumn,
     OneToOne,
     OneToMany,
+    Unique,
 } from 'typeorm';
 
 import { User } from 'src/auth/users/entities/user.entity';
@@ -14,6 +15,7 @@ import { Visualization } from 'src/visualizations/entities/visualization.entity'
 import { MatrixRequest } from 'src/matrix-requests/entities/matrix-request.entity';
 
 @Entity('matrices')
+@Unique(['name', 'user'])
 export class Matrix {
     @PrimaryGeneratedColumn()
     id!: number;

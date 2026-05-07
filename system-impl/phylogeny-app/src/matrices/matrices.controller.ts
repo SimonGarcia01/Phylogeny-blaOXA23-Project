@@ -30,21 +30,8 @@ export class MatricesController {
     }
 
     @Post()
-    //This interceptor is used to handle file uploads
-    //It looks for a file in the request with the field "file"
-    @UseInterceptors(
-        FileInterceptor('file', {
-            limits: {
-                fileSize: 10 * 1024 * 1024, // 10MB
-            },
-        }),
-    )
-    async create(
-        @CurrentUser() user: User,
-        @Body() createMatrixDto: CreateMatrixDto,
-        @UploadedFile() file: Express.Multer.File,
-    ) {
-        return await this.matricesService.create(user, createMatrixDto, file);
+    async create(@CurrentUser() user: User, @Body() createMatrixDto: CreateMatrixDto) {
+        return await this.matricesService.create(user, createMatrixDto);
     }
 
     @Get()
