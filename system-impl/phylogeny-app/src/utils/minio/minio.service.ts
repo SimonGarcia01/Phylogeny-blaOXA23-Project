@@ -50,10 +50,17 @@ export class MinioService implements OnModuleInit {
 
     //Function to upload a file to the minio server.
     //Takes in the file name and bucket name
-    async uploadFile(bucket: string, fileName: string, buffer: Buffer): Promise<string> {
-        const client = this.getClient();
-        await client.putObject(bucket, fileName, buffer);
-        return `${bucket}/${fileName}`;
+    async uploadFile(bucket: string, objectKey: string, file: Express.Multer.File): Promise<boolean> {
+        const client: Minio.Client = this.getClient();
+        const result = await client.putObject(bucket, objectKey, file.buffer, file.size, {
+            'Content-Type': file.mimetype || 'application/octet-stream',
+        });
+
+        if (!result) {
+            throw new Error(`Failed to upload file "${objectKey}" to bucket "${bucket}".`);
+        }
+
+        return true;
     }
 
     //Function to download a file from the minIO server

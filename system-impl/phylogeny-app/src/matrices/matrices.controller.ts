@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Patch,
+    Param,
+    Delete,
+    ParseUUIDPipe,
+    UseInterceptors,
+    UploadedFile,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { User } from 'src/auth/users/entities/user.entity';
@@ -12,9 +24,27 @@ import { ResponseMatrixListItemDto } from './dto/response-matrix-list-item.dto';
 export class MatricesController {
     constructor(private readonly matricesService: MatricesService) {}
 
+    @Post('upload-url')
+    async generateUploadUrl(@CurrentUser() user: User, @Body() dto: GenerateUploadDto) {
+        return this.matricesService.generateUploadUrl(user, dto);
+    }
+
     @Post()
-    async create(@Body() createMatrixDto: CreateMatrixDto, @CurrentUser() user: User) {
-        return await this.matricesService.create(user, createMatrixDto);
+    //This interceptor is used to handle file uploads
+    //It looks for a file in the request with the field "file"
+    @UseInterceptors(
+        FileInterceptor('file', {
+            limits: {
+                fileSize: 10 * 1024 * 1024, // 10MB
+            },
+        }),
+    )
+    async create(
+        @CurrentUser() user: User,
+        @Body() createMatrixDto: CreateMatrixDto,
+        @UploadedFile() file: Express.Multer.File,
+    ) {
+        return await this.matricesService.create(user, createMatrixDto, file);
     }
 
     @Get()

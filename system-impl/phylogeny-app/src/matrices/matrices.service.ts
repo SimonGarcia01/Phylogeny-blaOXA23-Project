@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -21,19 +21,40 @@ export class MatricesService {
         private readonly minioService: MinioService,
     ) {}
 
-    async create(user: User, createMatrixDto: CreateMatrixDto): Promise<ResponseMessage> {
+    async create(user: User, createMatrixDto: CreateMatrixDto, file: Express.Multer.File): Promise<ResponseMessage> {
+        if (!file) throw new BadRequestException('No file provided. Please include a file.');
+
+        if (!file.originalname.toLowerCase().endsWith('.nex')) {
+            throw new BadRequestException('Invalid file type. Only .nex files are allowed.');
+        }
+
+        const mimeType: string = file.mimetype || 'application/octet-stream';
+
         const randomUUID: string = crypto.randomUUID();
+
+        //Object key to store in minIO, structured as users/{userId}/matrices/{matrixId}/{originalFileName}
+        const objectKey: string = `users/${user.id}/matrices/${randomUUID}/${file.originalname}`;
+
+        //Make sure the bucket exists, if it doesn't create it
+        await this.minioService.ensureBucket('matrices');
+
+        //Upload the file to minIO
+        await this.minioService.uploadFile('matrices', objectKey, file);
 
         const newMatrix: Matrix = this.matrixRepository.create({
             ...createMatrixDto,
             matrixId: randomUUID,
             user: user,
+            objectKey: objectKey,
+            fileSize: file.size,
+            mimeType: file.mimetype || 'application/octet-stream',
+            uploadedAt: new Date(),
         });
 
         await this.matrixRepository.save(newMatrix);
 
         return new ResponseMessage(
-            `The matrix ${createMatrixDto.name} has been created successfully (ID: ${randomUUID}).`,
+            `The matrix ${createMatrixDto.name} has been uploaded successfully (ID: ${randomUUID}).`,
         );
     }
 
