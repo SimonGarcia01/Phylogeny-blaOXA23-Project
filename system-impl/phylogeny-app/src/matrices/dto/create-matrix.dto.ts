@@ -10,12 +10,8 @@ export class CreateMatrixDto {
 
     @IsOptional()
     @IsString({ message: 'description must be a string' })
-    @MaxLength(255, { message: 'description must be at most 255 characters long' })
+    @MaxLength(1000, { message: 'description must be at most 1000 characters long' })
     description?: string;
-
-    @IsString({ message: 'objectKey must be a string' })
-    @Length(1, 255, { message: 'objectKey must be between 1 and 255 characters long' })
-    objectKey!: string;
 
     @IsString({ message: 'mimeType must be a string' })
     @Equals('application/octet-stream', { message: 'Only application/octet-stream mime type is allowed' })

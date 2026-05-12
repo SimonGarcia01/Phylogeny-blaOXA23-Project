@@ -1,0 +1,96 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="FA14DBEB-AFFE-12E3-90E8-BDD498B79F88" name="ROLES_PERMISSIONS">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:35:07 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<ordsAlias>table_6</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<existDependencyConstraintName>Role_delesion</existDependencyConstraintName>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="1179ECF8-77C2-F925-5A89-B08C0D80DE29">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:47:39 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="role_id" id="FA157E43-346F-D05C-C989-8A00E4C3F14D">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:44:57 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<isDiscriminatorColumn>true</isDiscriminatorColumn>
+<associations>
+<colAssociation fkAssociation="62AF0337-6D96-E0AC-0D61-AE12FD7B8CCD" referredColumn="BCEA364C-90E7-F0A2-F0E0-43A129797916"/>
+</associations>
+</Column>
+<Column name="permission_id" id="2FFFEAF8-0F9A-42BB-1D9D-ADD424E6F1E8">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:44:51 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="A365B096-CF6D-770E-49BD-AD319C3B30F9" referredColumn="856A1B61-5BE3-9AD8-4E1C-21ED7D1C7CB3"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="6024E5C2-E3BA-277F-8C70-B5F227321D56" name="ROLES_PERMISSIONS_PK">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:47:39 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="1179ECF8-77C2-F925-5A89-B08C0D80DE29"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="65809466-88D4-0170-BF5B-92E1DAF583FC" name="ROLES_PERMISSIONS__UN">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:46:18 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FA157E43-346F-D05C-C989-8A00E4C3F14D"/>
+<colUsage columnID="2FFFEAF8-0F9A-42BB-1D9D-ADD424E6F1E8"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="96CCF640-2336-677B-D1F0-8DCC2EFC2FF2" name="ROLES_PERMISSIONS_PERMISSIONS_FK">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:44:51 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="2FFFEAF8-0F9A-42BB-1D9D-ADD424E6F1E8"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="7FB0E9E1-DA69-6740-437B-1782F9418AA9" name="ROLES_PERMISSIONS_ROLES_FK">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:44:57 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FA157E43-346F-D05C-C989-8A00E4C3F14D"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

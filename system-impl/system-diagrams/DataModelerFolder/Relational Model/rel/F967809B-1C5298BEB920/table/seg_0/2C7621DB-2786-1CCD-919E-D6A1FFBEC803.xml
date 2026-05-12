@@ -61,7 +61,7 @@
 <ownDataTypeParameters>15,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="MATRICES_id" id="BEE8627E-0FBD-60B8-9FCF-7B06893F01B6">
+<Column name="matrix_id" id="BEE8627E-0FBD-60B8-9FCF-7B06893F01B6">
 <createdBy>kracr</createdBy>
 <createdTime>2026-04-08 22:51:53 UTC</createdTime>
 <ownerDesignName>Relational Model</ownerDesignName>
@@ -87,16 +87,6 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="E687667C-B6B0-8C9F-1BFD-764597F02976"/>
-</indexColumnUsage>
-</ind_PK_UK>
-<ind_PK_UK id="A4524497-39BA-DE14-F27E-ECA01A82BA3D" name="MATRIX_REQUESTS__UN">
-<createdBy>kracr</createdBy>
-<createdTime>2026-04-08 22:53:09 UTC</createdTime>
-<ownerDesignName>Relational Model</ownerDesignName>
-<indexState>Unique Constraint</indexState>
-<isSurrogateKey>false</isSurrogateKey>
-<indexColumnUsage>
-<colUsage columnID="BEE8627E-0FBD-60B8-9FCF-7B06893F01B6"/>
 </indexColumnUsage>
 </ind_PK_UK>
 <ind_PK_UK id="C57BDB46-6538-766C-9711-0BB9932CD3F2" name="MATRIX_REQUESTS_MATRICES_FK">

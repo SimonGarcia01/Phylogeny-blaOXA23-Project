@@ -58,9 +58,23 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>100</dataTypeSize>
-<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="role_id" id="0161E936-ED1E-356A-4FA6-B4F7F71CF44A">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:39:03 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="E4835C9D-9B7F-80F3-D5CC-89187718F431" referredColumn="BCEA364C-90E7-F0A2-F0E0-43A129797916"/>
+</associations>
 </Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
@@ -83,6 +97,16 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="C547E939-5F4E-9B79-F3A8-6367C46C7BFD"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="5E73AD83-AA67-A1EC-5449-7CABACFD32DD" name="USERS_ROLES_FK">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:39:03 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0161E936-ED1E-356A-4FA6-B4F7F71CF44A"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

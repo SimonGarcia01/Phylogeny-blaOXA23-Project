@@ -1,0 +1,68 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="FC8C2177-7991-5AE1-73A8-563843817D43" name="PERMISSIONS">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:41:13 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<ordsAlias>table_8</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="856A1B61-5BE3-9AD8-4E1C-21ED7D1C7CB3">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:43:13 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="name" id="DABD51CF-B5A8-A397-FB6D-DCB3A53ED68A">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:43:13 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<ownDataTypeParameters>50,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="description" id="88BFB1B5-D450-03D7-F921-F8C84DEA973E">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:43:13 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="4B2FCA45-43B5-8E82-550A-7CE685876C4F" name="PERMISSIONS_PK">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:43:13 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="856A1B61-5BE3-9AD8-4E1C-21ED7D1C7CB3"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="A1C75127-0320-D7DF-6FF6-F5C0197C2D90" name="PERMISSIONS__UN">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 20:44:02 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="DABD51CF-B5A8-A397-FB6D-DCB3A53ED68A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

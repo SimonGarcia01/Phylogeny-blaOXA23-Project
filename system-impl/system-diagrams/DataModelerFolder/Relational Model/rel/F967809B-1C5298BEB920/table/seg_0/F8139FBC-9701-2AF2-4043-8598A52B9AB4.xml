@@ -18,6 +18,17 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
+<Column name="visualization_id" id="F421C740-6F5B-E322-7F6D-0F0B8704AFE4">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 21:46:18 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32</dataTypeSize>
+<ownDataTypeParameters>32,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 <Column name="name" id="51469E6A-DB2D-3FE7-900A-EAF56CE4CE54">
 <createdBy>kracr</createdBy>
 <createdTime>2026-04-08 22:48:32 UTC</createdTime>
@@ -25,14 +36,15 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>30</dataTypeSize>
-<ownDataTypeParameters>30,,</ownDataTypeParameters>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="description" id="A1242C37-66E1-62D3-0808-B1924987E51C">
 <createdBy>kracr</createdBy>
 <createdTime>2026-04-08 22:48:32 UTC</createdTime>
 <ownerDesignName>Relational Model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
@@ -50,14 +62,38 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="visualization" id="F0B590E0-4368-846A-1204-2F522846C478">
+<Column name="object_key" id="E94F3388-D40D-158F-C365-4B6A7233AED7">
 <createdBy>kracr</createdBy>
-<createdTime>2026-04-08 22:48:32 UTC</createdTime>
+<createdTime>2026-05-12 21:47:21 UTC</createdTime>
 <ownerDesignName>Relational Model</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LogDes-7DD553FD-11E8-61FA-399D-2E531FB621D0@LOGDT10034</logicalDatatype>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="file_size" id="840A952D-B477-FCC8-BE5F-401B62C32B09">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 21:48:35 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mime_type" id="E141D1E2-8D52-BF17-8AF6-D312E6C75CDB">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 21:48:35 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<ownDataTypeParameters>50,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="USERS_id" id="D95FF8F2-D0C9-C37F-58CF-DDC7BE2B15B6">
@@ -74,7 +110,7 @@
 <colAssociation fkAssociation="6C53C156-388E-D1EA-A688-E3C4111BB1D8" referredColumn="55B67DD0-6087-5737-ED69-AEB0AC543510"/>
 </associations>
 </Column>
-<Column name="MATRICES_id" id="BA4FB14F-2694-847F-6B93-2DDA3121E674">
+<Column name="matrix_id" id="BA4FB14F-2694-847F-6B93-2DDA3121E674">
 <createdBy>kracr</createdBy>
 <createdTime>2026-04-08 22:48:51 UTC</createdTime>
 <ownerDesignName>Relational Model</ownerDesignName>
@@ -102,14 +138,24 @@
 <colUsage columnID="1794EE27-4649-0DF7-049B-0525B1082B63"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="21B9E6A6-3B5C-5434-2D3C-B6A50E30502B" name="VISUALIZATIONS__UN">
+<ind_PK_UK id="9978791A-3749-A485-7D58-534917586F60" name="matrix_UN">
 <createdBy>kracr</createdBy>
-<createdTime>2026-04-08 22:49:09 UTC</createdTime>
+<createdTime>2026-05-12 21:46:18 UTC</createdTime>
 <ownerDesignName>Relational Model</ownerDesignName>
 <indexState>Unique Constraint</indexState>
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="BA4FB14F-2694-847F-6B93-2DDA3121E674"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="3E685186-C523-DE24-C333-79FAE743E937" name="visualization_id_UN">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-12 21:46:18 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F421C740-6F5B-E322-7F6D-0F0B8704AFE4"/>
 </indexColumnUsage>
 </ind_PK_UK>
 <ind_PK_UK id="E2B6CCF9-354E-F377-42E1-F4B10C0102D3" name="VISUALIZATIONS_USERS_FK">

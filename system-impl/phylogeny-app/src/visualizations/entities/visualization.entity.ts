@@ -15,7 +15,7 @@ export class Visualization {
     @Column({ name: 'name', length: 100, nullable: false })
     name!: string;
 
-    @Column({ name: 'description', length: 255, nullable: true })
+    @Column({ name: 'description', length: 1000, nullable: true })
     description?: string;
 
     @CreateDateColumn({ name: 'created_at', type: 'timestamp' })

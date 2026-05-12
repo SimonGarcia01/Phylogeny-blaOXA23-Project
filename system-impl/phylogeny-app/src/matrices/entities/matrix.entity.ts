@@ -27,7 +27,7 @@ export class Matrix {
     @Column({ name: 'name', length: 100, nullable: false })
     name!: string;
 
-    @Column({ name: 'description', length: 255, nullable: true })
+    @Column({ name: 'description', length: 1000, nullable: true })
     description?: string;
 
     // Object storage reference (MinIO)
