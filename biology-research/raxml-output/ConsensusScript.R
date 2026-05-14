@@ -69,20 +69,21 @@ node_bootstrap_map <- data.frame(id = seq_ids, node = internal_nodes, bootstrap 
 print(node_bootstrap_map)
 
 # plot showing sequential ids
-plot(tree_root, cex = 0.4)
-
-nodelabels(
-  text = seq_ids,
-  node = internal_nodes,
-  frame = "none",
-  cex = 0.28,
-  col = "red",
-  adj = c(1.2, 1.2)
-)
-
 
 plot(tree_root,
-     cex = 0.4,
-     no.margin = FALSE)
+     cex = 0.20,
+     no.margin = TRUE,
+     label.offset = 0.0001)
 
-par(pin = c(8, 14))
+keep <- !is.na(node_bootstrap_map$bootstrap)
+
+nodelabels(
+  text = node_bootstrap_map$id[keep],
+  node = node_bootstrap_map$node[keep],
+  frame = "none",
+  cex = 0.15,
+  col = "red",
+  adj = c(1.5, 0)
+)
+
+add.scale.bar()
