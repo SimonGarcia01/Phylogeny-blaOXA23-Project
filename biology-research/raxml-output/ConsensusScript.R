@@ -19,10 +19,10 @@ plot(tree)
 which(tree$tip.label == "AP019740.1_Chromosome_A.radior")
 
 #Root the tree using species 40
-tree_root <- root(tree, outgroup = 7, resolve.root = TRUE)
+#tree_root <- root(tree, outgroup = 7, resolve.root = TRUE)
 
 #Other way to do it is use the name:
-#tree_root <- root(tree, outgroup = "AP019740.1_Chromosome_A.radior", resolve.root = TRUE)
+tree_root <- root(tree, outgroup = "AP019740.1_Chromosome_A.radior", resolve.root = TRUE)
 
 #Check the best tree is rooted now
 is.rooted(tree_root)
@@ -48,5 +48,41 @@ plotBS(tree_root, bootreps, p=0, type="phylogram", cex=0.4, bs.col="red")
 #Now multiply the bootstrap values by 100 to get the percentages
 tre_bs <- plotBS(tree_root, bootreps, p=50, type="p", digits = 3)
 tre_bs$node.label <- as.numeric(tre_bs$node.label) * 100
-plot(tre_bs, cex=0.5)
-nodelabels(tre_bs$node.label, frame="none", cex=0.5, col = "red")
+
+# get tree with all bootstraps (no threshold)
+tre_bs <- plotBS(tree_root, bootreps, p = 0, type = "p", digits = 3)
+
+bootstrap_vals_raw <- as.numeric(tre_bs$node.label)
+if (max(bootstrap_vals_raw, na.rm = TRUE) <= 1) {
+  bootstrap_pct <- bootstrap_vals_raw * 100
+} else {
+  bootstrap_pct <- bootstrap_vals_raw
+}
+
+ntips <- length(tree_root$tip.label)
+ninternal <- tre_bs$Nnode
+internal_nodes <- seq(ntips + 1, ntips + ninternal)
+seq_ids <- seq_len(ninternal)
+
+# table with sequential id (1..Nnode) and actual ape node number
+node_bootstrap_map <- data.frame(id = seq_ids, node = internal_nodes, bootstrap = round(bootstrap_pct, 3))
+print(node_bootstrap_map)
+
+# plot showing sequential ids
+plot(tree_root, cex = 0.4)
+
+nodelabels(
+  text = seq_ids,
+  node = internal_nodes,
+  frame = "none",
+  cex = 0.28,
+  col = "red",
+  adj = c(1.2, 1.2)
+)
+
+
+plot(tree_root,
+     cex = 0.4,
+     no.margin = FALSE)
+
+par(pin = c(8, 14))
