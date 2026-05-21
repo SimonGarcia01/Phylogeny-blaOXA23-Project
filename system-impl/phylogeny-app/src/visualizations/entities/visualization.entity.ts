@@ -1,9 +1,19 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToOne,
+    PrimaryGeneratedColumn,
+    Unique,
+} from 'typeorm';
 
 import { User } from 'src/auth/users/entities/user.entity';
 import { Matrix } from 'src/matrices/entities/matrix.entity';
 
 @Entity('visualizations')
+@Unique(['name', 'user'])
 export class Visualization {
     @PrimaryGeneratedColumn()
     id!: number;
