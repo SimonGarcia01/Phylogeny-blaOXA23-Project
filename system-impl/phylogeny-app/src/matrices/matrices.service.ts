@@ -31,12 +31,7 @@ export class MatricesService {
             throw new BadRequestException('File size exceeds the 10MB limit.');
         }
 
-        const matrixNameExist: Matrix | null = await this.matrixRepository.findOne({
-            where: {
-                name: fileName,
-                user: { id: user.id },
-            },
-        });
+        const matrixNameExist: boolean = await this.matrixNameExists(fileName, user.id);
 
         if (matrixNameExist) {
             throw new BusinessRuleViolationException('A matrix with the same name already exists.');
@@ -91,6 +86,8 @@ export class MatricesService {
         return matrices.map((m) => new ResponseMatrixListItemDto(m.matrixId, m.name, m.uploadedAt));
     }
 
+    //This is the method that returns the details of a matrix (metadata)
+    //This will also include the metadata of the visualization if it exists
     async findOne(matrixId: string): Promise<ResponseMatrixDetailDto> {
         const matrix: Matrix | null = await this.matrixRepository.findOne({
             where: { matrixId: matrixId },
@@ -118,10 +115,22 @@ export class MatricesService {
         return matrix;
     }
 
+    //The update method will make sure the matrix exists
     async update(matrixId: string, updateMatrixDto: UpdateMatrixDto): Promise<ResponseMessage> {
+        //Make sure the matrix exists before updating
         const matrix: Matrix | null = await this.matrixRepository.findOneBy({ matrixId: matrixId });
 
         if (!matrix) throw new NotFoundException(`The entered matrix ID ${matrixId} wasn't found.`);
+
+        //If the name is going to change, make sure it's unique to the user
+        if (updateMatrixDto.name && updateMatrixDto.name !== matrix.name) {
+            const matrixNameExists: boolean = await this.matrixNameExists(updateMatrixDto.name, matrix.user.id);
+            if (matrixNameExists) {
+                throw new BusinessRuleViolationException(
+                    `A matrix with the name ${updateMatrixDto.name} already exists.`,
+                );
+            }
+        }
 
         await this.matrixRepository.update(matrixId, updateMatrixDto);
 
@@ -131,6 +140,7 @@ export class MatricesService {
     }
 
     async remove(matrixId: string): Promise<ResponseMessage> {
+        //Make sure the matrix exists before deleting
         const matrix: Matrix | null = await this.matrixRepository.findOneBy({ matrixId: matrixId });
 
         if (!matrix) throw new NotFoundException(`The entered matrix ID ${matrixId} wasn't found.`);
@@ -140,5 +150,15 @@ export class MatricesService {
         return new ResponseMessage(
             `The matrix with the name ${matrix.name} has been removed successfully (ID: ${matrixId}).`,
         );
+    }
+
+    async matrixNameExists(name: string, userId: number): Promise<boolean> {
+        const matrix: Matrix | null = await this.matrixRepository.findOne({
+            where: {
+                name: name,
+                user: { id: userId },
+            },
+        });
+        return !!matrix;
     }
 }
