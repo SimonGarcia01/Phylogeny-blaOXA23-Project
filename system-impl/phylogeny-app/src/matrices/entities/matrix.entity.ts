@@ -31,7 +31,7 @@ export class Matrix {
     description?: string;
 
     // Object storage reference (MinIO)
-    @Column({ name: 'object_key', type: 'text', nullable: false })
+    @Column({ name: 'object_key', length: 100, nullable: false })
     objectKey!: string;
 
     @Column({ name: 'file_size', type: 'int', nullable: true })

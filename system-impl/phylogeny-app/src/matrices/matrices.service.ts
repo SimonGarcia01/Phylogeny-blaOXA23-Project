@@ -48,6 +48,10 @@ export class MatricesService {
 
         let randomUUID: string = crypto.randomUUID();
 
+        //This is what defines the minimum length:
+        //Baseline it has users/matrices/ = 16 characters
+        //UUID v4 has 36 characters = 52 characters total
+        //The user ID is an integer, so minimum 1 character = 53 chars total
         let objectKey: string = `users/${user.id}/matrices/${randomUUID}`;
 
         //Should never happen, but just in case, regenerate it once
@@ -66,6 +70,7 @@ export class MatricesService {
         return !!matrix;
     }
 
+    //The create method is called after the file has been uploaded to MinIO, just to store the metadata
     async create(user: User, createMatrixDto: CreateMatrixDto): Promise<ResponseMessage> {
         const newMatrix: Matrix = this.matrixRepository.create({
             ...createMatrixDto,

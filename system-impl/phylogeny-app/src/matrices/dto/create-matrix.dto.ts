@@ -8,6 +8,10 @@ export class CreateMatrixDto {
     @Length(1, 100, { message: 'name must be between 1 and 100 characters long' })
     name!: string;
 
+    @IsString({ message: 'objectKey must be a string' })
+    @Length(53, 100, { message: 'objectKey must be between 53 and 100 characters long' })
+    objectKey!: string;
+
     @IsOptional()
     @IsString({ message: 'description must be a string' })
     @MaxLength(1000, { message: 'description must be at most 1000 characters long' })
