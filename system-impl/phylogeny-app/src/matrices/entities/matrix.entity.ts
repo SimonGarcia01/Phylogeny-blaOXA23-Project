@@ -47,7 +47,8 @@ export class Matrix {
     @JoinColumn({ name: 'user_id' })
     user!: User;
 
-    @OneToOne(() => Visualization, (visualization) => visualization.matrix, { nullable: true })
+    @OneToOne(() => Visualization, (visualization) => visualization.matrix, { nullable: true, onDelete: 'SET NULL' })
+    @JoinColumn({ name: 'visualization_id' })
     visualization?: Visualization;
 
     @OneToMany(() => MatrixRequest, (matrixRequest) => matrixRequest.matrix)

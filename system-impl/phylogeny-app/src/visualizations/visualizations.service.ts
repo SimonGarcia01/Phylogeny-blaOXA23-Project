@@ -73,14 +73,19 @@ export class VisualizationsService {
 
         const matrix: Matrix = await this.matricesService.findOneByMatrixId(matrixId);
 
+        if (matrix.visualization) {
+            throw new BusinessRuleViolationException('This matrix already has a visualization.');
+        }
+
         const newVisualization: Visualization = this.visualizationRepository.create({
             ...visualizationData,
             user: user,
-            matrix: matrix,
             createdAt: new Date(),
         });
 
         await this.visualizationRepository.save(newVisualization);
+
+        await this.matricesService.updateVisualizationId(matrixId, newVisualization.visualizationId);
 
         return new ResponseMessage(
             `The visualization ${createVisualizationDto.name} has been uploaded successfully (ID: ${createVisualizationDto.visualizationId}).`,
@@ -152,8 +157,16 @@ export class VisualizationsService {
         const { matrixId, ...rest } = updateVisualizationDto;
 
         if (matrixId && visualization.matrix?.matrixId !== matrixId) {
-            const matrix: Matrix = await this.matricesService.findOneByMatrixId(matrixId);
-            visualization.matrix = matrix;
+            const targetMatrix: Matrix = await this.matricesService.findOneByMatrixId(matrixId);
+
+            if (
+                targetMatrix.visualization &&
+                targetMatrix.visualization.visualizationId !== visualization.visualizationId
+            ) {
+                throw new BusinessRuleViolationException('This matrix already has a visualization.');
+            }
+
+            await this.matricesService.updateVisualizationId(matrixId, visualization.visualizationId);
         }
 
         Object.assign(visualization, rest);
@@ -167,13 +180,15 @@ export class VisualizationsService {
 
     async remove(visualizationId: string): Promise<ResponseMessage> {
         //Make sure the visualization exists before deleting
-        const visualization: Visualization | null = await this.visualizationRepository.findOneBy({
-            visualizationId: visualizationId,
+        const visualization: Visualization | null = await this.visualizationRepository.findOne({
+            where: { visualizationId: visualizationId },
+            relations: ['matrix'],
         });
 
         if (!visualization)
             throw new NotFoundException(`The entered visualization ID ${visualizationId} wasn't found.`);
 
+        await this.minioService.deleteObject('visualizations', visualization.objectKey);
         await this.visualizationRepository.remove(visualization);
 
         return new ResponseMessage(
@@ -189,5 +204,15 @@ export class VisualizationsService {
             },
         });
         return !!visualization;
+    }
+
+    async findVisualizationByVisualizationId(visualizationId: string): Promise<Visualization> {
+        const visualization: Visualization | null = await this.visualizationRepository.findOneBy({
+            visualizationId: visualizationId,
+        });
+        if (!visualization)
+            throw new NotFoundException(`The entered visualization ID ${visualizationId} wasn't found.`);
+
+        return visualization;
     }
 }

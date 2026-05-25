@@ -9,6 +9,7 @@ import { User } from 'src/auth/users/entities/user.entity';
 import { ResponseGeneratedUrlDto } from 'src/common/dtos/response-generate-url.dto';
 import { RequestGenerateUrlDto } from 'src/common/dtos/request-generate-url.dto';
 import { BusinessRuleViolationException } from 'src/common/exceptions/business-rule-violation-exception';
+import { VisualizationsService } from 'src/visualizations/visualizations.service';
 
 import { CreateMatrixDto } from './dto/create-matrix.dto';
 import { UpdateMatrixDto } from './dto/update-matrix.dto';
@@ -22,6 +23,7 @@ export class MatricesService {
         @InjectRepository(Matrix) private readonly matrixRepository: Repository<Matrix>,
         private readonly userService: UsersService,
         private readonly minioService: MinioService,
+        private readonly visualizationsService: VisualizationsService,
     ) {}
 
     async generateUploadUrl(user: User, generateUrlDto: RequestGenerateUrlDto): Promise<ResponseGeneratedUrlDto> {
@@ -110,7 +112,10 @@ export class MatricesService {
 
     //This is for internal use only, to be used by the visualizations
     async findOneByMatrixId(matrixId: string): Promise<Matrix> {
-        const matrix: Matrix | null = await this.matrixRepository.findOneBy({ matrixId: matrixId });
+        const matrix: Matrix | null = await this.matrixRepository.findOne({
+            where: { matrixId: matrixId },
+            relations: ['visualization'],
+        });
         if (!matrix) throw new NotFoundException(`The entered matrix ID ${matrixId} wasn't found.`);
         return matrix;
     }
@@ -132,7 +137,7 @@ export class MatricesService {
             }
         }
 
-        await this.matrixRepository.update(matrixId, updateMatrixDto);
+        await this.matrixRepository.update({ matrixId: matrixId }, updateMatrixDto);
 
         return new ResponseMessage(
             `The matrix with the name ${matrix.name} has been updated successfully (ID: ${matrixId}).`,
@@ -145,6 +150,7 @@ export class MatricesService {
 
         if (!matrix) throw new NotFoundException(`The entered matrix ID ${matrixId} wasn't found.`);
 
+        await this.minioService.deleteObject('matrices', matrix.objectKey);
         await this.matrixRepository.remove(matrix);
 
         return new ResponseMessage(
@@ -160,5 +166,31 @@ export class MatricesService {
             },
         });
         return !!matrix;
+    }
+
+    async updateVisualizationId(matrixId: string, visualizationId: string): Promise<void> {
+        const matrix: Matrix | null = await this.matrixRepository.findOne({
+            where: { matrixId: matrixId },
+            relations: ['visualization'],
+        });
+        if (!matrix) throw new NotFoundException(`The entered matrix ID ${matrixId} wasn't found.`);
+
+        if (matrix.visualization && matrix.visualization.visualizationId !== visualizationId) {
+            throw new BusinessRuleViolationException('This matrix already has a visualization.');
+        }
+
+        const visualization = await this.visualizationsService.findVisualizationByVisualizationId(visualizationId);
+
+        const linkedMatrix: Matrix | null = await this.matrixRepository.findOne({
+            where: { visualization: { visualizationId: visualizationId } },
+            relations: ['visualization'],
+        });
+
+        if (linkedMatrix && linkedMatrix.matrixId !== matrixId) {
+            throw new BusinessRuleViolationException('This visualization is already linked to another matrix.');
+        }
+
+        matrix.visualization = visualization;
+        await this.matrixRepository.save(matrix);
     }
 }

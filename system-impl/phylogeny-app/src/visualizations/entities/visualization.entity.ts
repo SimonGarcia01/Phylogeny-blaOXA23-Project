@@ -44,7 +44,6 @@ export class Visualization {
     @JoinColumn({ name: 'user_id' })
     user!: User;
 
-    @OneToOne(() => Matrix, (matrix) => matrix.visualization, { nullable: false, onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'matrix_id' })
+    @OneToOne(() => Matrix, (matrix) => matrix.visualization)
     matrix!: Matrix;
 }
