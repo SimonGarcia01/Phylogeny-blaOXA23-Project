@@ -110,6 +110,21 @@
 <colAssociation fkAssociation="8FB199F4-D3E7-8557-7639-3BE24CC92028" referredColumn="55B67DD0-6087-5737-ED69-AEB0AC543510"/>
 </associations>
 </Column>
+<Column name="visualization_id" id="4E889855-0F16-3610-F45F-75DAD0688C37">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-25 12:51:46 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="C660C9D4-67D6-38CD-F917-D5565DC82B55" referredColumn="1794EE27-4649-0DF7-049B-0525B1082B63"/>
+</associations>
+</Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
 <ind_PK_UK id="514ABEF8-F521-932A-FE9D-999809951BBF" name="MATRICES_PK">
@@ -144,6 +159,16 @@
 <colUsage columnID="FA3B82EF-3D12-389F-7014-1F1EA42BC03B"/>
 </indexColumnUsage>
 </ind_PK_UK>
+<ind_PK_UK id="129FDB6C-A119-F478-091C-6E319EC9481E" name="visualization__UN">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-25 12:52:39 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="4E889855-0F16-3610-F45F-75DAD0688C37"/>
+</indexColumnUsage>
+</ind_PK_UK>
 <ind_PK_UK id="D540CC1D-B57A-4F1E-1DC6-908DF8FA77BF" name="MATRICES_USERS_FK">
 <createdBy>kracr</createdBy>
 <createdTime>2026-04-08 22:48:37 UTC</createdTime>
@@ -152,6 +177,16 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="FA3B82EF-3D12-389F-7014-1F1EA42BC03B"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="1FDC0EBC-F685-10C5-77C9-CE4742040B5A" name="MATRICES_VISUALIZATIONS_FK">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-25 12:51:46 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="4E889855-0F16-3610-F45F-75DAD0688C37"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

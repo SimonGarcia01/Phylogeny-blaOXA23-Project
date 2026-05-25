@@ -96,7 +96,7 @@
 <ownDataTypeParameters>50,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="USERS_id" id="D95FF8F2-D0C9-C37F-58CF-DDC7BE2B15B6">
+<Column name="user_id" id="D95FF8F2-D0C9-C37F-58CF-DDC7BE2B15B6">
 <createdBy>kracr</createdBy>
 <createdTime>2026-04-08 22:48:44 UTC</createdTime>
 <ownerDesignName>Relational Model</ownerDesignName>
@@ -108,21 +108,6 @@
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
 <colAssociation fkAssociation="6C53C156-388E-D1EA-A688-E3C4111BB1D8" referredColumn="55B67DD0-6087-5737-ED69-AEB0AC543510"/>
-</associations>
-</Column>
-<Column name="matrix_id" id="BA4FB14F-2694-847F-6B93-2DDA3121E674">
-<createdBy>kracr</createdBy>
-<createdTime>2026-04-08 22:48:51 UTC</createdTime>
-<ownerDesignName>Relational Model</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-<previousColumn>false</previousColumn>
-<autoIncrementCycle>false</autoIncrementCycle>
-<associations>
-<colAssociation fkAssociation="703AA9DD-8F4C-53A2-084C-56EEADEE83B8" referredColumn="F97E13A4-CE1F-C094-B82D-3CAACCD5885F"/>
 </associations>
 </Column>
 </columns>
@@ -138,16 +123,6 @@
 <colUsage columnID="1794EE27-4649-0DF7-049B-0525B1082B63"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="9978791A-3749-A485-7D58-534917586F60" name="matrix_UN">
-<createdBy>kracr</createdBy>
-<createdTime>2026-05-12 21:46:18 UTC</createdTime>
-<ownerDesignName>Relational Model</ownerDesignName>
-<indexState>Unique Constraint</indexState>
-<isSurrogateKey>false</isSurrogateKey>
-<indexColumnUsage>
-<colUsage columnID="BA4FB14F-2694-847F-6B93-2DDA3121E674"/>
-</indexColumnUsage>
-</ind_PK_UK>
 <ind_PK_UK id="3E685186-C523-DE24-C333-79FAE743E937" name="visualization_id_UN">
 <createdBy>kracr</createdBy>
 <createdTime>2026-05-12 21:46:18 UTC</createdTime>
@@ -158,6 +133,17 @@
 <colUsage columnID="F421C740-6F5B-E322-7F6D-0F0B8704AFE4"/>
 </indexColumnUsage>
 </ind_PK_UK>
+<ind_PK_UK id="52BAA5F9-CF0C-1362-7FEF-76CC078350BE" name="name_user__UN">
+<createdBy>kracr</createdBy>
+<createdTime>2026-05-25 12:53:20 UTC</createdTime>
+<ownerDesignName>Relational Model</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="51469E6A-DB2D-3FE7-900A-EAF56CE4CE54"/>
+<colUsage columnID="D95FF8F2-D0C9-C37F-58CF-DDC7BE2B15B6"/>
+</indexColumnUsage>
+</ind_PK_UK>
 <ind_PK_UK id="E2B6CCF9-354E-F377-42E1-F4B10C0102D3" name="VISUALIZATIONS_USERS_FK">
 <createdBy>kracr</createdBy>
 <createdTime>2026-04-08 22:48:44 UTC</createdTime>
@@ -166,16 +152,6 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="D95FF8F2-D0C9-C37F-58CF-DDC7BE2B15B6"/>
-</indexColumnUsage>
-</ind_PK_UK>
-<ind_PK_UK id="A8EFEF1D-8E03-63DF-2DB2-F21EB887E838" name="VISUALIZATIONS_MATRICES_FK">
-<createdBy>kracr</createdBy>
-<createdTime>2026-04-08 22:48:51 UTC</createdTime>
-<ownerDesignName>Relational Model</ownerDesignName>
-<indexState>Foreign Key</indexState>
-<isSurrogateKey>false</isSurrogateKey>
-<indexColumnUsage>
-<colUsage columnID="BA4FB14F-2694-847F-6B93-2DDA3121E674"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>
