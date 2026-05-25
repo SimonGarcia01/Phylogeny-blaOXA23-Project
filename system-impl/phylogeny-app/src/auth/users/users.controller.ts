@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 
+import { Permissions } from 'src/common/decorators/permissions.decorator';
 import { ResponseMessage } from 'src/common/dtos/response-message';
 
 import { UsersService } from './users.service';
@@ -11,11 +12,13 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
     @Post()
+    @Permissions('USERS_CREATE')
     async create(@Body() createUserDto: CreateUserDto): Promise<ResponseMessage> {
         return await this.usersService.create(createUserDto);
     }
 
     @Get()
+    @Permissions('USERS_READ')
     async findAll(): Promise<ResponseUserDto[]> {
         return await this.usersService.findAll();
     }

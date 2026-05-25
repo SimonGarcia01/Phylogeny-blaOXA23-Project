@@ -5,6 +5,7 @@ import { User } from 'src/auth/users/entities/user.entity';
 import { RequestGenerateUrlDto } from 'src/common/dtos/request-generate-url.dto';
 import { ResponseGeneratedUrlDto } from 'src/common/dtos/response-generate-url.dto';
 import { ResponseMessage } from 'src/common/dtos/response-message';
+import { Permissions } from 'src/common/decorators/permissions.decorator';
 
 import { VisualizationsService } from './visualizations.service';
 import { CreateVisualizationDto } from './dto/create-visualization.dto';
@@ -17,6 +18,7 @@ export class VisualizationsController {
     constructor(private readonly visualizationsService: VisualizationsService) {}
 
     @Post('get-visualization-upload-url')
+    @Permissions('VISUALIZATIONS_CREATE')
     async generateUploadUrl(
         @CurrentUser() user: User,
         @Body() dto: RequestGenerateUrlDto,
@@ -25,6 +27,7 @@ export class VisualizationsController {
     }
 
     @Post()
+    @Permissions('VISUALIZATIONS_CREATE')
     async create(
         @CurrentUser() user: User,
         @Body() createVisualizationDto: CreateVisualizationDto,
@@ -33,16 +36,19 @@ export class VisualizationsController {
     }
 
     @Get()
+    @Permissions('VISUALIZATIONS_READ')
     async findAll(): Promise<ResponseVisualizationListItemDto[]> {
         return await this.visualizationsService.findAll();
     }
 
     @Get(':id')
+    @Permissions('VISUALIZATIONS_READ')
     async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<ResponseVisualizationDetailDto> {
         return await this.visualizationsService.findOne(id);
     }
 
     @Patch(':id')
+    @Permissions('VISUALIZATIONS_UPDATE')
     async update(
         @Param('id', ParseUUIDPipe) id: string,
         @Body() updateVisualizationDto: UpdateVisualizationDto,
@@ -51,6 +57,7 @@ export class VisualizationsController {
     }
 
     @Delete(':id')
+    @Permissions('VISUALIZATIONS_DELETE')
     async remove(@Param('id', ParseUUIDPipe) id: string): Promise<ResponseMessage> {
         return await this.visualizationsService.remove(id);
     }

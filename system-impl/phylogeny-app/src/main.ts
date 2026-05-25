@@ -3,6 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from './app.module';
 import { JwtAuthGuard } from './common/guards/auth.guard';
+import { PermissionsGuard } from './common/guards/permission.guard';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -14,7 +15,7 @@ async function bootstrap() {
 
     //We are going to set everything to be protected by default authentication, you must use @Public() to make a route public
     const reflector: Reflector = app.get('Reflector');
-    app.useGlobalGuards(new JwtAuthGuard(reflector));
+    app.useGlobalGuards(new JwtAuthGuard(reflector), new PermissionsGuard(reflector));
 
     //Run the app on the port defined in the .env file or 3001 if not defined
     await app.listen(process.env.PORT ?? 3001);

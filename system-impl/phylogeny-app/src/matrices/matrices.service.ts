@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -23,6 +23,7 @@ export class MatricesService {
         @InjectRepository(Matrix) private readonly matrixRepository: Repository<Matrix>,
         private readonly userService: UsersService,
         private readonly minioService: MinioService,
+        @Inject(forwardRef(() => VisualizationsService))
         private readonly visualizationsService: VisualizationsService,
     ) {}
 

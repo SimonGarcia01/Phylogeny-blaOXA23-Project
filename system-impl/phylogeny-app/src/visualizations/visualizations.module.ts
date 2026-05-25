@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { MinioModule } from 'src/utils/minio/minio.module';
@@ -9,7 +9,7 @@ import { VisualizationsController } from './visualizations.controller';
 import { Visualization } from './entities/visualization.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Visualization]), MinioModule, MatricesModule],
+    imports: [TypeOrmModule.forFeature([Visualization]), MinioModule, forwardRef(() => MatricesModule)],
     controllers: [VisualizationsController],
     providers: [VisualizationsService],
     exports: [VisualizationsService],

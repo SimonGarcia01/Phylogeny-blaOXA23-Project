@@ -1,0 +1,964 @@
+{
+    "info": {
+        "_postman_id": "6315b381-0897-460a-8d8f-99c3084a2c93",
+        "name": "phylogeny-app",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "43808561",
+        "_collection_link": "https://go.postman.co/collection/43808561-6315b381-0897-460a-8d8f-99c3084a2c93?source=collection_link"
+    },
+    "item": [
+        {
+            "name": "App",
+            "item": [
+                {
+                    "name": "Get Hello",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/",
+                            "host": ["{{baseUrl}}"],
+                            "path": [""]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Researcher Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const data = pm.response.json();",
+                                    "if (data && data.accessToken) {",
+                                    "  pm.collectionVariables.set('accessToken', data.accessToken);",
+                                    "}"
+                                ],
+                                "type": "text/javascript",
+                                "packages": {},
+                                "requests": {}
+                            }
+                        }
+                    ],
+                    "request": {
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"researcher1@example.com\",\n  \"password\": \"Researcher123\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/login",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["auth", "login"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Admin Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const data = pm.response.json();",
+                                    "if (data && data.accessToken) {",
+                                    "  pm.collectionVariables.set('accessToken', data.accessToken);",
+                                    "}"
+                                ],
+                                "type": "text/javascript",
+                                "packages": {},
+                                "requests": {}
+                            }
+                        }
+                    ],
+                    "request": {
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"Admin1234\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/login",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["auth", "login"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Signup",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const data = pm.response.json();",
+                                    "if (data && data.accessToken) {",
+                                    "  pm.collectionVariables.set('accessToken', data.accessToken);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\",\n  \"email\": \"test.user@example.com\",\n  \"password\": \"Password123\",\n  \"role\": \"Researcher\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/signup",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["auth", "signup"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Users",
+            "item": [
+                {
+                    "name": "Create User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"email\": \"jane.doe@example.com\",\n  \"password\": \"Password123\",\n  \"role\": \"Researcher\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/users",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["users"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Users",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/users",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["users"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Roles",
+            "item": [
+                {
+                    "name": "Create Role",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Admin\",\n  \"description\": \"Admin role\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/roles",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["roles"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Roles",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/roles",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["roles"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Role",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/roles/{{roleId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["roles", "{{roleId}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Role",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"description\": \"Updated role description\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/roles/{{roleId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["roles", "{{roleId}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Role",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/roles/{{roleId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["roles", "{{roleId}}"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Permissions",
+            "item": [
+                {
+                    "name": "Create Permission",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"matrix:read\",\n  \"description\": \"Read matrices\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/permissions",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["permissions"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Permissions",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/permissions",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["permissions"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Permission",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/permissions/{{permissionId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["permissions", "{{permissionId}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Permission",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"description\": \"Updated permission description\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/permissions/{{permissionId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["permissions", "{{permissionId}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Permission",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/permissions/{{permissionId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["permissions", "{{permissionId}}"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Roles Permissions",
+            "item": [
+                {
+                    "name": "Create Roles Permission",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"roleId\": {{roleId}},\n  \"permissionId\": {{permissionId}}\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/roles-permissions",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["roles-permissions"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Roles Permissions",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/roles-permissions",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["roles-permissions"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Roles Permission",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/roles-permissions/{{rolesPermissionId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["roles-permissions", "{{rolesPermissionId}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Roles Permission",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"roleId\": {{roleId}},\n  \"permissionId\": {{permissionId}}\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/roles-permissions/{{rolesPermissionId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["roles-permissions", "{{rolesPermissionId}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Roles Permission",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/roles-permissions/{{rolesPermissionId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["roles-permissions", "{{rolesPermissionId}}"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Matrices",
+            "item": [
+                {
+                    "name": "Get Matrix Upload URL",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const data = pm.response.json();",
+                                    "if (data && data.matrixId) {",
+                                    "  pm.collectionVariables.set('matrixId', data.matrixId);",
+                                    "}",
+                                    "if (data && data.objectKey) {",
+                                    "  pm.collectionVariables.set('matrixObjectKey', data.objectKey);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"fileName\": \"matrix.nex\",\n  \"fileSize\": 1024,\n  \"fileType\": \".nex\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/matrices/get-matrix-upload-url",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["matrices", "get-matrix-upload-url"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Matrix",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"matrixId\": \"{{matrixId}}\",\n  \"name\": \"Matrix A\",\n  \"objectKey\": \"{{matrixObjectKey}}\",\n  \"description\": \"Example matrix\",\n  \"mimeType\": \"application/octet-stream\",\n  \"fileSize\": 1024\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/matrices",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["matrices"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Matrices",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/matrices",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["matrices"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Matrix",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/matrices/{{matrixId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["matrices", "{{matrixId}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Matrix",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Matrix A (updated)\",\n  \"description\": \"Updated description\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/matrices/{{matrixId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["matrices", "{{matrixId}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Matrix",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/matrices/{{matrixId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["matrices", "{{matrixId}}"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Matrix Requests",
+            "item": [
+                {
+                    "name": "Create Matrix Request",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Request A\",\n  \"requestedAt\": \"2024-01-01T00:00:00.000Z\",\n  \"matrixId\": \"{{matrixId}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/matrix-requests",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["matrix-requests"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Matrix Requests",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/matrix-requests",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["matrix-requests"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Matrix Request",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/matrix-requests/{{matrixRequestId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["matrix-requests", "{{matrixRequestId}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Matrix Request",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Request A (updated)\",\n  \"requestedAt\": \"2024-01-02T00:00:00.000Z\",\n  \"matrixId\": \"{{matrixId}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/matrix-requests/{{matrixRequestId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["matrix-requests", "{{matrixRequestId}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Matrix Request",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/matrix-requests/{{matrixRequestId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["matrix-requests", "{{matrixRequestId}}"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Visualizations",
+            "item": [
+                {
+                    "name": "Get Visualization Upload URL",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const data = pm.response.json();",
+                                    "if (data && data.matrixId) {",
+                                    "  pm.collectionVariables.set('visualizationId', data.matrixId);",
+                                    "}",
+                                    "if (data && data.objectKey) {",
+                                    "  pm.collectionVariables.set('visualizationObjectKey', data.objectKey);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"fileName\": \"visualization.nex\",\n  \"fileSize\": 2048,\n  \"fileType\": \".nex\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/visualizations/get-visualization-upload-url",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["visualizations", "get-visualization-upload-url"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Visualization",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"visualizationId\": \"{{visualizationId}}\",\n  \"name\": \"Visualization A\",\n  \"objectKey\": \"{{visualizationObjectKey}}\",\n  \"description\": \"Example visualization\",\n  \"mimeType\": \"application/octet-stream\",\n  \"fileSize\": 2048,\n  \"matrixId\": \"{{matrixId}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/visualizations",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["visualizations"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Visualizations",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/visualizations",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["visualizations"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Visualization",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/visualizations/{{visualizationId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["visualizations", "{{visualizationId}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Visualization",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Visualization A (updated)\",\n  \"description\": \"Updated description\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/visualizations/{{visualizationId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["visualizations", "{{visualizationId}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Visualization",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/visualizations/{{visualizationId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["visualizations", "{{visualizationId}}"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Seed",
+            "item": [
+                {
+                    "name": "Run Seed",
+                    "request": {
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/seed/run",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["seed", "run"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "{{accessToken}}",
+                "type": "string"
+            }
+        ]
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:3001"
+        },
+        {
+            "key": "accessToken",
+            "value": ""
+        },
+        {
+            "key": "roleId",
+            "value": "1"
+        },
+        {
+            "key": "permissionId",
+            "value": "1"
+        },
+        {
+            "key": "rolesPermissionId",
+            "value": "1"
+        },
+        {
+            "key": "matrixId",
+            "value": "00000000-0000-0000-0000-000000000000"
+        },
+        {
+            "key": "visualizationId",
+            "value": "00000000-0000-0000-0000-000000000000"
+        },
+        {
+            "key": "matrixRequestId",
+            "value": "1"
+        },
+        {
+            "key": "matrixObjectKey",
+            "value": "users/1/matrices/00000000-0000-0000-0000-000000000000"
+        },
+        {
+            "key": "visualizationObjectKey",
+            "value": "users/1/visualizations/00000000-0000-0000-0000-000000000000"
+        }
+    ]
+}
