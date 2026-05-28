@@ -1,24 +1,14 @@
-import Link from 'next/link';
 import './globals.css';
 
-export default function RootLayout({
-	children,
-}: Readonly<{
-	children: React.ReactNode;
-}>) {
+export const metadata = {
+	title: 'Phylogeny',
+	description: 'A tool for generating and visualizing phylogenetic trees',
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
-			<head>
-				<title>Phylogeny</title>
-				<meta name="description" content="A tool for visualizing phylogenetic trees" />
-				<Link rel="icon" href="/favicon.ico" />
-			</head>
-			<body>
-				{/* Upper navbar on top of the page */}
-				<header></header>
-				{/* Main Content Area */}
-				{children}
-			</body>
+			<body>{children}</body>
 		</html>
 	);
 }
