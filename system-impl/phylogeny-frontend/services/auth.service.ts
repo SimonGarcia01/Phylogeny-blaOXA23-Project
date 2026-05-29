@@ -1,4 +1,4 @@
-import { AuthResponse, LoginRequest } from '@/types/auth.type';
+import { AuthResponse, LoginRequest } from '@/interfaces/auth.interfaces';
 import apiClient from './api-client.service';
 
 const authService = {

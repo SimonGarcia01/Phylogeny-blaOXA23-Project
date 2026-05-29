@@ -1,11 +1,11 @@
 import { ResponseUserDto } from '../users/dto/response-user.dto';
 
 export class AuthResponseDto {
-    accessToken: string;
+    token: string;
     user: ResponseUserDto;
 
-    constructor(accessToken: string, user: ResponseUserDto) {
-        this.accessToken = accessToken;
+    constructor(token: string, user: ResponseUserDto) {
+        this.token = token;
         this.user = user;
     }
 }

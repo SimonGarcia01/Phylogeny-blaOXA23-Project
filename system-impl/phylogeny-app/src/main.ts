@@ -17,6 +17,11 @@ async function bootstrap() {
     const reflector: Reflector = app.get('Reflector');
     app.useGlobalGuards(new JwtAuthGuard(reflector), new PermissionsGuard(reflector));
 
+    //Add cors to support requests from the frontend
+    app.enableCors({
+        origin: process.env.FRONT_ORIGIN ?? 'http://localhost:3000',
+    });
+
     //Run the app on the port defined in the .env file or 3001 if not defined
     await app.listen(process.env.PORT ?? 3001);
 }
