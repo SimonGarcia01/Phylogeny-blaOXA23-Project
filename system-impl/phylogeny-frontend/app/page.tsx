@@ -3,7 +3,7 @@
 export default function Home() {
 	return (
 		<div>
-			<h1>Change test c:</h1>
+			<h1>Phylogeny</h1>
 		</div>
 	);
 }

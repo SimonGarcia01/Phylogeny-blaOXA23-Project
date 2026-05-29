@@ -8,9 +8,11 @@ import { Repository } from 'typeorm';
 import { DbIntegrityException } from 'src/common/exceptions/db-integrity-exception';
 
 import { UsersService } from './users/users.service';
+import { AuthResponseDto } from './dto/auth-response.dto';
 import { UserLoginDto } from './dto/user-login.dto';
 import { User } from './users/entities/user.entity';
 import { SignUpUserDto } from './dto/singup-user.dto';
+import { ResponseUserDto } from './users/dto/response-user.dto';
 import { RolesService } from './roles/roles.service';
 import { Role, RoleName } from './roles/entities/role.entity';
 
@@ -36,17 +38,20 @@ export class AuthService {
         return user;
     }
 
-    async login(userLoginDto: UserLoginDto): Promise<{ accessToken: string }> {
+    async login(userLoginDto: UserLoginDto): Promise<AuthResponseDto> {
         const user: User = await this.validateUser(userLoginDto.email, userLoginDto.password);
 
         const permissions = user.role.rolesPermissions.map((rp) => rp.permission.name);
 
         const payload = { sub: user.id, email: user.email, permissions };
 
-        return { accessToken: this.jwtService.sign(payload) };
+        const accessToken = this.jwtService.sign(payload);
+        const responseUser = new ResponseUserDto(user.email, user.firstName, user.lastName);
+
+        return new AuthResponseDto(accessToken, responseUser);
     }
 
-    async signup(signupDto: SignUpUserDto): Promise<{ accessToken: string }> {
+    async signup(signupDto: SignUpUserDto): Promise<AuthResponseDto> {
         const emailExists: User | null = await this.userService.findByEmail(signupDto.email);
 
         if (emailExists) throw new DbIntegrityException('A user with the provided email already exists.');
@@ -71,6 +76,9 @@ export class AuthService {
 
         const payload = { sub: savedUser.id, email: savedUser.email, permissions };
 
-        return { accessToken: this.jwtService.sign(payload) };
+        const accessToken = this.jwtService.sign(payload);
+        const responseUser = new ResponseUserDto(savedUser.email, savedUser.firstName, savedUser.lastName);
+
+        return new AuthResponseDto(accessToken, responseUser);
     }
 }
