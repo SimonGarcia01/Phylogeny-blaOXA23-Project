@@ -5,7 +5,7 @@ import { Public } from 'src/common/decorators/public.decorator';
 import { AuthService } from './auth.service';
 import { AuthResponseDto } from './dto/auth-response.dto';
 import { UserLoginDto } from './dto/user-login.dto';
-import { CreateUserDto } from './users/dto/create-user.dto';
+import { SignUpUserDto } from './dto/singup-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -19,7 +19,7 @@ export class AuthController {
 
     @Public()
     @Post('signup')
-    async signup(@Body() createUserDto: CreateUserDto): Promise<AuthResponseDto> {
-        return this.authService.signup(createUserDto);
+    async signup(@Body() signupUserDto: SignUpUserDto): Promise<AuthResponseDto> {
+        return this.authService.signup(signupUserDto);
     }
 }

@@ -13,8 +13,8 @@ export default function Page() {
 
 	const router = useRouter();
 
-	const setUser = useAuthStore((s) => s.setUser);
-	const setToken = useAuthStore((s) => s.setToken);
+	const setUser = useAuthStore((store) => store.setUser);
+	const setToken = useAuthStore((store) => store.setToken);
 
 	async function handleLogin(event: React.SubmitEvent<HTMLFormElement>): Promise<void> {
 		event.preventDefault();
@@ -45,7 +45,7 @@ export default function Page() {
 					type="email"
 					id="email"
 					name="email"
-					placeholder="Enter your email"
+					placeholder="user@email.com"
 					value={email}
 					onChange={(event) => setEmail(event.target.value)}
 					autoComplete="email"
@@ -58,7 +58,7 @@ export default function Page() {
 					type="password"
 					id="password"
 					name="password"
-					placeholder="Enter your password"
+					placeholder="Password"
 					value={password}
 					onChange={(event) => setPassword(event.target.value)}
 					autoComplete="current-password"

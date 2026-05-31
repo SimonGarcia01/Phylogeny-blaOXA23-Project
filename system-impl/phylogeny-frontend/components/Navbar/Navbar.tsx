@@ -8,6 +8,7 @@ function Navbar() {
 				<Link href="/about">About</Link>
 				<Link href="/contact">Contact</Link>
 				<Link href="/auth/login">Login</Link>
+				<Link href="/auth/signup">Signup</Link>
 				<Link href="/auth/register">Register</Link>
 				<Link href="/auth/logout">Logout</Link>
 			</nav>
