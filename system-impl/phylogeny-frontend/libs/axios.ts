@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/stores/auth.store';
 import axios, { AxiosInstance } from 'axios';
 
 const axiosInstance: AxiosInstance = axios.create({
@@ -5,6 +6,16 @@ const axiosInstance: AxiosInstance = axios.create({
 	headers: {
 		'Content-Type': 'application/json',
 	},
+});
+
+axiosInstance.interceptors.request.use((config) => {
+	const token = useAuthStore.getState().token;
+
+	if (token) {
+		config.headers.Authorization = `Bearer ${token}`;
+	}
+
+	return config;
 });
 
 export default axiosInstance;
