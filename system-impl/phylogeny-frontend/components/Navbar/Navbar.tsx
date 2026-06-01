@@ -13,9 +13,12 @@ function Navbar() {
 				<Link href="/">Home</Link>
 				<Link href="/about">About</Link>
 				{token ? (
-					<Link href="/" onClick={logout}>
-						Logout
-					</Link>
+					<>
+						<Link href="/dashboard">Dashboard</Link>
+						<Link href="/" onClick={logout}>
+							Logout
+						</Link>
+					</>
 				) : (
 					<>
 						<Link href="/auth/login">Login</Link>
