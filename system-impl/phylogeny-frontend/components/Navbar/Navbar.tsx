@@ -1,16 +1,27 @@
+'use client';
+
+import { useAuthStore } from '@/stores/auth.store';
 import Link from 'next/link';
 
 function Navbar() {
+	const token: string | null = useAuthStore((store) => store.token);
+	const logout = useAuthStore((store) => store.logout);
+
 	return (
 		<header>
 			<nav>
 				<Link href="/">Home</Link>
 				<Link href="/about">About</Link>
-				<Link href="/contact">Contact</Link>
-				<Link href="/auth/login">Login</Link>
-				<Link href="/auth/signup">Signup</Link>
-				<Link href="/auth/register">Register</Link>
-				<Link href="/auth/logout">Logout</Link>
+				{token ? (
+					<Link href="/" onClick={logout}>
+						Logout
+					</Link>
+				) : (
+					<>
+						<Link href="/auth/login">Login</Link>
+						<Link href="/auth/signup">Signup</Link>
+					</>
+				)}
 			</nav>
 		</header>
 	);
