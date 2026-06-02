@@ -3,6 +3,7 @@
 import { AuthResponse } from '@/interfaces/auth.interfaces';
 import authService from '@/services/auth.service';
 import { useAuthStore } from '@/stores/auth.store';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -70,6 +71,9 @@ export default function Page() {
 					{loading ? 'Logging in...' : 'Login'}
 				</button>
 			</form>
+			<p>
+				Don&apost have an account yet?, Sign up <Link href="/auth/signup">Here</Link>!
+			</p>
 		</div>
 	);
 }
