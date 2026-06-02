@@ -10,6 +10,7 @@ import { MatrixRequestsModule } from './matrix-requests/matrix-requests.module';
 import { AuthModule } from './auth/auth.module';
 import { SeedModule } from './utils/seed/seed.module';
 import { MinioModule } from './utils/minio/minio.module';
+import { DashboardsModule } from './dashboards/dashboards.module';
 
 //Define the supported db types for the application
 type SupportedDbTypes = 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mongodb' | 'oracle';
@@ -37,6 +38,7 @@ type SupportedDbTypes = 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mongodb' 
         AuthModule,
         SeedModule,
         MinioModule,
+        DashboardsModule,
     ],
     controllers: [AppController],
     providers: [AppService],
