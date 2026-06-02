@@ -12,6 +12,8 @@ export default function Page() {
 
 	useEffect(() => {
 		if (!user) router.replace('/auth/login');
+
+		//load stuff
 	}, []);
 
 	return (
