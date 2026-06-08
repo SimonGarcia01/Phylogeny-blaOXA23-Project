@@ -1,0 +1,80 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Distribution
+build/
+dist/
+*.egg-info/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type checking
+.mypy_cache/
+.pyre/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+
+!.env.example
+
+# =========================
+# IDEs
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+
+# =========================
+# Analysis outputs
+# =========================
+results/
+tmp/
+output/
+uploads/
+
+# =========================
+# MinIO downloads
+# =========================
+data/
+
+# =========================
+# Tool binaries
+# =========================
+tools/**/*.exe
+tools/**/*.jar
+tools/**/*.dll
+
+# =========================
+# FastAPI
+# =========================
+*.pid
