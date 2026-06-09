@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { MinioService } from 'src/utils/minio/minio.service';
-import { UsersService } from 'src/auth/users/users.service';
 import { ResponseMessage } from 'src/common/dtos/response-message';
 import { User } from 'src/auth/users/entities/user.entity';
 import { ResponseGeneratedUrlDto } from 'src/common/dtos/response-generate-url.dto';
@@ -21,7 +20,6 @@ import { ResponseMatrixDetailDto } from './dto/response-matrix-detail.dto';
 export class MatricesService {
     constructor(
         @InjectRepository(Matrix) private readonly matrixRepository: Repository<Matrix>,
-        private readonly userService: UsersService,
         private readonly minioService: MinioService,
         @Inject(forwardRef(() => VisualizationsService))
         private readonly visualizationsService: VisualizationsService,
@@ -151,7 +149,7 @@ export class MatricesService {
 
         if (!matrix) throw new NotFoundException(`The entered matrix ID ${matrixId} wasn't found.`);
 
-        await this.minioService.deleteObject('matrices', matrix.objectKey);
+        await this.minioService.deleteFile('matrices', matrix.objectKey);
         await this.matrixRepository.remove(matrix);
 
         return new ResponseMessage(

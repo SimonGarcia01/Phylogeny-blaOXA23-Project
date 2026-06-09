@@ -5,7 +5,9 @@ from app.routers import analysis
 
 #Create the FastAPI instance with a title
 app: FastAPI = FastAPI(
-    title=settings.APP_NAME
+    title=settings.APP_NAME,
+    version=settings.VERSION,
+    description=settings.DESCRIPTION
 )
 
 #Give access to the analysis router

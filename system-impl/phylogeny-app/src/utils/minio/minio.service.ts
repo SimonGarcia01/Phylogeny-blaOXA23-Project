@@ -1,5 +1,3 @@
-import Stream from 'stream';
-
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as Minio from 'minio';
@@ -59,7 +57,7 @@ export class MinioService implements OnModuleInit {
         );
     }
 
-    async deleteObject(bucket: string, objectKey: string): Promise<void> {
+    async deleteFile(bucket: string, objectKey: string): Promise<void> {
         const client: Minio.Client = this.getClient();
 
         const bucketExists: boolean = await client.bucketExists(bucket);
@@ -68,32 +66,5 @@ export class MinioService implements OnModuleInit {
         }
 
         await client.removeObject(bucket, objectKey);
-    }
-
-    //Function to download a file from the minIO server
-    async getFile(bucket: string, fileName: string): Promise<Stream.Readable> {
-        const client: Minio.Client = this.getClient();
-
-        //Check if the bucker exists first
-        const bucketExists: boolean = await client.bucketExists(bucket);
-
-        if (!bucketExists) {
-            throw new Error(`Bucket "${bucket}" does not exist.`);
-        }
-
-        //Check if the object exists in the bucket
-        const objectExists: boolean = await client
-            .statObject(bucket, fileName)
-            .then(() => true)
-            .catch(() => false);
-
-        if (!objectExists) {
-            throw new Error(`Object "${fileName}" does not exist in bucket "${bucket}".`);
-        }
-
-        //Get the object as a readable stream
-        const dataStream: Stream.Readable = await client.getObject(bucket, fileName);
-
-        return dataStream;
     }
 }

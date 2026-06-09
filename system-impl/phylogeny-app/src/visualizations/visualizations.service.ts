@@ -189,7 +189,7 @@ export class VisualizationsService {
         if (!visualization)
             throw new NotFoundException(`The entered visualization ID ${visualizationId} wasn't found.`);
 
-        await this.minioService.deleteObject('visualizations', visualization.objectKey);
+        await this.minioService.deleteFile('visualizations', visualization.objectKey);
         await this.visualizationRepository.remove(visualization);
 
         return new ResponseMessage(
