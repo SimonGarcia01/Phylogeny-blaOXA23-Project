@@ -8,10 +8,17 @@ export class MinioService implements OnModuleInit {
     // The MinIO client instance. It is initialized in onModuleInit().
     private client: Minio.Client | null = null;
 
-    constructor(private readonly configService: ConfigService) {}
+    //This are constants that define the bucket names so other places can use them without hardcoding everywhere.
+    private readonly matrixBucket: string;
+    private readonly visualizationBucket: string;
+
+    constructor(private readonly configService: ConfigService) {
+        this.matrixBucket = this.configService.getOrThrow<string>('MINIO_MATRIX_BUCKET');
+        this.visualizationBucket = this.configService.getOrThrow<string>('MINIO_VISUALIZATION_BUCKET');
+    }
 
     //Initializes the MinIO client when the module starts
-    onModuleInit() {
+    async onModuleInit() {
         const endPoint: string = this.configService.get<string>('MINIO_ENDPOINT') ?? 'localhost';
         const port: number = Number(this.configService.get<number>('MINIO_PORT') ?? 9000);
         const useSSL: boolean = (this.configService.get<string>('MINIO_USE_SSL') ?? 'false') === 'true';
@@ -24,6 +31,13 @@ export class MinioService implements OnModuleInit {
             useSSL,
             accessKey,
             secretKey,
+        });
+
+        await this.ensureBucket(this.matrixBucket).catch((err) => {
+            console.error(`Error ensuring matrix bucket "${this.matrixBucket}":`, err);
+        });
+        await this.ensureBucket(this.visualizationBucket).catch((err) => {
+            console.error(`Error ensuring visualization bucket "${this.visualizationBucket}":`, err);
         });
     }
 
@@ -66,5 +80,13 @@ export class MinioService implements OnModuleInit {
         }
 
         await client.removeObject(bucket, objectKey);
+    }
+
+    get matrixBucketName(): string {
+        return this.matrixBucket;
+    }
+
+    get visualizationBucketName(): string {
+        return this.visualizationBucket;
     }
 }

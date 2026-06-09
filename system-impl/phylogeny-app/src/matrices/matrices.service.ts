@@ -56,7 +56,10 @@ export class MatricesService {
             objectKey = `users/${user.id}/matrices/${randomUUID}`;
         }
 
-        const presignedUrl: string = await this.minioService.generatePresignedPutUrl('matrices', objectKey);
+        const presignedUrl: string = await this.minioService.generatePresignedPutUrl(
+            this.minioService.matrixBucketName,
+            objectKey,
+        );
 
         return new ResponseGeneratedUrlDto(randomUUID, objectKey, presignedUrl);
     }
@@ -149,7 +152,7 @@ export class MatricesService {
 
         if (!matrix) throw new NotFoundException(`The entered matrix ID ${matrixId} wasn't found.`);
 
-        await this.minioService.deleteFile('matrices', matrix.objectKey);
+        await this.minioService.deleteFile(this.minioService.matrixBucketName, matrix.objectKey);
         await this.matrixRepository.remove(matrix);
 
         return new ResponseMessage(

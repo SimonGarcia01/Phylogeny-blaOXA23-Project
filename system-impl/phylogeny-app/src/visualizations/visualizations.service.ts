@@ -56,7 +56,10 @@ export class VisualizationsService {
             objectKey = `users/${user.id}/visualizations/${randomUUID}`;
         }
 
-        const presignedUrl: string = await this.minioService.generatePresignedPutUrl('visualizations', objectKey);
+        const presignedUrl: string = await this.minioService.generatePresignedPutUrl(
+            this.minioService.visualizationBucketName,
+            objectKey,
+        );
 
         return new ResponseGeneratedUrlDto(randomUUID, objectKey, presignedUrl);
     }
@@ -189,7 +192,7 @@ export class VisualizationsService {
         if (!visualization)
             throw new NotFoundException(`The entered visualization ID ${visualizationId} wasn't found.`);
 
-        await this.minioService.deleteFile('visualizations', visualization.objectKey);
+        await this.minioService.deleteFile(this.minioService.visualizationBucketName, visualization.objectKey);
         await this.visualizationRepository.remove(visualization);
 
         return new ResponseMessage(
