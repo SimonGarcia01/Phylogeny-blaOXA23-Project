@@ -6,5 +6,6 @@ class MatrixAnalysisRequest(BaseModel):
     matrix_request_id: str
     bucket_name: str
 
+
 class MatrixAnalysisResponse(BaseModel):
     message: str
