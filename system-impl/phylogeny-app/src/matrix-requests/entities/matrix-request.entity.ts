@@ -28,5 +28,5 @@ export class MatrixRequest {
 
     @ManyToOne(() => Matrix, (matrix) => matrix.matrixRequests, { nullable: false })
     @JoinColumn({ name: 'matrix_id' })
-    matrix?: Matrix;
+    matrix!: Matrix;
 }

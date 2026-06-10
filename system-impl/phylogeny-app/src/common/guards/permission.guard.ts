@@ -3,6 +3,7 @@ import { Reflector } from '@nestjs/core';
 
 import { User } from '../../auth/users/entities/user.entity';
 import { PERMISSIONS_KEY } from '../decorators/permissions.decorator';
+import { IS_INTERNAL_KEY } from '../decorators/internal.decorator';
 
 interface AuthenticatedRequest extends Request {
     user?: User;
@@ -13,6 +14,13 @@ export class PermissionsGuard implements CanActivate {
     constructor(private reflector: Reflector) {}
 
     canActivate(context: ExecutionContext): boolean {
+        //Check if the route is marked as internal = skip permissions check
+        const isInternal = this.reflector.getAllAndOverride<boolean>(IS_INTERNAL_KEY, [
+            context.getHandler(),
+            context.getClass(),
+        ]);
+        if (isInternal) return true;
+
         //Get the information from the metadata set by the Permissions decorator
         //This is a list of permissions in string format
         //The getAllAndOverride method checks two things:

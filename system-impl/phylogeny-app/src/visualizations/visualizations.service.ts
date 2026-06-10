@@ -1,117 +1,145 @@
-import { BadRequestException, Inject, Injectable, NotFoundException, forwardRef } from '@nestjs/common';
+import {
+    ForbiddenException,
+    Inject,
+    Injectable,
+    NotFoundException,
+    ServiceUnavailableException,
+    forwardRef,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 
 import { MinioService } from 'src/utils/minio/minio.service';
 import { ResponseMessage } from 'src/common/dtos/response-message';
 import { User } from 'src/auth/users/entities/user.entity';
-import { ResponseGeneratedUrlDto } from 'src/common/dtos/response-generate-url.dto';
-import { RequestGenerateUrlDto } from 'src/common/dtos/request-generate-url.dto';
 import { BusinessRuleViolationException } from 'src/common/exceptions/business-rule-violation-exception';
 import { MatricesService } from 'src/matrices/matrices.service';
 import { Matrix } from 'src/matrices/entities/matrix.entity';
+import { MatrixRequestsService } from 'src/matrix-requests/matrix-requests.service';
+import { MatrixRequest, MatrixRequestStatus } from 'src/matrix-requests/entities/matrix-request.entity';
 
-import { CreateVisualizationDto } from './dto/create-visualization.dto';
 import { UpdateVisualizationDto } from './dto/update-visualization.dto';
 import { Visualization } from './entities/visualization.entity';
 import { ResponseVisualizationListItemDto } from './dto/response-visualization-list-item.dto';
 import { ResponseVisualizationDetailDto } from './dto/response-visualization-detail.dto';
+import { ResponseAnalyzeDto } from './dto/response-analyze.dto';
+import { FinalizeVisualizationDto } from './dto/request-finalize-visualization.dto';
 
 @Injectable()
 export class VisualizationsService {
     constructor(
-        @InjectRepository(Visualization) private readonly visualizationRepository: Repository<Visualization>,
+        @InjectRepository(Visualization)
+        private readonly visualizationRepository: Repository<Visualization>,
         @Inject(forwardRef(() => MatricesService))
         private readonly matricesService: MatricesService,
         private readonly minioService: MinioService,
+        private readonly matrixRequestsService: MatrixRequestsService,
+        private readonly configService: ConfigService,
+        private readonly httpService: HttpService,
     ) {}
 
-    async generateUploadUrl(user: User, generateUrlDto: RequestGenerateUrlDto): Promise<ResponseGeneratedUrlDto> {
-        const { fileName, fileSize, fileType } = generateUrlDto;
-
-        if (fileSize > 10 * 1024 * 1024) {
-            throw new BadRequestException('File size exceeds the 10MB limit.');
-        }
-
-        const visualizationNameExist: boolean = await this.visualizationNameExists(fileName, user.id);
-
-        if (visualizationNameExist) {
-            throw new BusinessRuleViolationException('A visualization with the same name already exists.');
-        }
-
-        if (!fileType.toLowerCase().includes('.nex')) {
-            throw new BusinessRuleViolationException('Only .nex files are allowed.');
-        }
-
-        let randomUUID: string = crypto.randomUUID();
-
-        //This is what defines the minimum length:
-        //Baseline it has users/{id}/visualizations/ = 23 characters (with a 1-digit user ID)
-        //UUID v4 has 36 characters = 59 characters total
-        let objectKey: string = `users/${user.id}/visualizations/${randomUUID}`;
-
-        //Should never happen, but just in case, regenerate it once
-        if (await this.objectKeyExists(objectKey)) {
-            randomUUID = crypto.randomUUID();
-            objectKey = `users/${user.id}/visualizations/${randomUUID}`;
-        }
-
-        const presignedUrl: string = await this.minioService.generatePresignedPutUrl(
-            this.minioService.visualizationBucketName,
-            objectKey,
-        );
-
-        return new ResponseGeneratedUrlDto(randomUUID, objectKey, presignedUrl);
-    }
-
-    async objectKeyExists(objectKey: string): Promise<boolean> {
-        const visualization: Visualization | null = await this.visualizationRepository.findOneBy({
-            objectKey: objectKey,
-        });
-        return !!visualization;
-    }
-
-    //The create method is called after the file has been uploaded to MinIO, just to store the metadata
-    async create(user: User, createVisualizationDto: CreateVisualizationDto): Promise<ResponseMessage> {
-        const { matrixId, ...visualizationData } = createVisualizationDto;
-
+    // -----------------------------------------------------------------------
+    // User triggers analysis — creates skeleton visualization + matrix request
+    // -----------------------------------------------------------------------
+    async analyze(user: User, matrixId: string): Promise<ResponseAnalyzeDto> {
         const matrix: Matrix = await this.matricesService.findOneByMatrixId(matrixId);
+
+        if (matrix.user.id !== user.id) {
+            throw new ForbiddenException('You do not have access to this matrix.');
+        }
 
         if (matrix.visualization) {
             throw new BusinessRuleViolationException('This matrix already has a visualization.');
         }
 
-        const newVisualization: Visualization = this.visualizationRepository.create({
-            ...visualizationData,
-            user: user,
-            createdAt: new Date(),
+        const visualizationId: string = crypto.randomUUID();
+        const visualizationObjectKey: string = `users/${user.id}/visualizations/${visualizationId}`;
+
+        const visualization: Visualization = this.visualizationRepository.create({
+            visualizationId,
+            name: matrix.name,
+            objectKey: visualizationObjectKey,
+            user,
+        });
+        await this.visualizationRepository.save(visualization);
+
+        await this.matricesService.updateVisualizationId(matrixId, visualizationId);
+
+        const matrixRequest: MatrixRequest = await this.matrixRequestsService.create({
+            name: matrix.name,
+            requestedAt: new Date(),
+            matrix,
         });
 
-        await this.visualizationRepository.save(newVisualization);
+        const microserviceUrl: string = `${this.configService.get<string>('MICROSERVICE_URL')}/analyze`;
 
-        await this.matricesService.updateVisualizationId(matrixId, newVisualization.visualizationId);
+        try {
+            await firstValueFrom(
+                this.httpService.post(microserviceUrl, {
+                    matrixObjectKey: matrix.objectKey,
+                    visualizationObjectKey,
+                    visualizationId,
+                    matrixRequestId: matrixRequest.id,
+                }),
+            );
+        } catch {
+            await this.matrixRequestsService.updateStatus(matrixRequest.id, {
+                status: MatrixRequestStatus.FAILED,
+                error: 'Failed to reach the analysis microservice.',
+            });
+            throw new ServiceUnavailableException('The analysis service is currently unavailable.');
+        }
 
-        return new ResponseMessage(
-            `The visualization ${createVisualizationDto.name} has been uploaded successfully (ID: ${createVisualizationDto.visualizationId}).`,
-        );
+        return new ResponseAnalyzeDto(matrixRequest.id, visualizationId, MatrixRequestStatus.PENDING);
     }
 
-    async findAll(): Promise<ResponseVisualizationListItemDto[]> {
-        const visualizations: Visualization[] = await this.visualizationRepository.find();
+    // -----------------------------------------------------------------------
+    // Internal — microservice finalizes the record after uploading results
+    // -----------------------------------------------------------------------
+    async finalize(visualizationId: string, dto: FinalizeVisualizationDto): Promise<ResponseMessage> {
+        const visualization: Visualization | null = await this.visualizationRepository.findOneBy({
+            visualizationId,
+        });
+
+        if (!visualization) {
+            throw new NotFoundException(`Visualization ${visualizationId} not found.`);
+        }
+
+        visualization.fileSize = dto.fileSize;
+        visualization.mimeType = dto.mimeType;
+
+        await this.visualizationRepository.save(visualization);
+
+        return new ResponseMessage(`Visualization ${visualizationId} finalized successfully.`);
+    }
+
+    // -----------------------------------------------------------------------
+    // User-facing CRUD — all scoped to the requesting user
+    // -----------------------------------------------------------------------
+    async findAll(user: User): Promise<ResponseVisualizationListItemDto[]> {
+        const visualizations: Visualization[] = await this.visualizationRepository.find({
+            where: { user: { id: user.id } },
+            order: { createdAt: 'DESC' },
+        });
 
         return visualizations.map((v) => new ResponseVisualizationListItemDto(v.visualizationId, v.name, v.createdAt));
     }
 
-    //This is the method that returns the details of a visualization (metadata)
-    //This will also include the metadata of the related matrix
-    async findOne(visualizationId: string): Promise<ResponseVisualizationDetailDto> {
+    async findOne(visualizationId: string, user: User): Promise<ResponseVisualizationDetailDto> {
         const visualization: Visualization | null = await this.visualizationRepository.findOne({
-            where: { visualizationId: visualizationId },
-            relations: ['matrix'],
+            where: { visualizationId },
+            relations: ['matrix', 'user'],
         });
 
         if (!visualization) {
             throw new NotFoundException(`The entered visualization ID ${visualizationId} wasn't found.`);
+        }
+
+        if (visualization.user.id !== user.id) {
+            throw new ForbiddenException('You do not have access to this visualization.');
         }
 
         return new ResponseVisualizationDetailDto(
@@ -124,34 +152,27 @@ export class VisualizationsService {
         );
     }
 
-    //This is for internal use only, to be used by other modules
-    async findOneByVisualizationId(visualizationId: string): Promise<Visualization> {
-        const visualization: Visualization | null = await this.visualizationRepository.findOneBy({
-            visualizationId: visualizationId,
-        });
-        if (!visualization)
-            throw new NotFoundException(`The entered visualization ID ${visualizationId} wasn't found.`);
-        return visualization;
-    }
-
-    //The update method will make sure the visualization exists
-    async update(visualizationId: string, updateVisualizationDto: UpdateVisualizationDto): Promise<ResponseMessage> {
-        //Make sure the visualization exists before updating
+    async update(
+        visualizationId: string,
+        updateVisualizationDto: UpdateVisualizationDto,
+        user: User,
+    ): Promise<ResponseMessage> {
         const visualization: Visualization | null = await this.visualizationRepository.findOne({
-            where: { visualizationId: visualizationId },
+            where: { visualizationId },
             relations: ['user', 'matrix'],
         });
 
-        if (!visualization)
+        if (!visualization) {
             throw new NotFoundException(`The entered visualization ID ${visualizationId} wasn't found.`);
+        }
 
-        //If the name is going to change, make sure it's unique to the user
+        if (visualization.user.id !== user.id) {
+            throw new ForbiddenException('You do not have access to this visualization.');
+        }
+
         if (updateVisualizationDto.name && updateVisualizationDto.name !== visualization.name) {
-            const visualizationNameExists: boolean = await this.visualizationNameExists(
-                updateVisualizationDto.name,
-                visualization.user.id,
-            );
-            if (visualizationNameExists) {
+            const nameExists: boolean = await this.visualizationNameExists(updateVisualizationDto.name, user.id);
+            if (nameExists) {
                 throw new BusinessRuleViolationException(
                     `A visualization with the name ${updateVisualizationDto.name} already exists.`,
                 );
@@ -174,7 +195,6 @@ export class VisualizationsService {
         }
 
         Object.assign(visualization, rest);
-
         await this.visualizationRepository.save(visualization);
 
         return new ResponseMessage(
@@ -182,15 +202,19 @@ export class VisualizationsService {
         );
     }
 
-    async remove(visualizationId: string): Promise<ResponseMessage> {
-        //Make sure the visualization exists before deleting
+    async remove(visualizationId: string, user: User): Promise<ResponseMessage> {
         const visualization: Visualization | null = await this.visualizationRepository.findOne({
-            where: { visualizationId: visualizationId },
-            relations: ['matrix'],
+            where: { visualizationId },
+            relations: ['user', 'matrix'],
         });
 
-        if (!visualization)
+        if (!visualization) {
             throw new NotFoundException(`The entered visualization ID ${visualizationId} wasn't found.`);
+        }
+
+        if (visualization.user.id !== user.id) {
+            throw new ForbiddenException('You do not have access to this visualization.');
+        }
 
         await this.minioService.deleteFile(this.minioService.visualizationBucketName, visualization.objectKey);
         await this.visualizationRepository.remove(visualization);
@@ -200,23 +224,35 @@ export class VisualizationsService {
         );
     }
 
+    // -----------------------------------------------------------------------
+    // Internal helpers
+    // -----------------------------------------------------------------------
+    async objectKeyExists(objectKey: string): Promise<boolean> {
+        const visualization: Visualization | null = await this.visualizationRepository.findOneBy({ objectKey });
+        return !!visualization;
+    }
+
     async visualizationNameExists(name: string, userId: number): Promise<boolean> {
         const visualization: Visualization | null = await this.visualizationRepository.findOne({
-            where: {
-                name: name,
-                user: { id: userId },
-            },
+            where: { name, user: { id: userId } },
         });
         return !!visualization;
     }
 
     async findVisualizationByVisualizationId(visualizationId: string): Promise<Visualization> {
-        const visualization: Visualization | null = await this.visualizationRepository.findOneBy({
-            visualizationId: visualizationId,
-        });
-        if (!visualization)
+        const visualization: Visualization | null = await this.visualizationRepository.findOneBy({ visualizationId });
+        if (!visualization) {
             throw new NotFoundException(`The entered visualization ID ${visualizationId} wasn't found.`);
+        }
+        return visualization;
+    }
 
+    // Kept for internal use by MatricesService
+    async findOneByVisualizationId(visualizationId: string): Promise<Visualization> {
+        const visualization: Visualization | null = await this.visualizationRepository.findOneBy({ visualizationId });
+        if (!visualization) {
+            throw new NotFoundException(`The entered visualization ID ${visualizationId} wasn't found.`);
+        }
         return visualization;
     }
 }
