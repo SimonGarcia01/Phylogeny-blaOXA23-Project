@@ -9,8 +9,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
 
 import { MinioService } from 'src/utils/minio/minio.service';
 import { ResponseMessage } from 'src/common/dtos/response-message';
@@ -20,6 +18,7 @@ import { MatricesService } from 'src/matrices/matrices.service';
 import { Matrix } from 'src/matrices/entities/matrix.entity';
 import { MatrixRequestsService } from 'src/matrix-requests/matrix-requests.service';
 import { MatrixRequest, MatrixRequestStatus } from 'src/matrix-requests/entities/matrix-request.entity';
+import { MicroserviceService } from 'src/utils/api/services/microservice.service';
 
 import { UpdateVisualizationDto } from './dto/update-visualization.dto';
 import { Visualization } from './entities/visualization.entity';
@@ -38,7 +37,7 @@ export class VisualizationsService {
         private readonly minioService: MinioService,
         private readonly matrixRequestsService: MatrixRequestsService,
         private readonly configService: ConfigService,
-        private readonly httpService: HttpService,
+        private readonly microserviceService: MicroserviceService,
     ) {}
 
     // -----------------------------------------------------------------------
@@ -74,17 +73,13 @@ export class VisualizationsService {
             matrix,
         });
 
-        const microserviceUrl: string = `${this.configService.get<string>('MICROSERVICE_URL')}/analyze`;
-
         try {
-            await firstValueFrom(
-                this.httpService.post(microserviceUrl, {
-                    matrixObjectKey: matrix.objectKey,
-                    visualizationObjectKey,
-                    visualizationId,
-                    matrixRequestId: matrixRequest.id,
-                }),
-            );
+            await this.microserviceService.triggerAnalysis({
+                matrixObjectKey: matrix.objectKey,
+                visualizationObjectKey,
+                visualizationId,
+                matrixRequestId: matrixRequest.id,
+            });
         } catch {
             await this.matrixRequestsService.updateStatus(matrixRequest.id, {
                 status: MatrixRequestStatus.FAILED,

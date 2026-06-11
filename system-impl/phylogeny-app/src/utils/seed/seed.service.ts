@@ -64,23 +64,27 @@ export class SeedService {
 
         // Researcher gets only domain entity permissions (not admin-related entities)
         for (const p of savedPermissions) {
-            if (
-                p.name.startsWith('MATRICES_') ||
-                p.name.startsWith('MATRIX_REQUESTS_') ||
-                p.name.startsWith('VISUALIZATIONS_')
-            ) {
+            if (p.name.startsWith('MATRICES_') || p.name.startsWith('VISUALIZATIONS_')) {
                 rolesPermissionsToSave.push(
                     this.rolesPermissionRepository.create({ role: savedResearcherRole, permission: p }),
                 );
             }
         }
 
+        //Just giving read matrix-requests permissions for researchers
+        rolesPermissionsToSave.push(
+            this.rolesPermissionRepository.create({
+                role: savedResearcherRole,
+                permission: savedPermissions.find((p) => p.name === 'MATRIX_REQUESTS_READ')!,
+            }),
+        );
+
         await this.rolesPermissionRepository.save(rolesPermissionsToSave);
 
         // Create users
         const saltRounds: number = parseInt(this.configService.get<string>('SALT_ROUNDS') ?? '10');
 
-        const adminPassword = await bcrypt.hash('Admin1234', saltRounds);
+        const adminPassword = await bcrypt.hash('Admin123', saltRounds);
         const researcherPassword = await bcrypt.hash('Researcher123', saltRounds);
 
         const adminUser = this.userRepository.create({

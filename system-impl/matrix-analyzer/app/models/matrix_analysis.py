@@ -2,9 +2,10 @@ from pydantic import BaseModel
 
 
 class MatrixAnalysisRequest(BaseModel):
-    matrix_object_key: str
-    matrix_request_id: str
-    bucket_name: str
+    matrixObjectKey: str
+    visualizationObjectKey: str
+    visualizationId: str
+    matrixRequestId: str
 
 
 class MatrixAnalysisResponse(BaseModel):

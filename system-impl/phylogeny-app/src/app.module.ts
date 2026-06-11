@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { SeedModule } from './utils/seed/seed.module';
 import { MinioModule } from './utils/minio/minio.module';
 import { DashboardsModule } from './dashboards/dashboards.module';
+import { ApiModule } from './utils/api/api.module';
 
 //Define the supported db types for the application
 type SupportedDbTypes = 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mongodb' | 'oracle';
@@ -37,6 +38,7 @@ type SupportedDbTypes = 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mongodb' 
         SeedModule,
         MinioModule,
         DashboardsModule,
+        ApiModule,
     ],
     controllers: [],
     providers: [],

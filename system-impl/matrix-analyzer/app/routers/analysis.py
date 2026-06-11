@@ -9,5 +9,5 @@ router: APIRouter = APIRouter(prefix='/analysis', tags=['matrix analysis'])
 async def analyze_matrix(matrixRequest: MatrixAnalysisRequest) -> MatrixAnalysisResponse:
 
     return MatrixAnalysisResponse(
-        message=f'Matrix analysis request received for object key: {matrixRequest.matrix_object_key} with request ID: {matrixRequest.matrix_request_id}'
+        message=f'Matrix analysis request received for object key: {matrixRequest.matrixObjectKey} with request ID: {matrixRequest.matrixRequestId}'
     )
