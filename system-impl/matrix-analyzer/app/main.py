@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.config import settings
+from app.core.config import settings
 from app.routers import analysis
 
 # Create the FastAPI instance with a title
@@ -20,7 +20,3 @@ app.add_middleware(
 
 # Give access to the analysis router
 app.include_router(analysis.router)
-
-
-
-

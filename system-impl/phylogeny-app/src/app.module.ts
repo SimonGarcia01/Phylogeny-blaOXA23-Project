@@ -6,10 +6,10 @@ import { MatricesModule } from './matrices/matrices.module';
 import { VisualizationsModule } from './visualizations/visualizations.module';
 import { MatrixRequestsModule } from './matrix-requests/matrix-requests.module';
 import { AuthModule } from './auth/auth.module';
-import { SeedModule } from './utils/seed/seed.module';
-import { MinioModule } from './utils/minio/minio.module';
+import { SeedModule } from './common/utils/seed/seed.module';
+import { MinioModule } from './common/utils/minio/minio.module';
 import { DashboardsModule } from './dashboards/dashboards.module';
-import { ApiModule } from './utils/api/api.module';
+import { ApiModule } from './common/utils/api/api.module';
 
 //Define the supported db types for the application
 type SupportedDbTypes = 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mongodb' | 'oracle';

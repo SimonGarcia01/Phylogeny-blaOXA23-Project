@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     MINIO_VISUALIZATION_BUCKET: str = 'visualization'
     MINIO_ACCESS_KEY: str = 'minio'
     MINIO_SECRET_KEY: str = 'minio123'
+    INTERNAL_SECRET: str = 'supersecretkey'
 
     model_config = SettingsConfigDict(env_file='.env', extra='ignore')
 

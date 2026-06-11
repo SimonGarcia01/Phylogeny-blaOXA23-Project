@@ -9,7 +9,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { MinioService } from 'src/utils/minio/minio.service';
+import { MinioService } from 'src/common/utils/minio/minio.service';
 import { ResponseMessage } from 'src/common/dtos/response-message';
 import { User } from 'src/auth/users/entities/user.entity';
 import { BusinessRuleViolationException } from 'src/common/exceptions/business-rule-violation-exception';
@@ -17,8 +17,8 @@ import { MatricesService } from 'src/matrices/matrices.service';
 import { Matrix } from 'src/matrices/entities/matrix.entity';
 import { MatrixRequestsService } from 'src/matrix-requests/matrix-requests.service';
 import { MatrixRequest, MatrixRequestStatus } from 'src/matrix-requests/entities/matrix-request.entity';
-import { MicroserviceService } from 'src/utils/api/services/microservice.service';
-import { MicroserviceAnalysisResponse } from 'src/utils/api/interfaces/response-analyze.interface';
+import { MicroserviceService } from 'src/common/utils/api/services/microservice.service';
+import { MicroserviceAnalysisResponse } from 'src/common/utils/api/interfaces/response-analyze.interface';
 
 import { UpdateVisualizationDto } from './dto/update-visualization.dto';
 import { Visualization } from './entities/visualization.entity';

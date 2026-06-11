@@ -2,7 +2,7 @@ import { BadRequestException, Inject, Injectable, NotFoundException, forwardRef 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { MinioService } from 'src/utils/minio/minio.service';
+import { MinioService } from 'src/common/utils/minio/minio.service';
 import { ResponseMessage } from 'src/common/dtos/response-message';
 import { User } from 'src/auth/users/entities/user.entity';
 import { ResponseGeneratedUrlDto } from 'src/common/dtos/response-generate-url.dto';

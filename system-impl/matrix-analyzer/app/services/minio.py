@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from minio import Minio
 from minio.error import S3Error
 
-from config import settings
+from app.core.config import settings
 
 
 @dataclass

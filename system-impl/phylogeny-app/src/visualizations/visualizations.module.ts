@@ -1,10 +1,10 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { MinioModule } from 'src/utils/minio/minio.module';
+import { MinioModule } from 'src/common/utils/minio/minio.module';
 import { MatricesModule } from 'src/matrices/matrices.module';
 import { MatrixRequestsModule } from 'src/matrix-requests/matrix-requests.module';
-import { ApiModule } from 'src/utils/api/api.module';
+import { ApiModule } from 'src/common/utils/api/api.module';
 
 import { VisualizationsService } from './visualizations.service';
 import { VisualizationsController } from './visualizations.controller';
