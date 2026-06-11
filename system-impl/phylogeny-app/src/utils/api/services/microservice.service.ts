@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { AnalyzeRequestPayload } from '../interfaces/analyze-request.interface';
+import { AnalyzeRequestPayload } from '../interfaces/request-analyze.interface';
+import { MicroserviceAnalysisResponse } from '../interfaces/response-analyze.interface';
 
 import { ApiService } from './api.service';
 
@@ -22,9 +23,13 @@ export class MicroserviceService {
         return { 'x-internal-secret': this.internalSecret };
     }
 
-    async triggerAnalysis(payload: AnalyzeRequestPayload): Promise<void> {
-        await this.apiService.post<AnalyzeRequestPayload, void>(`${this.baseUrl}/analyze`, payload, {
-            headers: this.internalHeaders,
-        });
+    async triggerAnalysis(payload: AnalyzeRequestPayload): Promise<MicroserviceAnalysisResponse> {
+        const response = await this.apiService.post<AnalyzeRequestPayload, MicroserviceAnalysisResponse>(
+            `${this.baseUrl}/analysis/analyze_matrix`,
+            payload,
+            { headers: this.internalHeaders },
+        );
+
+        return response.data;
     }
 }

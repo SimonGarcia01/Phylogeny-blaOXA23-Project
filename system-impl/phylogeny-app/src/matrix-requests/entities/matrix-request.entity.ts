@@ -23,6 +23,9 @@ export class MatrixRequest {
     @CreateDateColumn({ name: 'finished_at', type: 'timestamp', nullable: true })
     finishedAt?: Date;
 
+    @Column({ name: 'task_id', type: 'varchar', length: 255, nullable: true })
+    taskId?: string;
+
     @Column({ name: 'status', type: 'enum', enum: MatrixRequestStatus, nullable: false })
     status!: MatrixRequestStatus;
 

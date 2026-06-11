@@ -61,4 +61,10 @@ export class MatrixRequestsService {
 
         return new ResponseMessage(`MatrixRequest with id ${id} status updated successfully`);
     }
+
+    async addTaskId(id: number, taskId: string): Promise<void> {
+        const matrixRequest: MatrixRequest = await this.findOne(id);
+        matrixRequest.taskId = taskId;
+        await this.matrixRequestRepository.save(matrixRequest);
+    }
 }

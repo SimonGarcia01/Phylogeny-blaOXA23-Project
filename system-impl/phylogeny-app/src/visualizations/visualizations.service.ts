@@ -8,7 +8,6 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ConfigService } from '@nestjs/config';
 
 import { MinioService } from 'src/utils/minio/minio.service';
 import { ResponseMessage } from 'src/common/dtos/response-message';
@@ -19,6 +18,7 @@ import { Matrix } from 'src/matrices/entities/matrix.entity';
 import { MatrixRequestsService } from 'src/matrix-requests/matrix-requests.service';
 import { MatrixRequest, MatrixRequestStatus } from 'src/matrix-requests/entities/matrix-request.entity';
 import { MicroserviceService } from 'src/utils/api/services/microservice.service';
+import { MicroserviceAnalysisResponse } from 'src/utils/api/interfaces/response-analyze.interface';
 
 import { UpdateVisualizationDto } from './dto/update-visualization.dto';
 import { Visualization } from './entities/visualization.entity';
@@ -36,7 +36,6 @@ export class VisualizationsService {
         private readonly matricesService: MatricesService,
         private readonly minioService: MinioService,
         private readonly matrixRequestsService: MatrixRequestsService,
-        private readonly configService: ConfigService,
         private readonly microserviceService: MicroserviceService,
     ) {}
 
@@ -54,9 +53,35 @@ export class VisualizationsService {
             throw new BusinessRuleViolationException('This matrix already has a visualization.');
         }
 
+        //This are precreated so we can send the analysis request to see if it's going to work
         const visualizationId: string = crypto.randomUUID();
         const visualizationObjectKey: string = `users/${user.id}/visualizations/${visualizationId}`;
 
+        //This will store the failed attempt is if doesn't work so we can create the MatrixRequest record
+        const matrixRequest: MatrixRequest = await this.matrixRequestsService.create({
+            name: matrix.name,
+            matrix,
+        });
+
+        try {
+            const response: MicroserviceAnalysisResponse = await this.microserviceService.triggerAnalysis({
+                matrixObjectKey: matrix.objectKey,
+                visualizationObjectKey: visualizationObjectKey,
+                visualizationId: visualizationId,
+                matrixRequestId: matrixRequest.id,
+            });
+
+            await this.matrixRequestsService.addTaskId(matrixRequest.id, response.taskId);
+        } catch {
+            await this.matrixRequestsService.updateStatus(matrixRequest.id, {
+                status: MatrixRequestStatus.FAILED,
+                error: 'Failed to reach the analysis microservice.',
+            });
+            throw new ServiceUnavailableException('The analysis service is currently unavailable.');
+        }
+
+        //If nothing fails, then we can create the visualization record
+        //The matrix-request record will keep the "pending" status until the microservice updates it
         const visualization: Visualization = this.visualizationRepository.create({
             visualizationId,
             name: matrix.name,
@@ -65,28 +90,8 @@ export class VisualizationsService {
         });
         await this.visualizationRepository.save(visualization);
 
+        //Update the visualizationId in the matrix at the end
         await this.matricesService.updateVisualizationId(matrixId, visualizationId);
-
-        const matrixRequest: MatrixRequest = await this.matrixRequestsService.create({
-            name: matrix.name,
-            requestedAt: new Date(),
-            matrix,
-        });
-
-        try {
-            await this.microserviceService.triggerAnalysis({
-                matrixObjectKey: matrix.objectKey,
-                visualizationObjectKey,
-                visualizationId,
-                matrixRequestId: matrixRequest.id,
-            });
-        } catch {
-            await this.matrixRequestsService.updateStatus(matrixRequest.id, {
-                status: MatrixRequestStatus.FAILED,
-                error: 'Failed to reach the analysis microservice.',
-            });
-            throw new ServiceUnavailableException('The analysis service is currently unavailable.');
-        }
 
         return new ResponseAnalyzeDto(matrixRequest.id, visualizationId, MatrixRequestStatus.PENDING);
     }

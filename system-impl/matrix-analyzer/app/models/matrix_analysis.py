@@ -1,12 +1,12 @@
-from pydantic import BaseModel
+from app.models.camel_model import CamelModel
 
 
-class MatrixAnalysisRequest(BaseModel):
-    matrixObjectKey: str
-    visualizationObjectKey: str
-    visualizationId: str
-    matrixRequestId: str
+class MatrixAnalysisRequest(CamelModel):
+    matrix_object_key: str
+    visualization_object_key: str
+    visualization_id: str
+    matrix_request_id: int
 
 
-class MatrixAnalysisResponse(BaseModel):
-    message: str
+class MatrixAnalysisResponse(CamelModel):
+    task_id: str
