@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     MINIO_ACCESS_KEY: str = 'minio'
     MINIO_SECRET_KEY: str = 'minio123'
     INTERNAL_SECRET: str = 'supersecretkey'
+    NEST_API_URL: str = 'http://localhost:3000'
 
     model_config = SettingsConfigDict(env_file='.env', extra='ignore')
 

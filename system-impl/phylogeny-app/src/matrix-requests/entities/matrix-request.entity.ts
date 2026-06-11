@@ -29,6 +29,9 @@ export class MatrixRequest {
     @Column({ name: 'status', type: 'enum', enum: MatrixRequestStatus, nullable: false })
     status!: MatrixRequestStatus;
 
+    @Column({ name: 'error', type: 'text', nullable: true })
+    error?: string;
+
     @ManyToOne(() => Matrix, (matrix) => matrix.matrixRequests, { nullable: false })
     @JoinColumn({ name: 'matrix_id' })
     matrix!: Matrix;

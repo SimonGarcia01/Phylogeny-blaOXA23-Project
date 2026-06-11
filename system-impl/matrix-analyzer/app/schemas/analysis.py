@@ -1,4 +1,4 @@
-from app.models.camel_model import CamelModel
+from app.schemas.camel_model import CamelModel
 
 
 class MatrixAnalysisRequest(CamelModel):

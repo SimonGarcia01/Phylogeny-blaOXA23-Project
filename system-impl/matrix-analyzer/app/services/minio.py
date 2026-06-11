@@ -143,3 +143,14 @@ class MinioService:
         job_dir: str = os.path.join('/tmp', job_id)
         os.makedirs(job_dir, exist_ok=True)
         return job_dir
+
+
+# Making a singleton for the MinioService to reuse the same client across the app
+_minio_service: MinioService | None = None
+
+
+def get_minio_service() -> MinioService:
+    global _minio_service
+    if _minio_service is None:
+        _minio_service = MinioService()
+    return _minio_service

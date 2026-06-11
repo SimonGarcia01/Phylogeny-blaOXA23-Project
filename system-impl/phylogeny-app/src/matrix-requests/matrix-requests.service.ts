@@ -50,16 +50,22 @@ export class MatrixRequestsService {
     }
 
     async updateStatus(id: number, dto: UpdateMatrixRequestStatusDto): Promise<ResponseMessage> {
-        const { status, finishedAt } = dto;
+        const { status, finishedAt, error } = dto;
 
         const matrixRequest: MatrixRequest = await this.findOne(id);
 
         matrixRequest.status = status;
-        if (finishedAt) matrixRequest.finishedAt = finishedAt;
+
+        if (error) matrixRequest.error = error;
+
+        const terminalStatuses: MatrixRequestStatus[] = [MatrixRequestStatus.COMPLETED, MatrixRequestStatus.FAILED];
+        if (terminalStatuses.includes(status)) {
+            matrixRequest.finishedAt = finishedAt ? new Date(finishedAt) : new Date();
+        }
 
         await this.matrixRequestRepository.save(matrixRequest);
 
-        return new ResponseMessage(`MatrixRequest with id ${id} status updated successfully`);
+        return new ResponseMessage(`MatrixRequest ${id} status updated to ${status}`);
     }
 
     async addTaskId(id: number, taskId: string): Promise<void> {
