@@ -116,7 +116,7 @@ export class MatricesService {
     async findOneByMatrixId(matrixId: string): Promise<Matrix> {
         const matrix: Matrix | null = await this.matrixRepository.findOne({
             where: { matrixId: matrixId },
-            relations: ['visualization'],
+            relations: ['user', 'visualization'],
         });
         if (!matrix) throw new NotFoundException(`The entered matrix ID ${matrixId} wasn't found.`);
         return matrix;

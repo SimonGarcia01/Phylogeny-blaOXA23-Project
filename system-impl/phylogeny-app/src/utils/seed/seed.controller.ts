@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 
 import { Public } from 'src/common/decorators/public.decorator';
 
@@ -9,7 +9,7 @@ export class SeedController {
     constructor(private readonly seedService: SeedService) {}
 
     @Public()
-    @Get('run')
+    @Post('run')
     async run() {
         return await this.seedService.seed();
     }
