@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends
 from app.dependencies.internal_auth import verify_internal_secret
 from app.models.matrix_analysis import MatrixAnalysisRequest, MatrixAnalysisResponse
 
-router: APIRouter = APIRouter(prefix='/analysis', tags=['matrix analysis'])
+router: APIRouter = APIRouter(prefix='/analysis', tags=['matrix analysis'], dependencies=[Depends(verify_internal_secret)])
 
 
-@router.post('/analyze_matrix', response_model=MatrixAnalysisResponse, dependencies=[Depends(verify_internal_secret)])
+@router.post('/analyze_matrix', response_model=MatrixAnalysisResponse)
 async def analyze_matrix(matrixRequest: MatrixAnalysisRequest) -> MatrixAnalysisResponse:
 
     return MatrixAnalysisResponse(
