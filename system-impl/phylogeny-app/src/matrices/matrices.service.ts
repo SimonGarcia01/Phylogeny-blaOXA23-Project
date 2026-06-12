@@ -28,10 +28,12 @@ export class MatricesService {
     async generateUploadUrl(user: User, generateUrlDto: RequestGenerateUrlDto): Promise<ResponseGeneratedUrlDto> {
         const { fileName, fileSize, fileType } = generateUrlDto;
 
+        //Check the file size before generating the  URL
         if (fileSize > 10 * 1024 * 1024) {
             throw new BadRequestException('File size exceeds the 10MB limit.');
         }
 
+        //Make sure the matrix name is unique to the user
         const matrixNameExist: boolean = await this.matrixNameExists(fileName, user.id);
 
         if (matrixNameExist) {

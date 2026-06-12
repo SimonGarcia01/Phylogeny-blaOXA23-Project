@@ -1,3 +1,5 @@
+import os
+
 from app.schemas.analysis import MatrixAnalysisRequest
 from app.services.api_client import NestApiClient
 from app.services.jmodeltest import JModelTestResult, run_jmodeltest, select_criterion
@@ -25,6 +27,10 @@ def run_phylo_pipeline(
                 job_dir=job_dir,
             )
             print(f'[pipeline] Downloaded to: {download.local_path}')
+            print("Exists:", os.path.exists(download.local_path))
+            print("Size:", os.path.getsize(download.local_path))
+            with open(download.local_path, "r", encoding="utf-8", errors="ignore") as f:
+                print(f.read(500))
         except Exception as e:
             nest.mark_failed(request.matrix_request_id, f'Failed to download matrix file: {e}')
             raise

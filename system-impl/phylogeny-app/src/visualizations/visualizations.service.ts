@@ -43,8 +43,10 @@ export class VisualizationsService {
     // User triggers analysis — creates skeleton visualization + matrix request
     // -----------------------------------------------------------------------
     async analyze(user: User, matrixId: string): Promise<ResponseAnalyzeDto> {
+        console.log(`Starting analysis for user ${user.id} and matrix ${matrixId}`);
         const matrix: Matrix = await this.matricesService.findOneByMatrixId(matrixId);
 
+        console.log(matrix);
         if (matrix.user.id !== user.id) {
             throw new ForbiddenException('You do not have access to this matrix.');
         }
@@ -52,6 +54,8 @@ export class VisualizationsService {
         if (matrix.visualization) {
             throw new BusinessRuleViolationException('This matrix already has a visualization.');
         }
+
+        console.log('Generating upload URL for visualization...');
 
         //This are precreated so we can send the analysis request to see if it's going to work
         const visualizationId: string = crypto.randomUUID();
@@ -63,6 +67,7 @@ export class VisualizationsService {
             matrix,
         });
 
+        console.log('Triggering analysis microservice...');
         try {
             const response: MicroserviceAnalysisResponse = await this.microserviceService.triggerAnalysis({
                 matrixObjectKey: matrix.objectKey,
@@ -72,10 +77,11 @@ export class VisualizationsService {
             });
 
             await this.matrixRequestsService.addTaskId(matrixRequest.id, response.taskId);
-        } catch {
+        } catch (error) {
+            console.error(error);
             await this.matrixRequestsService.updateStatus(matrixRequest.id, {
                 status: MatrixRequestStatus.FAILED,
-                error: 'Failed to reach the analysis microservice.',
+                error: error instanceof Error ? error.message : 'Unknown error',
             });
             throw new ServiceUnavailableException('The analysis service is currently unavailable.');
         }
