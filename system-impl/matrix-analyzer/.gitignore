@@ -70,9 +70,9 @@ data/
 # =========================
 # Tool binaries
 # =========================
-tools/**
-!tools/**/
-!tools/**/.keep
+app/tools/**
+!app/tools/**/
+!app/tools/**/.keep
 
 # =========================
 # FastAPI
