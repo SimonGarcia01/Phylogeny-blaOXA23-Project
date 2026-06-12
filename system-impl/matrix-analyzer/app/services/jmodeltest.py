@@ -96,26 +96,43 @@ def _parse_best_model(output_path: str, criterion: str) -> str:
     """
     if not os.path.exists(output_path):
         raise RuntimeError(f'JModelTest2 output file not found: {output_path}')
+    
+    with open(output_path, 'r') as f:
+        lines: list[str] = f.readlines()
 
-    # Patterns to try in order — JModelTest2 output format varies slightly by version
+    # Search line by line — the model name is always on its own short line
+    # never on the tree line (which starts with '(' and is very long)
     patterns: list[str] = [
-        rf'{criterion}\s+model\s*[=:]\s*(\S+)',  # "AIC model = GTR+I+G"
-        r'Model selected:\s*(\S+)',  # "Model selected: GTR+I+G"
-        r'Best Model:\s*(\S+)',  # "Best Model: GTR+I+G"
+        rf'{criterion}\s+[Mm]odel\s*[=:]\s*(\S+)',
+        r'Model selected:\s*(\S+)',
+        r'Best [Mm]odel:\s*(\S+)',
+        r'[Mm]odel\s*[=:]\s*(\S+)',
     ]
 
-    with open(output_path, 'r') as f:
-        content: str = f.read()
 
-    for pattern in patterns:
-        match: re.Match[str] | None = re.search(pattern, content, re.IGNORECASE)
-        if match:
-            return match.group(1).strip()
 
-    # If none matched, dump the last 50 lines to help debug
-    last_lines: str = '\n'.join(content.splitlines()[-50:])
+    for line in lines:
+        stripped: str = line.strip()
+
+        # Skip tree lines — they start with '(' and are very long
+        if stripped.startswith('(') or len(stripped) > 200:
+            continue
+
+        for pattern in patterns:
+            match: re.Match[str] | None = re.search(pattern, stripped, re.IGNORECASE)
+            if match:
+                model: str = match.group(1).strip()
+                # Sanity check — a model name should never be longer than 30 chars
+                if len(model) < 30:
+                    return model
+
+    # If still not found, dump relevant lines to help debug
+    relevant: str = '\n'.join(
+        l.rstrip() for l in lines
+        if 'model' in l.lower() and not l.strip().startswith('(')
+    )
     raise RuntimeError(
         f'Could not parse best model from JModelTest2 output.\n'
-        f'Criterion used: {criterion}\n'
-        f'Last 50 lines of output:\n{last_lines}'
+        f'Criterion: {criterion}\n'
+        f'Lines mentioning "model":\n{relevant}'
     )

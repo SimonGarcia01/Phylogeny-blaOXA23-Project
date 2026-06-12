@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends
+import asyncio
+
+from fastapi import APIRouter, BackgroundTasks, Depends
 from app.dependencies.internal_auth import verify_internal_secret
 from app.pipeline.phylo_pipeline import run_phylo_pipeline
 from app.schemas.analysis import MatrixAnalysisRequest, MatrixAnalysisResponse
@@ -13,10 +15,18 @@ router: APIRouter = APIRouter(
 @router.post('/analyze_matrix', response_model=MatrixAnalysisResponse, response_model_by_alias=True)
 async def analyze_matrix(
     matrixRequest: MatrixAnalysisRequest,
+    background_tasks: BackgroundTasks,
     minio: MinioService = Depends(get_minio_service),
     nest: NestApiClient = Depends(get_nest_client),
 ) -> MatrixAnalysisResponse:
 
-    result: str = run_phylo_pipeline(matrixRequest, minio, nest)
+    background_tasks.add_task(
+        asyncio.get_event_loop().run_in_executor,
+        None,                           # uses default ThreadPoolExecutor
+        run_phylo_pipeline,
+        matrixRequest,
+        minio,
+        nest,
+    )
 
-    return MatrixAnalysisResponse(task_id=result)
+    return MatrixAnalysisResponse(task_id=f'queued:{matrixRequest.visualization_id}')

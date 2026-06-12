@@ -1,0 +1,78 @@
+[pipeline] Downloaded to: /tmp\1ad604b6-d50f-431e-a4b9-daa7f2a41d1a\7e7fb258-ce4f-4c49-bdd5-198aa433df22
+[pipeline] Size of the downloaded file : 3704
+#NEXUS
+[written Thu Feb 09 15:23:01 COT 2023 by Mesquite  version 3.70 (build 940) at Maria-del-Rosario-Castanedas-MacBook-Pro.local/172.30.128.209]
+
+BEGIN TAXA;
+        TITLE Taxa;
+        DIMENSIONS NTAX=9;
+        TAXLABELS
+                Cm_chamaeleonides Cr_barbouri newsp Ph_heterodermus Ph_nicefori acutus aeneus aequatorialis agassizi 
+        ;
+
+END;
+
+
+BEGIN CHARACTERS;
+        TITLE  Character_Matrix;
+        DIMENSIONS  NCHAR=340;
+        FORMAT DATATYPE = DNA GAP = - MISSING = ?;
+        MATRIX
+        Cm_chamaeleonides  ATGAGT---ACCATTACC---ATT---ATATCAAGCTTA
+[pipeline] Converted to PHYLIP: /tmp\1ad604b6-d50f-431e-a4b9-daa7f2a41d1a\input.phy
+[pipeline] 9 taxa detected — using AICc
+[pipeline] Raw best model string length: 2
+[pipeline] Best model: JC (by AICc)
+[jmodel output] -------------------------- jModeltest 2.1.10 v20160303 --------------------------
+[jmodel output]           "jModelTest 2: more models, new heuristics and parallel computing".
+[jmodel output] jModelTest 2.1.10 v20160303
+[jmodel output] Arguments = -d C:\tmp\1ad604b6-d50f-431e-a4b9-daa7f2a41d1a\input.phy -g 4 -i -f -AICc -a -o C:\tmp\1ad604b6-d50f-431e-a4b9-daa7f2a41d1a\jmodeltest_output.txt
+[jmodel output]  Phyml path = C:\Users\kracr\OneDrive\Desktop\PDG\Phylogeny-blaOXA23-Project\system-impl\matrix-analyzer\app\tools\jmodeltest\exe\phyml\
+[jmodel output]  Candidate models = 24
+[jmodel output]    including models with equal/unequal base frequencies (+F)
+[jmodel output]    including models with/without a proportion of invariable sites (+I)
+[jmodel output]    including models with/without rate variation among sites (+G) (nCat = 4)
+[jmodel output] Model            Exec. Time      Total Time      -lnL
+[jmodel output]    Model = JC
+[jmodel output]    Model = JC+I
+[jmodel output]    Model = JC+G
+[jmodel output]    Model = JC+I+G
+[jmodel output]    Model = F81
+[jmodel output]    Model = F81+I
+[jmodel output]    Model = F81+G
+[jmodel output]    Model = F81+I+G
+[jmodel output]    Model = K80
+[jmodel output]    Model = K80+I
+[jmodel output]    Model = K80+G
+[jmodel output]    Model = K80+I+G
+[jmodel output]    Model = HKY
+[jmodel output]    Model = HKY+I
+[jmodel output]    Model = HKY+G
+[jmodel output]    Model = HKY+I+G
+[jmodel output]    Model = SYM
+[jmodel output]    Model = SYM+I
+[jmodel output]    Model = SYM+G
+[jmodel output]    Model = SYM+I+G
+[jmodel output]    Model = GTR
+[jmodel output]    Model = GTR+I
+[jmodel output]    Model = GTR+G
+[jmodel output]    Model = GTR+I+G
+[jmodel output]   Best-fit models should be reoptimized for comparison with unconstrained likelihood
+[jmodel output]  Model selected:
+[jmodel output]    Model = GTR+G
+[jmodel output] Tree for the best AICc model = (newsp:0.00636335,Cr_barbouri:0.00001763,(Cm_chamaeleonides:0.15208151,(agassizi:0.19356531,((Ph_nicefori:0.06070807,Ph_heterodermus:0.05853098):0.14860005,(aeneus:0.14948814,(acutus:0.17507349,aequatorialis:0.09881694):0.01157932):0.08940800):0.02958201):0.06149728):0.19930018);
+[jmodel output] * AICc MODEL SELECTION : Selection uncertainty
+[jmodel output] Model             -lnL    K     AICc       delta       weight   cumWeight
+[jmodel output] * AICc MODEL SELECTION : Confidence interval
+[jmodel output] There are 24 models in the 100% confidence interval: [ GTR+G GTR+I+G GTR+I HKY+G HKY+I+G HKY+I SYM+G SYM+I+G SYM+I GTR F81+G F81+I+G F81+I HKY F81 SYM K80+G K80+I+G K80+I JC+I JC+G JC+I+G K80 JC ]
+[jmodel output] * AICc MODEL SELECTION : Best Model's command line
+[jmodel output] phyml  -i C:\Users\kracr\AppData\Local\Temp\jmodeltest10014460512820906284.phy -d nt -n 1 -b 0 --run_id GTR+G -m 012345 -f m -c 4 -a e --no_memory_check -o tlr -s BEST
+[jmodel output] *                    MODEL AVERAGED PHYLOGENY                 *
+[jmodel output] Using 24 models in the 1.00 confidence interval = GTR+G GTR+I+G GTR+I HKY+G HKY+I+G HKY+I SYM+G SYM+I+G SYM+I GTR F81+G F81+I+G F81+I HKY F81 SYM K80+G K80+I+G K80+I JC+I JC+G JC+I+G K80 JC
+[jmodel output] Note: this tree is unrooted. Branch lengths are the expected number of substitutions per site. Labels next to parentheses represent phylogenetic uncertainty due to model selection (see documentation)
+[jmodel output] Models supporting:   7
+[jmodel output] Models supporting:   11
+[jmodel output] Models supporting:   3
+[jmodel output] Models supporting:   3
+[jmodel output] ::Best Models::
+[jmodel output]         Model           f(a)    f(c)    f(g)    f(t)    kappa   titv    Ra      Rb  Rc       Rd      Re      Rf      pInv    gamma

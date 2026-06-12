@@ -24,14 +24,12 @@ export class MicroserviceService {
     }
 
     async triggerAnalysis(payload: AnalyzeRequestPayload): Promise<MicroserviceAnalysisResponse> {
-        console.log('Triggering analysis with payload:', payload);
         const response = await this.apiService.post<AnalyzeRequestPayload, MicroserviceAnalysisResponse>(
             `${this.baseUrl}/analysis/analyze_matrix`,
             payload,
             { headers: this.internalHeaders },
         );
 
-        console.log('Analysis response:', response.data);
         return response.data;
     }
 }

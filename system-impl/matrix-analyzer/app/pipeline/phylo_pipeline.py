@@ -27,8 +27,7 @@ def run_phylo_pipeline(
                 job_dir=job_dir,
             )
             print(f'[pipeline] Downloaded to: {download.local_path}')
-            print("Exists:", os.path.exists(download.local_path))
-            print("Size:", os.path.getsize(download.local_path))
+            print("[pipeline] Size of the downloaded file :", os.path.getsize(download.local_path))
             with open(download.local_path, "r", encoding="utf-8", errors="ignore") as f:
                 print(f.read(500))
         except Exception as e:
@@ -51,7 +50,13 @@ def run_phylo_pipeline(
         # Step 4: run JModelTest2 model selection
         try:
             jmodel_result: JModelTestResult = run_jmodeltest(phy_path, job_dir, criterion)
+            print(f'[pipeline] Raw best model string length: {len(jmodel_result.best_model)}')
             print(f'[pipeline] Best model: {jmodel_result.best_model} (by {criterion})')
+            
+            with open(jmodel_result.raw_output_path, 'r') as f:
+                for line in f:
+                    if 'model' in line.lower() and not line.strip().startswith('('):
+                        print(f'[jmodel output] {line.rstrip()}')
         except Exception as e:
             nest.mark_failed(request.matrix_request_id, f'JModelTest2 failed: {e}')
             raise
