@@ -1,0 +1,120 @@
+services:
+  ###############################################
+  # PostgreSQL database
+  ###############################################
+  db:
+    image: postgres:16
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+  ###############################################
+  # MinIO object storage
+  ###############################################
+  minio:
+    image: minio/minio
+    container_name: minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - app-network
+
+  ###############################################
+  # NestJs backend
+  ###############################################
+  phylogeny-app:
+    build:
+      context: ./phylogeny-app
+      dockerfile: Dockerfile
+    container_name: phylogeny-app
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: ${NEST_PORT}
+
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_TYPE: postgres
+      DB_SYNCHRONIZE: ${DB_SYNCHRONIZE}
+
+      SALT_ROUNDS: ${SALT_ROUNDS}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: ${MINIO_PORT}
+      MINIO_USE_SSL: false
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_MATRIX_BUCKET: ${MINIO_MATRIX_BUCKET}
+      MINIO_VISUALIZATION_BUCKET: ${MINIO_VISUALIZATION_BUCKET}
+
+      INTERNAL_SECRET: ${INTERNAL_SECRET}
+
+      MICROSERVICE_URL: http://matrix-analyzer:${FASTAPI_PORT}
+
+      FRONT_ORIGIN: ${FRONT_ORIGIN}
+    depends_on:
+      - db
+      - minio
+    networks:
+      - app-network
+
+  ###############################################
+  # FastAPI microservice for matrix analysis
+  ###############################################
+  matrix-analyzer:
+    build:
+      context: ./matrix-analyzer
+      dockerfile: Dockerfile
+    container_name: matrix-analyzer
+    ports:
+      - "8000:8000"
+    environment:
+      HOST: 0.0.0.0
+      PORT: ${FASTAPI_PORT}
+
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: ${MINIO_PORT}
+      MINIO_SECURE: false
+
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+
+      MINIO_MATRIX_BUCKET: ${MINIO_MATRIX_BUCKET}
+      MINIO_VISUALIZATION_BUCKET: ${MINIO_VISUALIZATION_BUCKET}
+
+      NEST_API_URL: http://phylogeny-app:${NEST_PORT}
+
+      INTERNAL_SECRET: ${INTERNAL_SECRET}
+
+    depends_on:
+      - minio
+      - phylogeny-app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  minio_data:

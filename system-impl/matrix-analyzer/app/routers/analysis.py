@@ -16,7 +16,7 @@ async def analyze_matrix(
     minio: MinioService = Depends(get_minio_service),
     nest: NestApiClient = Depends(get_nest_client),
 ) -> MatrixAnalysisResponse:
-    
+
     result: str = run_phylo_pipeline(matrixRequest, minio, nest)
 
     return MatrixAnalysisResponse(task_id=result)

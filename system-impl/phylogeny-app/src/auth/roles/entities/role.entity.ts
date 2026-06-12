@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { User } from 'src/auth/users/entities/user.entity';
-import { RolesPermission } from 'src/auth/roles-permissions/entities/roles-permission.entity';
+import type { User } from 'src/auth/users/entities/user.entity';
+import type { RolesPermission } from 'src/auth/roles-permissions/entities/roles-permission.entity';
 
 export enum RoleName {
     ADMIN = 'Admin',
@@ -19,9 +19,12 @@ export class Role {
     @Column({ name: 'description', length: 255, nullable: true })
     description!: string;
 
-    @OneToMany(() => User, (user) => user.role, { eager: false, onDelete: 'SET NULL' })
+    @OneToMany('User', (user: User) => user.role, { eager: false, onDelete: 'SET NULL' })
     users!: User;
 
-    @OneToMany(() => RolesPermission, (rolesPermission) => rolesPermission.role, { eager: false, onDelete: 'CASCADE' })
+    @OneToMany('RolesPermission', (rolesPermission: RolesPermission) => rolesPermission.role, {
+        eager: false,
+        onDelete: 'CASCADE',
+    })
     rolesPermissions!: RolesPermission[];
 }

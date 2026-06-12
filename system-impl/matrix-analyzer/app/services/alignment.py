@@ -29,9 +29,10 @@ def convert_to_phylip(nex_path: str, job_dir: str) -> str:
 
     return phy_path
 
+
 def get_num_taxa(phy_path: str) -> int:
 
-    try: 
+    try:
         alignment: MultipleSeqAlignment = MultipleSeqAlignment(
             AlignIO.read(phy_path, 'phylip-relaxed')  # type: ignore[arg-type]
         )

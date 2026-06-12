@@ -9,8 +9,8 @@ import {
     Unique,
 } from 'typeorm';
 
-import { User } from 'src/auth/users/entities/user.entity';
-import { Matrix } from 'src/matrices/entities/matrix.entity';
+import type { User } from 'src/auth/users/entities/user.entity';
+import type { Matrix } from 'src/matrices/entities/matrix.entity';
 
 @Entity('visualizations')
 @Unique(['name', 'user'])
@@ -40,10 +40,10 @@ export class Visualization {
     @Column({ name: 'mime_type', length: 50, nullable: true })
     mimeType?: string;
 
-    @ManyToOne(() => User, (user) => user.visualizations, { nullable: false })
+    @ManyToOne('User', (user: User) => user.visualizations, { nullable: false })
     @JoinColumn({ name: 'user_id' })
     user!: User;
 
-    @OneToOne(() => Matrix, (matrix) => matrix.visualization)
+    @OneToOne('Matrix', (matrix: Matrix) => matrix.visualization)
     matrix!: Matrix;
 }

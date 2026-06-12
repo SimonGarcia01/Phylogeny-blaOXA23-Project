@@ -10,9 +10,9 @@ import {
     Unique,
 } from 'typeorm';
 
-import { User } from 'src/auth/users/entities/user.entity';
-import { Visualization } from 'src/visualizations/entities/visualization.entity';
-import { MatrixRequest } from 'src/matrix-requests/entities/matrix-request.entity';
+import type { User } from 'src/auth/users/entities/user.entity';
+import type { Visualization } from 'src/visualizations/entities/visualization.entity';
+import type { MatrixRequest } from 'src/matrix-requests/entities/matrix-request.entity';
 
 @Entity('matrices')
 @Unique(['name', 'user'])
@@ -43,14 +43,17 @@ export class Matrix {
     @CreateDateColumn({ name: 'uploaded_at', type: 'timestamp' })
     uploadedAt!: Date;
 
-    @ManyToOne(() => User, (user) => user.matrices, { nullable: false })
+    @ManyToOne('User', (user: User) => user.matrices, { nullable: false })
     @JoinColumn({ name: 'user_id' })
     user!: User;
 
-    @OneToOne(() => Visualization, (visualization) => visualization.matrix, { nullable: true, onDelete: 'SET NULL' })
+    @OneToOne('Visualization', (visualization: Visualization) => visualization.matrix, {
+        nullable: true,
+        onDelete: 'SET NULL',
+    })
     @JoinColumn({ name: 'visualization_id' })
     visualization?: Visualization;
 
-    @OneToMany(() => MatrixRequest, (matrixRequest) => matrixRequest.matrix)
+    @OneToMany('MatrixRequest', (matrixRequest: MatrixRequest) => matrixRequest.matrix)
     matrixRequests!: MatrixRequest[];
 }

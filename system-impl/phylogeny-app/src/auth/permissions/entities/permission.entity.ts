@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { RolesPermission } from 'src/auth/roles-permissions/entities/roles-permission.entity';
+import type { RolesPermission } from 'src/auth/roles-permissions/entities/roles-permission.entity';
 
 @Entity('permissions')
 export class Permission {
@@ -13,7 +13,7 @@ export class Permission {
     @Column({ name: 'description', length: 255, nullable: true })
     description!: string;
 
-    @OneToMany(() => RolesPermission, (rolesPermission) => rolesPermission.permission, {
+    @OneToMany('RolesPermission', (rolesPermission: RolesPermission) => rolesPermission.permission, {
         eager: false,
         onDelete: 'CASCADE',
     })

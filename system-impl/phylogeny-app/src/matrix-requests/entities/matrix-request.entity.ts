@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Matrix } from 'src/matrices/entities/matrix.entity';
+import type { Matrix } from 'src/matrices/entities/matrix.entity';
 
 export enum MatrixRequestStatus {
     PENDING = 'pending',
@@ -32,7 +32,7 @@ export class MatrixRequest {
     @Column({ name: 'error', type: 'text', nullable: true })
     error?: string;
 
-    @ManyToOne(() => Matrix, (matrix) => matrix.matrixRequests, { nullable: false })
+    @ManyToOne('Matrix', (matrix: Matrix) => matrix.matrixRequests, { nullable: false })
     @JoinColumn({ name: 'matrix_id' })
     matrix!: Matrix;
 }

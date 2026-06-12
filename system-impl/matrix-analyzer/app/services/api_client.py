@@ -1,7 +1,7 @@
 import httpx
 from enum import Enum
 
-from core.config import settings
+from app.core.config import settings
 
 
 class MatrixRequestStatus(str, Enum):
@@ -58,7 +58,7 @@ class NestApiClient:
     def mark_processing(self, matrix_request_id: int) -> None:
         self.update_status(matrix_request_id, MatrixRequestStatus.PROCESSING)
 
-    #Used at the end of the pipeline to provide file details of the visualization to the Nest backend
+    # Used at the end of the pipeline to provide file details of the visualization to the Nest backend
     def finalize_visualization(self, visualization_id: str, file_size: int, mime_type: str) -> None:
         url: str = f'{self._base_url}/visualizations/{visualization_id}/finalize'
         payload: dict[str, object] = {'fileSize': file_size, 'mimeType': mime_type}
