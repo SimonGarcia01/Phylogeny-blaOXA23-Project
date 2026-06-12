@@ -70,15 +70,9 @@ data/
 # =========================
 # Tool binaries
 # =========================
-tools/*
-!tools/jmodeltest/
-!tools/raxml-ng/
-
-tools/jmodeltest/*
-!tools/jmodeltest/.keep
-
-tools/raxml-ng/*
-!tools/raxml-ng/.keep
+tools/**
+!tools/**/
+!tools/**/.keep
 
 # =========================
 # FastAPI
