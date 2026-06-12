@@ -28,3 +28,14 @@ def convert_to_phylip(nex_path: str, job_dir: str) -> str:
         raise ValueError(f'Failed to write PHYLIP file to {phy_path}: {e}')
 
     return phy_path
+
+def get_num_taxa(phy_path: str) -> int:
+
+    try: 
+        alignment: MultipleSeqAlignment = MultipleSeqAlignment(
+            AlignIO.read(phy_path, 'phylip-relaxed')  # type: ignore[arg-type]
+        )
+    except Exception as e:
+        raise ValueError(f'Failed to parse PHYLIP file at {phy_path}: {e}')
+
+    return len(alignment)

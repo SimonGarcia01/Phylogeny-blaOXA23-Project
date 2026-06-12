@@ -1,7 +1,8 @@
 from app.schemas.analysis import MatrixAnalysisRequest
 from app.services.api_client import NestApiClient
+from app.services.jmodeltest import select_criterion
 from services.minio import MinioService, DownloadResult
-from services.alignment import convert_to_phylip
+from services.alignment import convert_to_phylip, get_num_taxa
 
 
 def run_phylo_pipeline(
@@ -36,9 +37,14 @@ def run_phylo_pipeline(
             nest.mark_failed(request.matrix_request_id, f'Failed to parse alignment file: {e}')
             raise
 
-        # Step 3: JModelTest2 — coming next
-        # Step 4: RAxML-NG   — coming next
-        # Step 5: Upload results — coming next
+        #Step 3: Determine the best model selection criterion based on number of taxa
+        num_taxa: int = get_num_taxa(phy_path)
+        criterion: str = select_criterion(num_taxa)
+
+        # Step 4: JModelTest2 model selection
+        # Step 4: RAxML-NG  making the tree using the best model from JModelTest2
+        # Step 5: Upload results to MinIO
+        # Step 6: Update Nest backend with completion status and the visualization details
 
         nest.mark_completed(request.matrix_request_id)
         return 'pipeline_placeholder'
