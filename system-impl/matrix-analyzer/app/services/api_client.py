@@ -58,6 +58,19 @@ class NestApiClient:
     def mark_processing(self, matrix_request_id: int) -> None:
         self.update_status(matrix_request_id, MatrixRequestStatus.PROCESSING)
 
+    #Used at the end of the pipeline to provide file details of the visualization to the Nest backend
+    def finalize_visualization(self, visualization_id: str, file_size: int, mime_type: str) -> None:
+        url: str = f'{self._base_url}/visualizations/{visualization_id}/finalize'
+        payload: dict[str, object] = {'fileSize': file_size, 'mimeType': mime_type}
+
+        try:
+            response: httpx.Response = httpx.patch(url, json=payload, headers=self._headers, timeout=10)
+            response.raise_for_status()
+        except httpx.HTTPStatusError as e:
+            print(f'[api_client] Finalize visualization failed — HTTP {e.response.status_code}: {e.response.text}')
+        except httpx.RequestError as e:
+            print(f'[api_client] Finalize visualization failed — could not reach NestJS: {e}')
+
 
 # Make a singleton instance of the NestApiClient awailable for import across the app
 _nest_client: NestApiClient | None = None
