@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 import { ResponseMessage } from 'src/common/dtos/response-message';
 import { User } from 'src/auth/users/entities/user.entity';
@@ -72,5 +72,31 @@ export class MatrixRequestsService {
         const matrixRequest: MatrixRequest = await this.findOne(id);
         matrixRequest.taskId = taskId;
         await this.matrixRequestRepository.save(matrixRequest);
+    }
+
+    async findActiveByUser(user: User): Promise<MatrixRequestListItemDto[]> {
+        const requests: MatrixRequest[] = await this.matrixRequestRepository.find({
+            where: {
+                matrix: { user: { id: user.id } },
+                status: In([MatrixRequestStatus.PENDING, MatrixRequestStatus.PROCESSING]),
+            },
+            relations: ['matrix'],
+            order: { requestedAt: 'DESC' },
+        });
+
+        return requests.map((r) => new MatrixRequestListItemDto(r.id, r.name, r.requestedAt, r.status, r.finishedAt));
+    }
+
+    async findFailedByUser(user: User): Promise<MatrixRequestListItemDto[]> {
+        const requests: MatrixRequest[] = await this.matrixRequestRepository.find({
+            where: {
+                matrix: { user: { id: user.id } },
+                status: MatrixRequestStatus.FAILED,
+            },
+            relations: ['matrix'],
+            order: { requestedAt: 'DESC' },
+        });
+
+        return requests.map((r) => new MatrixRequestListItemDto(r.id, r.name, r.requestedAt, r.status, r.finishedAt));
     }
 }

@@ -177,6 +177,10 @@ export class MatricesService {
         );
     }
 
+    async countByUser(userId: number): Promise<number> {
+        return await this.matrixRepository.count({ where: { user: { id: userId } } });
+    }
+
     async matrixNameExists(name: string, userId: number): Promise<boolean> {
         const matrix: Matrix | null = await this.matrixRepository.findOne({
             where: {

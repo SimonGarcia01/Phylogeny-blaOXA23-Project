@@ -79,6 +79,23 @@ services:
       - app-network
 
   ###############################################
+  # Next.js frontend
+  ###############################################
+  phylogeny-frontend:
+    build:
+      context: ./phylogeny-frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    container_name: phylogeny-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - phylogeny-app
+    networks:
+      - app-network
+
+  ###############################################
   # FastAPI microservice for matrix analysis
   ###############################################
   matrix-analyzer:
