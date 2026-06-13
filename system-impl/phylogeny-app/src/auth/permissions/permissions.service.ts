@@ -28,6 +28,10 @@ export class PermissionsService {
         return new ResponseMessage(`Permission ${savedPermission.name} created successfully.`);
     }
 
+    async count(): Promise<number> {
+        return this.permissionRepository.count();
+    }
+
     async findAll(): Promise<ResponsePermissionDto[]> {
         const permissions: Permission[] = await this.permissionRepository.find();
 

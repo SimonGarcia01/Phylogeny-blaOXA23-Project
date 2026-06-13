@@ -26,6 +26,10 @@ export class RolesService {
         return new ResponseMessage(`Role ${savedRole.name} created successfully.`);
     }
 
+    async count(): Promise<number> {
+        return this.roleRepository.count();
+    }
+
     async findAll(): Promise<ResponseRoleDto[]> {
         const roles: Role[] = await this.roleRepository.find();
 

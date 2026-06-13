@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { Between, In, Repository } from 'typeorm';
 
 import { ResponseMessage } from 'src/common/dtos/response-message';
 import { User } from 'src/auth/users/entities/user.entity';
@@ -72,6 +72,14 @@ export class MatrixRequestsService {
         const matrixRequest: MatrixRequest = await this.findOne(id);
         matrixRequest.taskId = taskId;
         await this.matrixRequestRepository.save(matrixRequest);
+    }
+
+    async countToday(): Promise<number> {
+        const start: Date = new Date();
+        start.setHours(0, 0, 0, 0);
+        const end: Date = new Date();
+        end.setHours(23, 59, 59, 999);
+        return this.matrixRequestRepository.count({ where: { requestedAt: Between(start, end) } });
     }
 
     async findActiveByUser(user: User): Promise<MatrixRequestListItemDto[]> {

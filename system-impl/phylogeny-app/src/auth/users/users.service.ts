@@ -47,6 +47,10 @@ export class UsersService {
         return new ResponseMessage(`User with email ${savedUser.email} created successfully.`);
     }
 
+    async count(): Promise<number> {
+        return this.userRepository.count();
+    }
+
     async findAll(): Promise<ResponseUserDto[]> {
         const users: User[] = await this.userRepository.find();
 

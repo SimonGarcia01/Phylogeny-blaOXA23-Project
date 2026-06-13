@@ -218,6 +218,10 @@ export class VisualizationsService {
         return await this.visualizationRepository.count({ where: { user: { id: userId } } });
     }
 
+    async countAll(): Promise<number> {
+        return this.visualizationRepository.count();
+    }
+
     async objectKeyExists(objectKey: string): Promise<boolean> {
         const visualization: Visualization | null = await this.visualizationRepository.findOneBy({ objectKey });
         return !!visualization;
