@@ -1,15 +1,16 @@
-FROM oven/bun:latest
+FROM node:20-slim
 
 WORKDIR /app
 
-COPY package.json bun.lock ./
-
-RUN bun install --frozen-lockfile
+# Copy both lockfiles — npm ci uses package-lock.json
+COPY package.json package-lock.json ./
+RUN npm ci
 
 COPY . .
 
-RUN bun run build
+# Use npx to access the locally installed nest CLI
+RUN npx nest build
 
 EXPOSE 3001
 
-CMD ["bun", "start:prod"]
+CMD ["node", "dist/main"]

@@ -21,4 +21,5 @@ RUN chmod +x app/tools/jmodeltest/exe/phyml/PhyML_3.0_linux64
 # Expose the FastAPI port
 EXPOSE 8000
 
+# Use app.main:app since code lives at /app/app/main.py
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

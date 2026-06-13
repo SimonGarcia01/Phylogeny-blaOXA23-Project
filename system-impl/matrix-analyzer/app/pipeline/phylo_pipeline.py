@@ -11,7 +11,7 @@ def run_phylo_pipeline(
     request: MatrixAnalysisRequest,
     minio: MinioService,
     nest: NestApiClient,
-) -> str:
+):
 
     # As soon as pipeline starts running, mark the request as processing in Nest backend
     nest.mark_processing(request.matrix_request_id)
@@ -27,7 +27,7 @@ def run_phylo_pipeline(
                 job_dir=job_dir,
             )
             print(f'[pipeline] Downloaded to: {download.local_path}')
-            print("[pipeline] Size of the downloaded file :", os.path.getsize(download.local_path))
+            print("[pipeline] Size of the downloaded file :", os.path.getsize(download.local_path), " bytes")
             with open(download.local_path, "r", encoding="utf-8", errors="ignore") as f:
                 print(f.read(500))
         except Exception as e:
@@ -53,10 +53,6 @@ def run_phylo_pipeline(
             print(f'[pipeline] Raw best model string length: {len(jmodel_result.best_model)}')
             print(f'[pipeline] Best model: {jmodel_result.best_model} (by {criterion})')
             
-            with open(jmodel_result.raw_output_path, 'r') as f:
-                for line in f:
-                    if 'model' in line.lower() and not line.strip().startswith('('):
-                        print(f'[jmodel output] {line.rstrip()}')
         except Exception as e:
             nest.mark_failed(request.matrix_request_id, f'JModelTest2 failed: {e}')
             raise
@@ -65,7 +61,7 @@ def run_phylo_pipeline(
         # Step 6: Upload results to MinIO
         # Step 7: Finalize the visualization in nest -> add the mime type and file size of the tree file
         nest.mark_completed(request.matrix_request_id)
-        return jmodel_result.best_model
+        nest.finalize_visualization(request.visualization_id, file_size=os.path.getsize(jmodel_result.raw_output_path), mime_type='text/plain')
 
     finally:
         minio.cleanup_job_dir(job_dir)
