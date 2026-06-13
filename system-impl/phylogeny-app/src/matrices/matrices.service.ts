@@ -2,6 +2,7 @@ import { BadRequestException, Inject, Injectable, NotFoundException, forwardRef 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { assertOwnership } from 'src/auth/utils/user-ownership.util';
 import { MinioService } from 'src/common/utils/minio/minio.service';
 import { ResponseMessage } from 'src/common/dtos/response-message';
 import { User } from 'src/auth/users/entities/user.entity';
@@ -86,23 +87,28 @@ export class MatricesService {
         );
     }
 
-    async findAll(): Promise<ResponseMatrixListItemDto[]> {
-        const matrices: Matrix[] = await this.matrixRepository.find();
+    async findAll(user: User): Promise<ResponseMatrixListItemDto[]> {
+        const matrices: Matrix[] = await this.matrixRepository.find({
+            where: { user: { id: user.id } },
+            order: { uploadedAt: 'DESC' },
+        });
 
         return matrices.map((m) => new ResponseMatrixListItemDto(m.matrixId, m.name, m.uploadedAt));
     }
 
     //This is the method that returns the details of a matrix (metadata)
     //This will also include the metadata of the visualization if it exists
-    async findOne(matrixId: string): Promise<ResponseMatrixDetailDto> {
+    async findOne(matrixId: string, user: User): Promise<ResponseMatrixDetailDto> {
         const matrix: Matrix | null = await this.matrixRepository.findOne({
             where: { matrixId: matrixId },
-            relations: ['visualization'],
+            relations: ['user', 'visualization'],
         });
 
         if (!matrix) {
             throw new NotFoundException(`The entered matrix ID ${matrixId} wasn't found.`);
         }
+
+        assertOwnership(matrix.user.id, user.id, 'matrix');
 
         return new ResponseMatrixDetailDto(
             matrix.matrixId,
@@ -125,15 +131,20 @@ export class MatricesService {
     }
 
     //The update method will make sure the matrix exists
-    async update(matrixId: string, updateMatrixDto: UpdateMatrixDto): Promise<ResponseMessage> {
-        //Make sure the matrix exists before updating
-        const matrix: Matrix | null = await this.matrixRepository.findOneBy({ matrixId: matrixId });
+    async update(matrixId: string, updateMatrixDto: UpdateMatrixDto, user: User): Promise<ResponseMessage> {
+        const matrix: Matrix | null = await this.matrixRepository.findOne({
+            where: { matrixId },
+            relations: ['user'],
+        });
 
         if (!matrix) throw new NotFoundException(`The entered matrix ID ${matrixId} wasn't found.`);
 
+        assertOwnership(matrix.user.id, user.id, 'matrix');
+
         //If the name is going to change, make sure it's unique to the user
         if (updateMatrixDto.name && updateMatrixDto.name !== matrix.name) {
-            const matrixNameExists: boolean = await this.matrixNameExists(updateMatrixDto.name, matrix.user.id);
+            const matrixNameExists: boolean = await this.matrixNameExists(updateMatrixDto.name, user.id);
+
             if (matrixNameExists) {
                 throw new BusinessRuleViolationException(
                     `A matrix with the name ${updateMatrixDto.name} already exists.`,
@@ -148,11 +159,15 @@ export class MatricesService {
         );
     }
 
-    async remove(matrixId: string): Promise<ResponseMessage> {
-        //Make sure the matrix exists before deleting
-        const matrix: Matrix | null = await this.matrixRepository.findOneBy({ matrixId: matrixId });
+    async remove(matrixId: string, user: User): Promise<ResponseMessage> {
+        const matrix: Matrix | null = await this.matrixRepository.findOne({
+            where: { matrixId },
+            relations: ['user'],
+        });
 
         if (!matrix) throw new NotFoundException(`The entered matrix ID ${matrixId} wasn't found.`);
+
+        assertOwnership(matrix.user.id, user.id, 'matrix');
 
         await this.minioService.deleteFile(this.minioService.matrixBucketName, matrix.objectKey);
         await this.matrixRepository.remove(matrix);

@@ -1,11 +1,4 @@
-import {
-    ForbiddenException,
-    Inject,
-    Injectable,
-    NotFoundException,
-    ServiceUnavailableException,
-    forwardRef,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException, ServiceUnavailableException, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -18,6 +11,7 @@ import { Matrix } from 'src/matrices/entities/matrix.entity';
 import { MatrixRequestsService } from 'src/matrix-requests/matrix-requests.service';
 import { MatrixRequest, MatrixRequestStatus } from 'src/matrix-requests/entities/matrix-request.entity';
 import { MicroserviceService } from 'src/common/utils/api/services/microservice.service';
+import { assertOwnership } from 'src/auth/utils/user-ownership.util';
 import { MicroserviceAnalysisResponse } from 'src/common/utils/api/interfaces/response-analyze.interface';
 
 import { UpdateVisualizationDto } from './dto/update-visualization.dto';
@@ -45,9 +39,7 @@ export class VisualizationsService {
     async analyze(user: User, matrixId: string): Promise<ResponseAnalyzeDto> {
         const matrix: Matrix = await this.matricesService.findOneByMatrixId(matrixId);
 
-        if (matrix.user.id !== user.id) {
-            throw new ForbiddenException('You do not have access to this matrix.');
-        }
+        assertOwnership(matrix.user.id, user.id, 'matrix');
 
         if (matrix.visualization) {
             throw new BusinessRuleViolationException('This matrix already has a visualization.');
@@ -139,9 +131,7 @@ export class VisualizationsService {
             throw new NotFoundException(`The entered visualization ID ${visualizationId} wasn't found.`);
         }
 
-        if (visualization.user.id !== user.id) {
-            throw new ForbiddenException('You do not have access to this visualization.');
-        }
+        assertOwnership(visualization.user.id, user.id, 'visualization');
 
         return new ResponseVisualizationDetailDto(
             visualization.visualizationId,
@@ -167,9 +157,7 @@ export class VisualizationsService {
             throw new NotFoundException(`The entered visualization ID ${visualizationId} wasn't found.`);
         }
 
-        if (visualization.user.id !== user.id) {
-            throw new ForbiddenException('You do not have access to this visualization.');
-        }
+        assertOwnership(visualization.user.id, user.id, 'visualization');
 
         if (updateVisualizationDto.name && updateVisualizationDto.name !== visualization.name) {
             const nameExists: boolean = await this.visualizationNameExists(updateVisualizationDto.name, user.id);
@@ -213,9 +201,7 @@ export class VisualizationsService {
             throw new NotFoundException(`The entered visualization ID ${visualizationId} wasn't found.`);
         }
 
-        if (visualization.user.id !== user.id) {
-            throw new ForbiddenException('You do not have access to this visualization.');
-        }
+        assertOwnership(visualization.user.id, user.id, 'visualization');
 
         await this.minioService.deleteFile(this.minioService.visualizationBucketName, visualization.objectKey);
         await this.visualizationRepository.remove(visualization);

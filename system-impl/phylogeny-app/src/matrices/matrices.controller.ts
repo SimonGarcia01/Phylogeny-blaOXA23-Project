@@ -34,14 +34,14 @@ export class MatricesController {
 
     @Get()
     @Permissions('MATRICES_READ')
-    async findAll(): Promise<ResponseMatrixListItemDto[]> {
-        return await this.matricesService.findAll();
+    async findAll(@CurrentUser() user: User): Promise<ResponseMatrixListItemDto[]> {
+        return await this.matricesService.findAll(user);
     }
 
     @Get(':id')
     @Permissions('MATRICES_READ')
-    async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<ResponseMatrixDetailDto> {
-        return await this.matricesService.findOne(id);
+    async findOne(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: User): Promise<ResponseMatrixDetailDto> {
+        return await this.matricesService.findOne(id, user);
     }
 
     @Patch(':id')
@@ -49,13 +49,14 @@ export class MatricesController {
     async update(
         @Param('id', ParseUUIDPipe) id: string,
         @Body() updateMatrixDto: UpdateMatrixDto,
+        @CurrentUser() user: User,
     ): Promise<ResponseMessage> {
-        return await this.matricesService.update(id, updateMatrixDto);
+        return await this.matricesService.update(id, updateMatrixDto, user);
     }
 
     @Delete(':id')
     @Permissions('MATRICES_DELETE')
-    async remove(@Param('id', ParseUUIDPipe) id: string) {
-        return await this.matricesService.remove(id);
+    async remove(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: User) {
+        return await this.matricesService.remove(id, user);
     }
 }
