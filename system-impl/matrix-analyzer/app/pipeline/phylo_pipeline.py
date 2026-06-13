@@ -3,8 +3,9 @@ import os
 from app.schemas.analysis import MatrixAnalysisRequest
 from app.services.api_client import NestApiClient
 from app.services.jmodeltest import JModelTestResult, run_jmodeltest, select_criterion
-from app.services.minio import MinioService, DownloadResult
+from app.services.minio import MinioService, DownloadResult, UploadResult
 from app.services.alignment import convert_to_phylip, get_num_taxa
+from app.services.raxml import RAxMLResult, run_raxml
 
 
 def run_phylo_pipeline(
@@ -57,11 +58,37 @@ def run_phylo_pipeline(
             nest.mark_failed(request.matrix_request_id, f'JModelTest2 failed: {e}')
             raise
 
-        # Step 5: RAxML-NG  making the tree using the best model from JModelTest2
-        # Step 6: Upload results to MinIO
-        # Step 7: Finalize the visualization in nest -> add the mime type and file size of the tree file
+        # Step 5: Run RAxML-NG with the best model to build the phylogenetic tree
+        try:
+            raxml_result: RAxMLResult = run_raxml(
+                phy_path=phy_path,
+                job_dir=job_dir,
+                best_model=jmodel_result.best_model,
+                prefix='tree',
+            )
+            print(f'[pipeline] RAxML-NG finished. Support tree: {raxml_result.support_path}')
+        except Exception as e:
+            nest.mark_failed(request.matrix_request_id, f'RAxML-NG failed: {e}')
+            raise
+
+        # Step 6: Upload the support tree (.raxml.support) to MinIO at the visualization object key
+        try:
+            upload: UploadResult = minio.upload_result(
+                local_path=raxml_result.support_path,
+                object_key=request.visualization_object_key,
+            )
+            print(f'[pipeline] Uploaded support tree to MinIO: {upload.object_key} ({upload.size} bytes)')
+        except Exception as e:
+            nest.mark_failed(request.matrix_request_id, f'Failed to upload tree to MinIO: {e}')
+            raise
+
+        # Step 7: Finalize the visualization in NestJS with the actual file size and MIME type
+        nest.finalize_visualization(
+            request.visualization_id,
+            file_size=upload.size,
+            mime_type='text/plain',
+        )
         nest.mark_completed(request.matrix_request_id)
-        nest.finalize_visualization(request.visualization_id, file_size=os.path.getsize(jmodel_result.raw_output_path), mime_type='text/plain')
 
     finally:
         minio.cleanup_job_dir(job_dir)

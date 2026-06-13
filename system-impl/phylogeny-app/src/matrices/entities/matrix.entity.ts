@@ -54,6 +54,9 @@ export class Matrix {
     @JoinColumn({ name: 'visualization_id' })
     visualization?: Visualization;
 
-    @OneToMany('MatrixRequest', (matrixRequest: MatrixRequest) => matrixRequest.matrix)
+    @OneToMany('MatrixRequest', (matrixRequest: MatrixRequest) => matrixRequest.matrix, {
+        eager: false,
+        onDelete: 'CASCADE',
+    })
     matrixRequests!: MatrixRequest[];
 }

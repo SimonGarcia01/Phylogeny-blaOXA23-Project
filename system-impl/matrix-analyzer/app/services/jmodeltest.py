@@ -89,42 +89,38 @@ def run_jmodeltest(phy_path: str, job_dir: str, criterion: str) -> JModelTestRes
 def _parse_best_model(output_path: str, criterion: str) -> str:
     """
     Parses the JModelTest2 output file to extract the best-fit model name.
-    JModelTest2 output contains a block like:
-        Model selected: GTR+I+G
-    or depending on criterion:
-        AICc Model = GTR+I+G
+    JModelTest2 writes the selection as two consecutive lines:
+        Model selected:
+            Model = GTR+G
+    We must find that pair — scanning line-by-line would incorrectly match
+    the first "Model = JC" from the evaluation progress list.
     """
     if not os.path.exists(output_path):
         raise RuntimeError(f'JModelTest2 output file not found: {output_path}')
-    
+
     with open(output_path, 'r') as f:
         lines: list[str] = f.readlines()
 
-    # Search line by line — the model name is always on its own short line
-    # never on the tree line (which starts with '(' and is very long)
-    patterns: list[str] = [
-        rf'{criterion}\s+[Mm]odel\s*[=:]\s*(\S+)',
-        r'Model selected:\s*(\S+)',
-        r'Best [Mm]odel:\s*(\S+)',
-        r'[Mm]odel\s*[=:]\s*(\S+)',
-    ]
+    # Primary strategy: find "Model selected:" then grab "Model = X" in the next few lines
+    for i, line in enumerate(lines):
+        if re.search(r'Model selected\s*:', line, re.IGNORECASE):
+            for j in range(i + 1, min(i + 6, len(lines))):
+                match: re.Match[str] | None = re.search(r'Model\s*=\s*(\S+)', lines[j], re.IGNORECASE)
+                if match:
+                    model: str = match.group(1).strip()
+                    if len(model) < 30:
+                        return model
 
-
-
+    # Fallback: criterion-specific header line e.g. "AICc Model = GTR+G"
     for line in lines:
         stripped: str = line.strip()
-
-        # Skip tree lines — they start with '(' and are very long
         if stripped.startswith('(') or len(stripped) > 200:
             continue
-
-        for pattern in patterns:
-            match: re.Match[str] | None = re.search(pattern, stripped, re.IGNORECASE)
-            if match:
-                model: str = match.group(1).strip()
-                # Sanity check — a model name should never be longer than 30 chars
-                if len(model) < 30:
-                    return model
+        match = re.search(rf'{criterion}\s+[Mm]odel\s*[=:]\s*(\S+)', stripped, re.IGNORECASE)
+        if match:
+            model = match.group(1).strip()
+            if len(model) < 30:
+                return model
 
     # If still not found, dump relevant lines to help debug
     relevant: str = '\n'.join(

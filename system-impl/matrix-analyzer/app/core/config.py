@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     NEST_API_URL: str = 'http://localhost:3000'
     JMODELTEST_JAR: str = 'app/tools/jmodeltest/jModelTest.jar'
     JMODELTEST_DIR: str = 'app/tools/jmodeltest'
+    RAXML_BIN: str = 'app/tools/raxml-ng/raxml-ng'
 
     model_config = SettingsConfigDict(env_file='.env', extra='ignore')
 

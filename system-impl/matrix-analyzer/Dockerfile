@@ -15,8 +15,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app ./app
 
 # Make sure the Linux binaries are executable
-RUN chmod +x app/tools/raxml-ng
+RUN chmod +x app/tools/raxml-ng/raxml-ng
 RUN chmod +x app/tools/jmodeltest/exe/phyml/PhyML_3.0_linux64
+
+# Disable Python output buffering so prints appear immediately in Docker logs
+ENV PYTHONUNBUFFERED=1
 
 # Expose the FastAPI port
 EXPOSE 8000
