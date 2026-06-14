@@ -12,7 +12,15 @@ import { DashboardsService } from './dashboards.service';
 import { DashboardsController } from './dashboards.controller';
 
 @Module({
-    imports: [AuthModule, UsersModule, RolesModule, PermissionsModule, MatricesModule, VisualizationsModule, MatrixRequestsModule],
+    imports: [
+        AuthModule,
+        UsersModule,
+        RolesModule,
+        PermissionsModule,
+        MatricesModule,
+        VisualizationsModule,
+        MatrixRequestsModule,
+    ],
     controllers: [DashboardsController],
     providers: [DashboardsService],
 })
