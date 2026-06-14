@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Put } from '@nestjs/common';
 
 import { Permissions } from 'src/common/decorators/permissions.decorator';
 import { ResponseMessage } from 'src/common/dtos/response-message';
@@ -6,6 +6,7 @@ import { ResponseMessage } from 'src/common/dtos/response-message';
 import { RolesPermissionsService } from './roles-permissions.service';
 import { CreateRolesPermissionDto } from './dto/create-roles-permission.dto';
 import { UpdateRolesPermissionDto } from './dto/update-roles-permission.dto';
+import { SetRolePermissionsDto } from './dto/set-role-permissions.dto';
 import { ResponseRolesPermissionDto } from './dto/response-roles-permission.dto';
 
 @Controller('roles-permissions')
@@ -43,5 +44,14 @@ export class RolesPermissionsController {
     @Permissions('ROLES_PERMISSIONS_DELETE')
     async remove(@Param('id', ParseIntPipe) id: number): Promise<ResponseMessage> {
         return await this.rolesPermissionsService.remove(id);
+    }
+
+    @Put('role/:roleId')
+    @Permissions('ROLES_PERMISSIONS_UPDATE')
+    async setPermissionsForRole(
+        @Param('roleId', ParseIntPipe) roleId: number,
+        @Body() setRolePermissionsDto: SetRolePermissionsDto,
+    ): Promise<ResponseMessage> {
+        return await this.rolesPermissionsService.setPermissionsForRole(roleId, setRolePermissionsDto);
     }
 }

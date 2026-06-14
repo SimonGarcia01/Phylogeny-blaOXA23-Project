@@ -37,11 +37,16 @@ export class RolesService {
     }
 
     async findOne(roleId: number): Promise<ResponseRoleDto> {
-        const role: Role | null = await this.roleRepository.findOneBy({ id: roleId });
+        const role: Role | null = await this.roleRepository.findOne({
+            where: { id: roleId },
+            relations: ['rolesPermissions', 'rolesPermissions.permission'],
+        });
 
         if (!role) throw new NotFoundException(`The entered role ID ${roleId} wasn't found.`);
 
-        return new ResponseRoleDto(role.name, role.description);
+        const permissions: string[] = role.rolesPermissions?.map((rp) => rp.permission.name) ?? [];
+
+        return new ResponseRoleDto(role.name, role.description, permissions);
     }
 
     async update(roleId: number, updateRoleDto: UpdateRoleDto): Promise<ResponseMessage> {

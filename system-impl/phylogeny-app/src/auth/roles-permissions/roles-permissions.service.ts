@@ -11,6 +11,7 @@ import { Permission } from 'src/auth/permissions/entities/permission.entity';
 
 import { CreateRolesPermissionDto } from './dto/create-roles-permission.dto';
 import { UpdateRolesPermissionDto } from './dto/update-roles-permission.dto';
+import { SetRolePermissionsDto } from './dto/set-role-permissions.dto';
 import { RolesPermission } from './entities/roles-permission.entity';
 import { ResponseRolesPermissionDto } from './dto/response-roles-permission.dto';
 
@@ -119,5 +120,33 @@ export class RolesPermissionsService {
         await this.rolesPermissionRepository.delete(id);
 
         return new ResponseMessage('Role-permission mapping deleted successfully.');
+    }
+
+    async setPermissionsForRole(
+        roleId: number,
+        setRolePermissionsDto: SetRolePermissionsDto,
+    ): Promise<ResponseMessage> {
+        await this.rolesService.ensureExists(roleId);
+
+        await Promise.all(
+            setRolePermissionsDto.permissionIds.map((permissionId: number) =>
+                this.permissionsService.ensureExists(permissionId),
+            ),
+        );
+
+        await this.rolesPermissionRepository.delete({ role: { id: roleId } });
+
+        if (setRolePermissionsDto.permissionIds.length > 0) {
+            const newMappings: RolesPermission[] = setRolePermissionsDto.permissionIds.map((permissionId: number) =>
+                this.rolesPermissionRepository.create({
+                    role: { id: roleId },
+                    permission: { id: permissionId },
+                }),
+            );
+
+            await this.rolesPermissionRepository.save(newMappings);
+        }
+
+        return new ResponseMessage(`Permissions for role ID ${roleId} updated successfully.`);
     }
 }

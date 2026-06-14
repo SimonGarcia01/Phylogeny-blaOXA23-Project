@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 
 import { Permissions } from 'src/common/decorators/permissions.decorator';
 import { ResponseMessage } from 'src/common/dtos/response-message';
 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { ResponseUserDto } from './dto/response-user.dto';
 
 @Controller('users')
@@ -23,18 +24,24 @@ export class UsersController {
         return await this.usersService.findAll();
     }
 
-    // @Get(':id')
-    // async findOne(@Param('id') id: string) {
-    //     return await this.usersService.findOne(+id);
-    // }
+    @Get(':id')
+    @Permissions('USERS_READ')
+    async findOne(@Param('id', ParseIntPipe) id: number): Promise<ResponseUserDto> {
+        return await this.usersService.findOneDto(id);
+    }
 
-    // @Patch(':id')
-    // async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    //     return await this.usersService.update(+id, updateUserDto);
-    // }
+    @Patch(':id')
+    @Permissions('USERS_UPDATE')
+    async update(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() updateUserDto: UpdateUserDto,
+    ): Promise<ResponseMessage> {
+        return await this.usersService.update(id, updateUserDto);
+    }
 
-    // @Delete(':id')
-    // async remove(@Param('id') id: string) {
-    //     return await this.usersService.remove(+id);
-    // }
+    @Delete(':id')
+    @Permissions('USERS_DELETE')
+    async remove(@Param('id', ParseIntPipe) id: number): Promise<ResponseMessage> {
+        return await this.usersService.remove(id);
+    }
 }
