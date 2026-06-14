@@ -26,6 +26,13 @@
                 "packages": {},
                 "requests": {}
               }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "packages": {},
+                "type": "text/javascript"
+              }
             }
           ],
           "request": {
@@ -619,7 +626,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"fileName\": \"matrix.nex\",\n  \"fileSize\": 1024,\n  \"fileType\": \".nex\"\n}",
+              "raw": "{\n  \"fileName\": \"{{matrixName}}\",\n  \"fileSize\": 1024,\n  \"fileType\": \".nex\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -651,7 +658,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"matrixId\": \"{{matrixId}}\",\n  \"name\": \"Matrix A\",\n  \"objectKey\": \"{{matrixObjectKey}}\",\n  \"description\": \"Example matrix\",\n  \"mimeType\": \"application/octet-stream\",\n  \"fileSize\": 1024\n}",
+              "raw": "{\n  \"matrixId\": \"{{matrixId}}\",\n  \"name\": \"{{matrixName}}\",\n  \"objectKey\": \"{{matrixObjectKey}}\",\n  \"description\": \"Example matrix\",\n  \"mimeType\": \"application/octet-stream\",\n  \"fileSize\": 1024\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -686,7 +693,7 @@
             "body": {
               "mode": "file",
               "file": {
-                "src": "/C:/Users/kracr/OneDrive/Desktop/PDG/Phylogeny-blaOXA23-Project/biology-research/alignments/final-alignment-export.nex"
+                "src": "/C:/Users/kracr/Downloads/anolis.nex"
               }
             },
             "url": {
@@ -957,7 +964,44 @@
     },
     {
       "name": "Dashboard",
-      "item": []
+      "item": [
+        {
+          "name": "my",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/dashboards/my",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dashboards",
+                "my"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "admin",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/dashboards/admin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dashboards",
+                "admin"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ],
   "auth": {
@@ -1037,6 +1081,10 @@
     },
     {
       "key": "uploadUrl",
+      "value": ""
+    },
+    {
+      "key": "matrixName",
       "value": ""
     }
   ]
