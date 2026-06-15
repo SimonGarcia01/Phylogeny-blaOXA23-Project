@@ -2,8 +2,8 @@ import Navbar from '@/components/Navbar/Navbar';
 import './globals.css';
 
 export const metadata = {
-	title: 'Phylogeny',
-	description: 'A tool for generating and visualizing phylogenetic trees',
+	title: 'PhyloGen',
+	description: 'Streamlined phylogenetic analysis and visualization for researchers',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import type { Matrix } from 'src/matrices/entities/matrix.entity';
 import type { Visualization } from 'src/visualizations/entities/visualization.entity';
@@ -33,4 +33,7 @@ export class User {
     @ManyToOne('Role', (role: Role) => role.users, { onDelete: 'SET NULL' })
     @JoinColumn({ name: 'role_id' })
     role!: Role;
+
+    @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+    deletedAt?: Date;
 }

@@ -121,8 +121,8 @@ export class UsersService {
 
         if (!user) throw new NotFoundException(`The entered user ID ${userId} wasn't found.`);
 
-        await this.userRepository.delete(userId);
+        await this.userRepository.softDelete(userId);
 
-        return new ResponseMessage(`The user with email ${user.email} was deleted successfully.`);
+        return new ResponseMessage(`The user with email ${user.email} was deactivated successfully.`);
     }
 }

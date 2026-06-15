@@ -15,23 +15,17 @@ export default function Page() {
 	const [error, setError] = useState('');
 
 	const router = useRouter();
-
-	const setUser = useAuthStore((store) => store.setUser);
-	const setToken = useAuthStore((store) => store.setToken);
+	const setUser = useAuthStore((s) => s.setUser);
+	const setToken = useAuthStore((s) => s.setToken);
 
 	async function handleLogin(event: React.SubmitEvent<HTMLFormElement>): Promise<void> {
 		event.preventDefault();
 		setError('');
-
 		try {
 			setLoading(true);
-
 			const response: AuthResponse = await authService.login({ email, password });
-
 			setUser(response.user);
 			setToken(response.token);
-
-			// Redirect to personal dashboard
 			router.push('/dashboard');
 		} catch (err) {
 			setError(getApiError(err));
@@ -41,43 +35,60 @@ export default function Page() {
 	}
 
 	return (
-		<div>
-			<h2>Login</h2>
-			{error && <p style={{ color: 'red' }}>{error}</p>}
-			<form onSubmit={handleLogin}>
-				<label htmlFor="email">Email:</label>
-				<input
-					type="email"
-					id="email"
-					name="email"
-					placeholder="user@email.com"
-					value={email}
-					onChange={(event) => setEmail(event.target.value)}
-					autoComplete="email"
-					disabled={loading}
-					required
-				/>
-				<br />
-				<label htmlFor="password">Password:</label>
-				<input
-					type="password"
-					id="password"
-					name="password"
-					placeholder="Password"
-					value={password}
-					onChange={(event) => setPassword(event.target.value)}
-					autoComplete="current-password"
-					disabled={loading}
-					required
-				/>
-				<br />
-				<button type="submit" disabled={loading}>
-					{loading ? 'Logging in...' : 'Login'}
-				</button>
-			</form>
-			<p>
-				Don&apost have an account yet?, Sign up <Link href="/auth/signup">Here</Link>!
-			</p>
+		<div className="auth-wrapper">
+			<div className="auth-card">
+				<div className="auth-logo">PhyloGen</div>
+				<h2 className="auth-title">Welcome back</h2>
+				<p className="auth-subtitle">Sign in to continue to your workspace</p>
+
+				{error && <div className="form-error">{error}</div>}
+
+				<form onSubmit={handleLogin}>
+					<div className="form-group">
+						<label className="form-label" htmlFor="email">Email</label>
+						<input
+							type="email"
+							id="email"
+							name="email"
+							placeholder="you@institution.edu"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+							autoComplete="email"
+							disabled={loading}
+							required
+						/>
+					</div>
+					<div className="form-group">
+						<label className="form-label" htmlFor="password">Password</label>
+						<input
+							type="password"
+							id="password"
+							name="password"
+							placeholder="Your password"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							autoComplete="current-password"
+							disabled={loading}
+							required
+						/>
+					</div>
+					<button
+						type="submit"
+						disabled={loading}
+						className="btn btn-primary"
+						style={{ width: '100%', marginTop: '0.5rem' }}
+					>
+						{loading ? 'Signing in…' : 'Sign In'}
+					</button>
+				</form>
+
+				<p style={{ textAlign: 'center', marginTop: '1.25rem', fontSize: '0.875rem', color: 'var(--ink-muted)' }}>
+					Don&apos;t have an account?{' '}
+					<Link href="/auth/signup" style={{ color: 'var(--accent)', fontWeight: 500 }}>
+						Sign up
+					</Link>
+				</p>
+			</div>
 		</div>
 	);
 }

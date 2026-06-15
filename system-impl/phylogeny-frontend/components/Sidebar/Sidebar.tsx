@@ -1,55 +1,77 @@
 'use client';
 
 import { useAuthStore } from '@/stores/auth.store';
+import { useUiStore } from '@/stores/ui.store';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 
 function Sidebar() {
-	const user = useAuthStore((store) => store.user);
+	const user = useAuthStore((s) => s.user);
 	const pathname = usePathname();
+	const sidebarOpen = useUiStore((s) => s.sidebarOpen);
+	const closeSidebar = useUiStore((s) => s.closeSidebar);
 
 	const isAdmin = user?.role === 'Admin';
 
-	const links = [
-		{ href: '/dashboard', label: 'Dashboard' },
-		{ href: '/matrices', label: 'Matrices' },
-		{ href: '/visualizations', label: 'Visualizations' },
-		{ href: '/matrix-requests', label: 'Matrix Requests' },
-		...(isAdmin
-			? [
-					{ href: '/users', label: 'Users' },
-					{ href: '/roles', label: 'Roles' },
-					{ href: '/permissions', label: 'Permissions' },
-				]
-			: []),
+	// Close sidebar on route change
+	useEffect(() => {
+		closeSidebar();
+	}, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+
+	const isActive = (href: string) =>
+		href === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(href);
+
+	const mainLinks = [
+		{ href: '/dashboard', label: 'Dashboard', icon: '⊞' },
+		{ href: '/matrices', label: 'Matrices', icon: '⊞' },
+		{ href: '/visualizations', label: 'Visualizations', icon: '⊞' },
+		{ href: '/matrix-requests', label: 'Matrix Requests', icon: '⊞' },
 	];
 
+	const adminLinks = [
+		{ href: '/users', label: 'Users', icon: '⊞' },
+		{ href: '/roles', label: 'Roles', icon: '⊞' },
+		{ href: '/permissions', label: 'Permissions', icon: '⊞' },
+	];
+
+	if (!sidebarOpen) return null;
+
 	return (
-		<aside style={{ width: '200px', borderRight: '1px solid #ccc', padding: '1rem', minHeight: '100vh' }}>
-			<nav>
-				<ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-					{links.map((link) => (
-						<li key={link.href} style={{ marginBottom: '0.5rem' }}>
-							<Link
-								href={link.href}
-								style={{
-								fontWeight:
-									link.href === '/dashboard'
-										? pathname === '/dashboard'
-											? 'bold'
-											: 'normal'
-										: pathname.startsWith(link.href)
-											? 'bold'
-											: 'normal',
-							}}
-							>
-								{link.label}
-							</Link>
-						</li>
+		<>
+			<div className="sidebar-overlay" onClick={closeSidebar} />
+			<aside className="sidebar">
+				<p className="sidebar-section-label">Main</p>
+				<nav>
+					{mainLinks.map((link) => (
+						<Link
+							key={link.href}
+							href={link.href}
+							className={`sidebar-link${isActive(link.href) ? ' sidebar-link-active' : ''}`}
+						>
+							{link.label}
+						</Link>
 					))}
-				</ul>
-			</nav>
-		</aside>
+				</nav>
+
+				{isAdmin && (
+					<>
+						<p className="sidebar-section-label">Admin</p>
+						<nav>
+							{adminLinks.map((link) => (
+								<Link
+									key={link.href}
+									href={link.href}
+									className={`sidebar-link${isActive(link.href) ? ' sidebar-link-active' : ''}`}
+								>
+									{link.label}
+								</Link>
+							))}
+						</nav>
+					</>
+				)}
+			</aside>
+		</>
 	);
 }
 

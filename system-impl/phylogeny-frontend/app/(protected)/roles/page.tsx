@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function RolesPage() {
-	const user = useAuthStore((store) => store.user);
+	const user = useAuthStore((s) => s.user);
 	const router = useRouter();
 
 	const [roles, setRoles] = useState<RoleListItem[]>([]);
@@ -21,43 +21,21 @@ export default function RolesPage() {
 	const [error, setError] = useState('');
 
 	useEffect(() => {
-		if (user?.role !== 'Admin') {
-			router.replace('/dashboard');
-			return;
-		}
-
+		if (user?.role !== 'Admin') { router.replace('/dashboard'); return; }
 		async function loadRoles() {
-			try {
-				const data = await rolesService.getAll();
-				setRoles(data);
-			} catch (err) {
-				setError(getApiError(err));
-			} finally {
-				setLoading(false);
-			}
+			try { setRoles(await rolesService.getAll()); } catch (err) { setError(getApiError(err)); } finally { setLoading(false); }
 		}
-
 		loadRoles();
 	}, [user?.role, router]);
 
 	async function reloadRoles() {
-		try {
-			const data = await rolesService.getAll();
-			setRoles(data);
-		} catch (err) {
-			setError(getApiError(err));
-		}
+		try { setRoles(await rolesService.getAll()); } catch (err) { setError(getApiError(err)); }
 	}
 
 	async function handleDelete(id: number) {
 		if (!confirm('Delete this role?')) return;
 		setError('');
-		try {
-			await rolesService.remove(id);
-			await reloadRoles();
-		} catch (err) {
-			setError(getApiError(err));
-		}
+		try { await rolesService.remove(id); await reloadRoles(); } catch (err) { setError(getApiError(err)); }
 	}
 
 	async function handleCreate(event: React.FormEvent<HTMLFormElement>) {
@@ -65,11 +43,8 @@ export default function RolesPage() {
 		setError('');
 		try {
 			setCreating(true);
-			const dto: CreateRoleRequest = { name, description: description || undefined };
-			await rolesService.create(dto);
-			setShowCreate(false);
-			setName('');
-			setDescription('');
+			await rolesService.create({ name, description: description || undefined } as CreateRoleRequest);
+			setShowCreate(false); setName(''); setDescription('');
 			await reloadRoles();
 		} catch (err) {
 			setError(getApiError(err));
@@ -79,79 +54,80 @@ export default function RolesPage() {
 	}
 
 	if (user?.role !== 'Admin') return null;
-	if (loading) return <p>Loading...</p>;
+	if (loading) return <div className="loading-state">Loading roles…</div>;
 
 	return (
 		<div>
-			<h2>Roles</h2>
-			{error && <p style={{ color: 'red' }}>{error}</p>}
-			<button onClick={() => { setShowCreate(!showCreate); setError(''); }}>
-				{showCreate ? 'Cancel' : 'Create Role'}
-			</button>
+			<div className="page-header">
+				<div>
+					<h1 className="page-title">Roles</h1>
+					<p className="page-subtitle">Manage user roles and permissions</p>
+				</div>
+				<button
+					className={showCreate ? 'btn btn-secondary' : 'btn btn-primary'}
+					onClick={() => { setShowCreate(!showCreate); setError(''); }}
+				>
+					{showCreate ? 'Cancel' : 'Create Role'}
+				</button>
+			</div>
+
+			{error && <div className="form-error">{error}</div>}
 
 			{showCreate && (
-				<form onSubmit={handleCreate}>
-					<div>
-						<label htmlFor="name">Name:</label>
-						<input
-							id="name"
-							type="text"
-							value={name}
-							onChange={(e) => setName(e.target.value)}
-							required
-							disabled={creating}
-						/>
-					</div>
-					<div>
-						<label htmlFor="description">Description:</label>
-						<input
-							id="description"
-							type="text"
-							value={description}
-							onChange={(e) => setDescription(e.target.value)}
-							disabled={creating}
-						/>
-					</div>
-					<button type="submit" disabled={creating}>
-						{creating ? 'Creating...' : 'Create'}
-					</button>
-				</form>
+				<div className="create-panel">
+					<p className="create-panel-title">New Role</p>
+					<form onSubmit={handleCreate}>
+						<div className="form-row">
+							<div className="form-group">
+								<label className="form-label" htmlFor="name">Name</label>
+								<input id="name" type="text" value={name}
+									onChange={(e) => setName(e.target.value)} required disabled={creating} />
+							</div>
+							<div className="form-group">
+								<label className="form-label" htmlFor="description">Description</label>
+								<input id="description" type="text" value={description}
+									onChange={(e) => setDescription(e.target.value)} disabled={creating} />
+							</div>
+						</div>
+						<button type="submit" disabled={creating} className="btn btn-primary">
+							{creating ? 'Creating…' : 'Create Role'}
+						</button>
+					</form>
+				</div>
 			)}
 
-			<br />
-			<table>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Description</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{roles.map((r, index) => (
-						<tr key={r.id ?? r.name ?? index}>
-							<td>{r.name}</td>
-							<td>{r.description ?? '-'}</td>
-							<td>
-								{r.id != null ? (
-									<>
-										<Link href={`/roles/${r.id}`}>Edit</Link>
-										{' | '}
-										<button onClick={() => handleDelete(r.id!)}>Delete</button>
-									</>
-								) : (
-									'-'
-								)}
-							</td>
-						</tr>
-					))}
-					{roles.length === 0 && (
+			<div className="card">
+				<table>
+					<thead>
 						<tr>
-							<td colSpan={3}>No roles found.</td>
+							<th>Name</th>
+							<th>Description</th>
+							<th style={{ width: '120px' }}>Actions</th>
 						</tr>
-					)}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{roles.map((r, index) => (
+							<tr key={r.id ?? r.name ?? index}>
+								<td style={{ fontWeight: 500 }}>
+									<span className="badge badge-blue">{r.name}</span>
+								</td>
+								<td style={{ color: 'var(--ink-muted)', fontSize: '0.875rem' }}>{r.description ?? '—'}</td>
+								<td>
+									{r.id != null ? (
+										<div style={{ display: 'flex', gap: '0.5rem' }}>
+											<Link href={`/roles/${r.id}`} className="btn btn-ghost btn-sm">Edit</Link>
+											<button className="btn btn-danger btn-sm" onClick={() => handleDelete(r.id!)}>Delete</button>
+										</div>
+									) : '—'}
+								</td>
+							</tr>
+						))}
+						{roles.length === 0 && (
+							<tr><td colSpan={3}><div className="empty-state"><p>No roles found.</p></div></td></tr>
+						)}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	);
 }

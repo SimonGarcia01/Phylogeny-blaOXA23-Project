@@ -63,86 +63,129 @@ export default function VisualizationsPage() {
 		}
 	}
 
-	if (loading) return <p>Loading...</p>;
+	if (loading) return <div className="loading-state">Loading visualizations…</div>;
 
 	return (
 		<div>
-			<h2>Visualizations</h2>
-			{error && <p style={{ color: 'red' }}>{error}</p>}
-			<button onClick={() => { setShowAnalyze(!showAnalyze); setError(''); }}>
-				{showAnalyze ? 'Cancel' : 'Start Analysis'}
-			</button>
+			<div className="page-header">
+				<div>
+					<h1 className="page-title">Visualizations</h1>
+					<p className="page-subtitle">Phylogenetic tree analyses from your matrices</p>
+				</div>
+				<button
+					className={showAnalyze ? 'btn btn-secondary' : 'btn btn-primary'}
+					onClick={() => { setShowAnalyze(!showAnalyze); setError(''); }}
+				>
+					{showAnalyze ? 'Cancel' : 'Start Analysis'}
+				</button>
+			</div>
+
+			{error && <div className="form-error">{error}</div>}
 
 			{showAnalyze && (
-				<form onSubmit={handleAnalyze}>
-					<div>
-						<label htmlFor="matrixId">Select Matrix:</label>
-						<select
-							id="matrixId"
-							value={selectedMatrixId}
-							onChange={(e) => setSelectedMatrixId(e.target.value)}
-							required
-							disabled={analyzing}
-						>
-							<option value="">-- Select a matrix --</option>
-							{matrices.map((m) => (
-								<option key={m.matrixId} value={m.matrixId}>
-									{m.name ?? m.matrixId}
-								</option>
-							))}
-						</select>
-					</div>
-					<button type="submit" disabled={analyzing}>
-						{analyzing ? 'Starting...' : 'Analyze'}
-					</button>
-				</form>
+				<div className="create-panel">
+					<p className="create-panel-title">New Analysis</p>
+					<form onSubmit={handleAnalyze}>
+						<div className="form-group">
+							<label className="form-label" htmlFor="matrixId">Select Matrix</label>
+							<select
+								id="matrixId"
+								value={selectedMatrixId}
+								onChange={(e) => setSelectedMatrixId(e.target.value)}
+								required
+								disabled={analyzing}
+							>
+								<option value="">— Choose a matrix —</option>
+								{matrices.map((m) => (
+									<option key={m.matrixId} value={m.matrixId}>
+										{m.name ?? m.matrixId}
+									</option>
+								))}
+							</select>
+						</div>
+						<button type="submit" disabled={analyzing} className="btn btn-primary">
+							{analyzing ? 'Starting…' : 'Run Analysis'}
+						</button>
+					</form>
+				</div>
 			)}
 
-			<br />
-			<table>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Created At</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{visualizations.map((v) => {
-						const ready = v.fileSize != null;
-						return (
-							<tr key={v.visualizationId}>
-								<td>
-									{ready ? (
-										<Link href={`/visualizations/${v.visualizationId}`}>
-											{v.name ?? v.visualizationId}
-										</Link>
-									) : (
-										<span>{v.name ?? v.visualizationId} <em>(pending)</em></span>
-									)}
-								</td>
-								<td>{v.createdAt ? new Date(v.createdAt).toLocaleDateString() : '-'}</td>
-								<td>
-									{ready ? (
-										<>
-											<Link href={`/visualizations/${v.visualizationId}`}>Edit</Link>
-											{' | '}
-											<button onClick={() => handleDelete(v.visualizationId)}>Delete</button>
-										</>
-									) : (
-										<span title="Analysis still in progress">-</span>
-									)}
+			<div className="card">
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Status</th>
+							<th>Created At</th>
+							<th style={{ width: '140px' }}>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{visualizations.map((v) => {
+							const ready = v.fileSize != null;
+							return (
+								<tr key={v.visualizationId}>
+									<td style={{ fontWeight: 500 }}>
+										{ready ? (
+											<Link href={`/visualizations/${v.visualizationId}`}>
+												{v.name ?? v.visualizationId}
+											</Link>
+										) : (
+											<span style={{ color: 'var(--ink-muted)' }}>
+												{v.name ?? v.visualizationId}
+											</span>
+										)}
+									</td>
+									<td>
+										{ready ? (
+											<span className="badge badge-green">Ready</span>
+										) : (
+											<span className="badge badge-gold">Pending</span>
+										)}
+									</td>
+									<td style={{ color: 'var(--ink-muted)', fontSize: '0.875rem' }}>
+										{v.createdAt ? new Date(v.createdAt).toLocaleDateString() : '—'}
+									</td>
+									<td>
+										{ready ? (
+											<div style={{ display: 'flex', gap: '0.5rem' }}>
+												<Link
+													href={`/visualizations/${v.visualizationId}`}
+													className="btn btn-ghost btn-sm"
+												>
+													Open
+												</Link>
+												<button
+													className="btn btn-danger btn-sm"
+													onClick={() => handleDelete(v.visualizationId)}
+												>
+													Delete
+												</button>
+											</div>
+										) : (
+											<span
+												className="badge badge-muted"
+												title="Analysis still in progress"
+											>
+												Pending
+											</span>
+										)}
+									</td>
+								</tr>
+							);
+						})}
+						{visualizations.length === 0 && (
+							<tr>
+								<td colSpan={4}>
+									<div className="empty-state">
+										<p>No analyses yet. Start one by selecting a matrix above.</p>
+									</div>
 								</td>
 							</tr>
-						);
-					})}
-					{visualizations.length === 0 && (
-						<tr>
-							<td colSpan={3}>No visualizations found.</td>
-						</tr>
-					)}
-				</tbody>
-			</table>
+						)}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	);
 }

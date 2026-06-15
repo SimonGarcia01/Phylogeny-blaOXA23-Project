@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function UsersPage() {
-	const user = useAuthStore((store) => store.user);
+	const user = useAuthStore((s) => s.user);
 	const router = useRouter();
 
 	const [users, setUsers] = useState<UserListItem[]>([]);
@@ -28,39 +28,26 @@ export default function UsersPage() {
 			router.replace('/dashboard');
 			return;
 		}
-
 		async function loadUsers() {
 			try {
-				const data = await usersService.getAll();
-				setUsers(data);
+				setUsers(await usersService.getAll());
 			} catch (err) {
 				setError(getApiError(err));
 			} finally {
 				setLoading(false);
 			}
 		}
-
 		loadUsers();
 	}, [user?.role, router]);
 
 	async function reloadUsers() {
-		try {
-			const data = await usersService.getAll();
-			setUsers(data);
-		} catch (err) {
-			setError(getApiError(err));
-		}
+		try { setUsers(await usersService.getAll()); } catch (err) { setError(getApiError(err)); }
 	}
 
 	async function handleDelete(id: number) {
 		if (!confirm('Delete this user?')) return;
 		setError('');
-		try {
-			await usersService.remove(id);
-			await reloadUsers();
-		} catch (err) {
-			setError(getApiError(err));
-		}
+		try { await usersService.remove(id); await reloadUsers(); } catch (err) { setError(getApiError(err)); }
 	}
 
 	async function handleCreate(event: React.FormEvent<HTMLFormElement>) {
@@ -68,14 +55,9 @@ export default function UsersPage() {
 		setError('');
 		try {
 			setCreating(true);
-			const dto: CreateUserRequest = { firstName, lastName, email, password, role };
-			await usersService.create(dto);
+			await usersService.create({ firstName, lastName, email, password, role } as CreateUserRequest);
 			setShowCreate(false);
-			setFirstName('');
-			setLastName('');
-			setEmail('');
-			setPassword('');
-			setRole('Researcher');
+			setFirstName(''); setLastName(''); setEmail(''); setPassword(''); setRole('Researcher');
 			await reloadUsers();
 		} catch (err) {
 			setError(getApiError(err));
@@ -85,118 +67,112 @@ export default function UsersPage() {
 	}
 
 	if (user?.role !== 'Admin') return null;
-	if (loading) return <p>Loading...</p>;
+	if (loading) return <div className="loading-state">Loading users…</div>;
 
 	return (
 		<div>
-			<h2>Users</h2>
-			{error && <p style={{ color: 'red' }}>{error}</p>}
-			<button onClick={() => setShowCreate(!showCreate)}>
-				{showCreate ? 'Cancel' : 'Create User'}
-			</button>
+			<div className="page-header">
+				<div>
+					<h1 className="page-title">Users</h1>
+					<p className="page-subtitle">Manage researcher and admin accounts</p>
+				</div>
+				<button
+					className={showCreate ? 'btn btn-secondary' : 'btn btn-primary'}
+					onClick={() => { setShowCreate(!showCreate); setError(''); }}
+				>
+					{showCreate ? 'Cancel' : 'Create User'}
+				</button>
+			</div>
+
+			{error && <div className="form-error">{error}</div>}
 
 			{showCreate && (
-				<form onSubmit={handleCreate}>
-					<div>
-						<label htmlFor="firstName">First Name:</label>
-						<input
-							id="firstName"
-							type="text"
-							value={firstName}
-							onChange={(e) => setFirstName(e.target.value)}
-							required
-							disabled={creating}
-						/>
-					</div>
-					<div>
-						<label htmlFor="lastName">Last Name:</label>
-						<input
-							id="lastName"
-							type="text"
-							value={lastName}
-							onChange={(e) => setLastName(e.target.value)}
-							required
-							disabled={creating}
-						/>
-					</div>
-					<div>
-						<label htmlFor="email">Email:</label>
-						<input
-							id="email"
-							type="email"
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-							required
-							disabled={creating}
-						/>
-					</div>
-					<div>
-						<label htmlFor="password">Password:</label>
-						<input
-							id="password"
-							type="password"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							required
-							disabled={creating}
-						/>
-					</div>
-					<div>
-						<label htmlFor="role">Role:</label>
-						<select
-							id="role"
-							value={role}
-							onChange={(e) => setRole(e.target.value)}
-							disabled={creating}
-						>
-							<option value="Researcher">Researcher</option>
-							<option value="Admin">Admin</option>
-						</select>
-					</div>
-					<button type="submit" disabled={creating}>
-						{creating ? 'Creating...' : 'Create'}
-					</button>
-				</form>
+				<div className="create-panel">
+					<p className="create-panel-title">New User</p>
+					<form onSubmit={handleCreate}>
+						<div className="form-row">
+							<div className="form-group">
+								<label className="form-label" htmlFor="firstName">First Name</label>
+								<input id="firstName" type="text" value={firstName}
+									onChange={(e) => setFirstName(e.target.value)} required disabled={creating} />
+							</div>
+							<div className="form-group">
+								<label className="form-label" htmlFor="lastName">Last Name</label>
+								<input id="lastName" type="text" value={lastName}
+									onChange={(e) => setLastName(e.target.value)} required disabled={creating} />
+							</div>
+						</div>
+						<div className="form-group">
+							<label className="form-label" htmlFor="email">Email</label>
+							<input id="email" type="email" value={email}
+								onChange={(e) => setEmail(e.target.value)} required disabled={creating} />
+						</div>
+						<div className="form-row">
+							<div className="form-group">
+								<label className="form-label" htmlFor="password">Password</label>
+								<input id="password" type="password" value={password}
+									onChange={(e) => setPassword(e.target.value)} required disabled={creating} />
+							</div>
+							<div className="form-group">
+								<label className="form-label" htmlFor="roleSelect">Role</label>
+								<select id="roleSelect" value={role}
+									onChange={(e) => setRole(e.target.value)} disabled={creating}>
+									<option value="Researcher">Researcher</option>
+									<option value="Admin">Admin</option>
+								</select>
+							</div>
+						</div>
+						<button type="submit" disabled={creating} className="btn btn-primary">
+							{creating ? 'Creating…' : 'Create User'}
+						</button>
+					</form>
+				</div>
 			)}
 
-			<br />
-			<table>
-				<thead>
-					<tr>
-						<th>Email</th>
-						<th>Name</th>
-						<th>Role</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{users.map((u, index) => (
-						<tr key={u.id ?? u.email ?? index}>
-							<td>{u.email}</td>
-							<td>
-								{u.firstName} {u.lastName}
-							</td>
-							<td>{u.role ?? '-'}</td>
-							<td>
-								{u.id != null ? (
-									<>
-										<Link href={`/users/${u.id}`}>Edit</Link>
-										{' | '}
-										<button onClick={() => handleDelete(u.id!)}>Delete</button>
-									</>
-								) : (
-									'-'
-								)}
-							</td>
-						</tr>
-					))}
-					{users.length === 0 && (
+			<div className="card">
+				<table>
+					<thead>
 						<tr>
-							<td colSpan={4}>No users found.</td>
+							<th>Name</th>
+							<th>Email</th>
+							<th>Role</th>
+							<th style={{ width: '120px' }}>Actions</th>
 						</tr>
-					)}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{users.map((u, index) => (
+							<tr key={u.id ?? u.email ?? index}>
+								<td style={{ fontWeight: 500 }}>
+									{u.firstName} {u.lastName}
+								</td>
+								<td style={{ color: 'var(--ink-muted)', fontSize: '0.875rem' }}>{u.email}</td>
+								<td>
+									<span className={u.role === 'Admin' ? 'badge badge-gold' : 'badge badge-blue'}>
+										{u.role ?? '—'}
+									</span>
+								</td>
+								<td>
+									{u.id != null ? (
+										<div style={{ display: 'flex', gap: '0.5rem' }}>
+											<Link href={`/users/${u.id}`} className="btn btn-ghost btn-sm">Edit</Link>
+											<button className="btn btn-danger btn-sm" onClick={() => handleDelete(u.id!)}>
+												Delete
+											</button>
+										</div>
+									) : '—'}
+								</td>
+							</tr>
+						))}
+						{users.length === 0 && (
+							<tr>
+								<td colSpan={4}>
+									<div className="empty-state"><p>No users found.</p></div>
+								</td>
+							</tr>
+						)}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	);
 }

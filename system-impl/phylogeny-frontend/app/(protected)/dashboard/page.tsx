@@ -3,10 +3,11 @@
 import { AdminDashboardStats, DashboardStats } from '@/interfaces/dashboard.interfaces';
 import dashboardService from '@/services/dashboard.service';
 import { useAuthStore } from '@/stores/auth.store';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function GeneralDashboardPage() {
-	const user = useAuthStore((store) => store.user);
+	const user = useAuthStore((s) => s.user);
 	const isAdmin = user?.role === 'Admin';
 
 	const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -17,11 +18,9 @@ export default function GeneralDashboardPage() {
 		async function loadStats() {
 			try {
 				if (isAdmin) {
-					const data = await dashboardService.getAdminDashboard();
-					setAdminStats(data);
+					setAdminStats(await dashboardService.getAdminDashboard());
 				} else {
-					const data = await dashboardService.getMyDashboard();
-					setStats(data);
+					setStats(await dashboardService.getMyDashboard());
 				}
 			} catch (error) {
 				console.error('Failed to load dashboard stats:', error);
@@ -29,67 +28,140 @@ export default function GeneralDashboardPage() {
 				setLoading(false);
 			}
 		}
-
 		loadStats();
 	}, [isAdmin]);
 
-	if (loading) return <p>Loading...</p>;
+	if (loading) return <div className="loading-state">Loading dashboard…</div>;
 
 	if (isAdmin && adminStats) {
 		return (
 			<div>
-				<h2>Admin Dashboard</h2>
-				<p>
-					Welcome {user?.firstName} {user?.lastName}!
-				</p>
-				<ul>
-					<li>Total Users: {adminStats.totalUsers}</li>
-					<li>Total Roles: {adminStats.totalRoles}</li>
-					<li>Total Permissions: {adminStats.totalPermissions}</li>
-					<li>Total Matrices: {adminStats.totalMatrices}</li>
-					<li>Total Visualizations: {adminStats.totalVisualizations}</li>
-					<li>Matrix Requests Today: {adminStats.totalMatrixRequestsToday}</li>
-				</ul>
+				<div className="page-header">
+					<div>
+						<h1 className="page-title">Admin Dashboard</h1>
+						<p className="page-subtitle">
+							Welcome back, {user?.firstName} {user?.lastName}
+						</p>
+					</div>
+					<span className="badge badge-gold">Admin</span>
+				</div>
+
+				<div className="stats-grid">
+					<div className="stat-card">
+						<div className="stat-value">{adminStats.totalUsers}</div>
+						<div className="stat-label">Total Users</div>
+					</div>
+					<div className="stat-card stat-card-accent-2">
+						<div className="stat-value stat-value-2">{adminStats.totalMatrices}</div>
+						<div className="stat-label">Matrices</div>
+					</div>
+					<div className="stat-card">
+						<div className="stat-value">{adminStats.totalVisualizations}</div>
+						<div className="stat-label">Visualizations</div>
+					</div>
+					<div className="stat-card stat-card-accent-2">
+						<div className="stat-value stat-value-2">{adminStats.totalMatrixRequestsToday}</div>
+						<div className="stat-label">Requests Today</div>
+					</div>
+					<div className="stat-card">
+						<div className="stat-value">{adminStats.totalRoles}</div>
+						<div className="stat-label">Roles</div>
+					</div>
+					<div className="stat-card stat-card-accent-2">
+						<div className="stat-value stat-value-2">{adminStats.totalPermissions}</div>
+						<div className="stat-label">Permissions</div>
+					</div>
+				</div>
+
+				<div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+					<Link href="/users" className="btn btn-secondary">Manage Users</Link>
+					<Link href="/matrices" className="btn btn-secondary">Matrices</Link>
+					<Link href="/visualizations" className="btn btn-secondary">Visualizations</Link>
+				</div>
 			</div>
 		);
 	}
 
 	return (
 		<div>
-			<h2>Dashboard</h2>
-			<p>
-				Welcome {user?.firstName} {user?.lastName}!
-			</p>
+			<div className="page-header">
+				<div>
+					<h1 className="page-title">Dashboard</h1>
+					<p className="page-subtitle">
+						Welcome back, {user?.firstName} {user?.lastName}
+					</p>
+				</div>
+			</div>
+
 			{stats && (
 				<>
-					<ul>
-						<li>Total Matrices: {stats.totalMatrices}</li>
-						<li>Total Visualizations: {stats.totalVisualizations}</li>
-						<li>Active Requests: {stats.activeRequests.length}</li>
-						<li>Failed Requests: {stats.failedRequests.length}</li>
-					</ul>
+					<div className="stats-grid">
+						<div className="stat-card">
+							<div className="stat-value">{stats.totalMatrices}</div>
+							<div className="stat-label">My Matrices</div>
+						</div>
+						<div className="stat-card stat-card-accent-2">
+							<div className="stat-value stat-value-2">{stats.totalVisualizations}</div>
+							<div className="stat-label">Visualizations</div>
+						</div>
+						<div className="stat-card">
+							<div className="stat-value">{stats.activeRequests.length}</div>
+							<div className="stat-label">Active Requests</div>
+						</div>
+						<div className="stat-card stat-card-accent-2">
+							<div className="stat-value stat-value-2">{stats.failedRequests.length}</div>
+							<div className="stat-label">Failed Requests</div>
+						</div>
+					</div>
+
+					<div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
+						<Link href="/matrices" className="btn btn-primary">Upload Matrix</Link>
+						<Link href="/visualizations" className="btn btn-secondary">Visualizations</Link>
+					</div>
+
 					{stats.activeRequests.length > 0 && (
-						<div>
-							<h3>Active Requests</h3>
-							<ul>
-								{stats.activeRequests.map((req) => (
-									<li key={req.id}>
-										{req.name} — {req.status}
-									</li>
-								))}
-							</ul>
+						<div className="card" style={{ marginBottom: '1rem' }}>
+							<div className="card-header">
+								Active Requests
+								<span className="badge badge-blue">{stats.activeRequests.length}</span>
+							</div>
+							<div className="card-body" style={{ padding: 0 }}>
+								<table>
+									<tbody>
+										{stats.activeRequests.map((req) => (
+											<tr key={req.id}>
+												<td>{req.name}</td>
+												<td>
+													<span className="badge badge-gold">{req.status}</span>
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							</div>
 						</div>
 					)}
+
 					{stats.failedRequests.length > 0 && (
-						<div>
-							<h3>Failed Requests</h3>
-							<ul>
-								{stats.failedRequests.map((req) => (
-									<li key={req.id}>
-										{req.name} — {req.status}
-									</li>
-								))}
-							</ul>
+						<div className="card">
+							<div className="card-header">
+								Failed Requests
+								<span className="badge badge-red">{stats.failedRequests.length}</span>
+							</div>
+							<div className="card-body" style={{ padding: 0 }}>
+								<table>
+									<tbody>
+										{stats.failedRequests.map((req) => (
+											<tr key={req.id}>
+												<td>{req.name}</td>
+												<td>
+													<span className="badge badge-red">{req.status}</span>
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							</div>
 						</div>
 					)}
 				</>

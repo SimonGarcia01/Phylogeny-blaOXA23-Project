@@ -1,5 +1,6 @@
 'use client';
 
+import TreeVisualization from '@/components/TreeVisualization/TreeVisualization';
 import { VisualizationDetail } from '@/interfaces/visualizations.interfaces';
 import { getApiError } from '@/libs/errors';
 import visualizationsService from '@/services/visualizations.service';
@@ -18,8 +19,8 @@ export default function VisualizationDetailPage() {
 	const [saving, setSaving] = useState(false);
 	const [error, setError] = useState('');
 
-	// Tree state
 	const [treeContent, setTreeContent] = useState<string | null>(null);
+	const [showTree, setShowTree] = useState(false);
 	const [treeLoading, setTreeLoading] = useState(false);
 	const [treeError, setTreeError] = useState('');
 
@@ -68,12 +69,13 @@ export default function VisualizationDetailPage() {
 	}
 
 	async function handleSeeTree() {
-		setTreeContent(null);
 		setTreeError('');
+		if (treeContent) { setShowTree(true); return; }
 		setTreeLoading(true);
 		try {
 			const content = await visualizationsService.getTree(id);
 			setTreeContent(content);
+			setShowTree(true);
 		} catch (err) {
 			setTreeError(getApiError(err));
 		} finally {
@@ -81,98 +83,138 @@ export default function VisualizationDetailPage() {
 		}
 	}
 
-	if (loading) return <p>Loading...</p>;
-	if (!visualization && error) return <p style={{ color: 'red' }}>{error}</p>;
-	if (!visualization) return <p>Visualization not found.</p>;
+	if (loading) return <div className="loading-state">Loading…</div>;
+	if (!visualization && error) return <div className="form-error" style={{ margin: '2rem' }}>{error}</div>;
+	if (!visualization) return <div className="loading-state">Visualization not found.</div>;
 
 	const isReady = visualization.fileSize != null;
 
 	return (
 		<div>
-			<h2>Visualization Detail</h2>
-			{error && <p style={{ color: 'red' }}>{error}</p>}
-
-			<p>Name: {visualization.name ?? '-'}</p>
-			<p>Created: {visualization.createdAt ? new Date(visualization.createdAt).toLocaleDateString() : '-'}</p>
-			<p>
-				Status:{' '}
-				{isReady ? (
-					<strong>Ready</strong>
-				) : (
-					<em style={{ color: '#888' }}>Pending — analysis in progress</em>
-				)}
-			</p>
-			<p>File Size: {isReady ? `${visualization.fileSize} bytes` : <em>pending</em>}</p>
-			{visualization.relatedMatrixId && <p>Related Matrix: {visualization.relatedMatrixId}</p>}
-
-			<hr />
-			<h3>Edit</h3>
-			<form onSubmit={handleUpdate}>
+			<div className="page-header">
 				<div>
-					<label htmlFor="name">Name:</label>
-					<input
-						id="name"
-						type="text"
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-						disabled={saving}
-					/>
+					<h1 className="page-title">{visualization.name ?? 'Visualization'}</h1>
+					<p className="page-subtitle">Visualization detail</p>
 				</div>
-				<div>
-					<label htmlFor="description">Description:</label>
-					<input
-						id="description"
-						type="text"
-						value={description}
-						onChange={(e) => setDescription(e.target.value)}
-						disabled={saving}
-					/>
-				</div>
-				<button type="submit" disabled={saving}>
-					{saving ? 'Saving...' : 'Save'}
+				<button className="btn btn-secondary" onClick={() => router.push('/visualizations')}>
+					← Back
 				</button>
-			</form>
+			</div>
 
-			<hr />
-			<h3>Phylogenetic Tree</h3>
-			{isReady ? (
-				<>
-					<button onClick={handleSeeTree} disabled={treeLoading}>
-						{treeLoading ? 'Loading tree...' : 'See Tree'}
-					</button>
-					{treeError && <p style={{ color: 'red' }}>{treeError}</p>}
-					{treeContent !== null && (
-						<pre
-							style={{
-								marginTop: '1rem',
-								padding: '1rem',
-								background: '#f4f4f4',
-								border: '1px solid #ccc',
-								overflowX: 'auto',
-								whiteSpace: 'pre-wrap',
-								wordBreak: 'break-all',
-								fontFamily: 'monospace',
-								fontSize: '0.85rem',
-							}}
-						>
-							{treeContent}
-						</pre>
+			{error && <div className="form-error">{error}</div>}
+
+			{/* Info */}
+			<div className="card" style={{ marginBottom: '1.25rem' }}>
+				<div className="card-header">Overview</div>
+				<div className="card-body">
+					<div className="info-grid">
+						<div className="info-item">
+							<div className="info-key">Status</div>
+							<div className="info-val">
+								{isReady ? (
+									<span className="badge badge-green">Ready</span>
+								) : (
+									<span className="badge badge-gold">Pending</span>
+								)}
+							</div>
+						</div>
+						<div className="info-item">
+							<div className="info-key">Created</div>
+							<div className="info-val">
+								{visualization.createdAt
+									? new Date(visualization.createdAt).toLocaleString()
+									: '—'}
+							</div>
+						</div>
+						{visualization.relatedMatrixId && (
+							<div className="info-item">
+								<div className="info-key">Matrix</div>
+								<div className="info-val">{visualization.relatedMatrixId}</div>
+							</div>
+						)}
+						{isReady && (
+							<div className="info-item">
+								<div className="info-key">File Size</div>
+								<div className="info-val">{visualization.fileSize?.toLocaleString()} bytes</div>
+							</div>
+						)}
+					</div>
+				</div>
+			</div>
+
+			{/* Tree */}
+			<div className="card" style={{ marginBottom: '1.25rem' }}>
+				<div className="card-header">Phylogenetic Tree</div>
+				<div className="card-body">
+					{isReady ? (
+						<>
+							<p style={{ color: 'var(--ink-muted)', fontSize: '0.875rem', marginBottom: '0.75rem' }}>
+								Interactive SVG phylogram with proportional branch lengths and bootstrap
+								support values. Click any internal node to reroot.
+							</p>
+							<button
+								className="btn btn-primary"
+								onClick={handleSeeTree}
+								disabled={treeLoading}
+							>
+								{treeLoading ? 'Loading tree…' : 'See Tree'}
+							</button>
+							{treeError && (
+								<div className="form-error" style={{ marginTop: '0.75rem' }}>{treeError}</div>
+							)}
+						</>
+					) : (
+						<p style={{ color: 'var(--ink-muted)', fontSize: '0.875rem', margin: 0 }}>
+							The tree will be available once the RAxML-NG analysis completes.
+						</p>
 					)}
-				</>
-			) : (
-				<p>
-					<button disabled title="Analysis still in progress">
-						See Tree
-					</button>{' '}
-					<em style={{ color: '#888' }}>Tree will be available once analysis completes.</em>
-				</p>
-			)}
+				</div>
+			</div>
 
-			<hr />
-			<button onClick={handleDelete}>Delete Visualization</button>
-			<br />
-			<br />
-			<button onClick={() => router.push('/visualizations')}>Back to Visualizations</button>
+			{/* Edit */}
+			<div className="card" style={{ marginBottom: '1.25rem' }}>
+				<div className="card-header">Edit Details</div>
+				<div className="card-body">
+					<form onSubmit={handleUpdate}>
+						<div className="form-group">
+							<label className="form-label" htmlFor="name">Name</label>
+							<input
+								id="name"
+								type="text"
+								value={name}
+								onChange={(e) => setName(e.target.value)}
+								disabled={saving}
+							/>
+						</div>
+						<div className="form-group">
+							<label className="form-label" htmlFor="description">Description</label>
+							<input
+								id="description"
+								type="text"
+								value={description}
+								onChange={(e) => setDescription(e.target.value)}
+								disabled={saving}
+							/>
+						</div>
+						<button type="submit" disabled={saving} className="btn btn-primary">
+							{saving ? 'Saving…' : 'Save Changes'}
+						</button>
+					</form>
+				</div>
+			</div>
+
+			{/* Danger zone */}
+			<div className="danger-zone">
+				<div className="danger-zone-title">Danger Zone</div>
+				<p>Deleting a visualization cannot be undone.</p>
+				<button className="btn btn-danger" onClick={handleDelete}>
+					Delete Visualization
+				</button>
+			</div>
+
+			{showTree && treeContent && (
+				<TreeVisualization newick={treeContent} onClose={() => setShowTree(false)} />
+			)}
 		</div>
 	);
 }

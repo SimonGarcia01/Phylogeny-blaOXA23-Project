@@ -50,9 +50,6 @@ export default function MatricesPage() {
 		setError('');
 		try {
 			setUploading(true);
-
-			// Upload goes through the Next.js API route so the server (inside Docker)
-			// can reach minio:9000 directly with the presigned URL — no hostname issue.
 			const token = useAuthStore.getState().token;
 			const formData = new FormData();
 			formData.append('file', file);
@@ -84,87 +81,120 @@ export default function MatricesPage() {
 		}
 	}
 
-	if (loading) return <p>Loading...</p>;
+	if (loading) return <div className="loading-state">Loading matrices…</div>;
 
 	return (
 		<div>
-			<h2>Matrices</h2>
-			{error && <p style={{ color: 'red' }}>{error}</p>}
-			<button onClick={() => { setShowCreate(!showCreate); setError(''); }}>
-				{showCreate ? 'Cancel' : 'Upload Matrix'}
-			</button>
+			<div className="page-header">
+				<div>
+					<h1 className="page-title">Matrices</h1>
+					<p className="page-subtitle">Manage your sequence alignment files</p>
+				</div>
+				<button
+					className={showCreate ? 'btn btn-secondary' : 'btn btn-primary'}
+					onClick={() => { setShowCreate(!showCreate); setError(''); }}
+				>
+					{showCreate ? 'Cancel' : 'Upload Matrix'}
+				</button>
+			</div>
+
+			{error && <div className="form-error">{error}</div>}
 
 			{showCreate && (
-				<form onSubmit={handleCreate}>
-					<div>
-						<label htmlFor="name">Name:</label>
-						<input
-							id="name"
-							type="text"
-							value={name}
-							onChange={(e) => setName(e.target.value)}
-							required
-							disabled={uploading}
-						/>
-					</div>
-					<div>
-						<label htmlFor="description">Description:</label>
-						<input
-							id="description"
-							type="text"
-							value={description}
-							onChange={(e) => setDescription(e.target.value)}
-							disabled={uploading}
-						/>
-					</div>
-					<div>
-						<label htmlFor="file">File (.nex only):</label>
-						<input
-							ref={fileInputRef}
-							id="file"
-							type="file"
-							accept=".nex"
-							onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-							required
-							disabled={uploading}
-						/>
-					</div>
-					<button type="submit" disabled={uploading}>
-						{uploading ? 'Uploading...' : 'Upload'}
-					</button>
-				</form>
+				<div className="create-panel">
+					<p className="create-panel-title">New Matrix</p>
+					<form onSubmit={handleCreate}>
+						<div className="form-row">
+							<div className="form-group">
+								<label className="form-label" htmlFor="name">Name</label>
+								<input
+									id="name"
+									type="text"
+									value={name}
+									onChange={(e) => setName(e.target.value)}
+									placeholder="e.g. blaOXA-23 alignment"
+									required
+									disabled={uploading}
+								/>
+							</div>
+							<div className="form-group">
+								<label className="form-label" htmlFor="description">Description (optional)</label>
+								<input
+									id="description"
+									type="text"
+									value={description}
+									onChange={(e) => setDescription(e.target.value)}
+									placeholder="Short description"
+									disabled={uploading}
+								/>
+							</div>
+						</div>
+						<div className="form-group">
+							<label className="form-label" htmlFor="file">NEXUS File (.nex)</label>
+							<input
+								ref={fileInputRef}
+								id="file"
+								type="file"
+								accept=".nex"
+								onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+								required
+								disabled={uploading}
+							/>
+						</div>
+						<button type="submit" disabled={uploading} className="btn btn-primary">
+							{uploading ? 'Uploading…' : 'Upload'}
+						</button>
+					</form>
+				</div>
 			)}
 
-			<br />
-			<table>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Uploaded At</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{matrices.map((m) => (
-						<tr key={m.matrixId}>
-							<td>
-								<Link href={`/matrices/${m.matrixId}`}>{m.name ?? m.matrixId}</Link>
-							</td>
-							<td>{m.uploadedAt ? new Date(m.uploadedAt).toLocaleDateString() : '-'}</td>
-							<td>
-								<Link href={`/matrices/${m.matrixId}`}>Edit</Link>
-								{' | '}
-								<button onClick={() => handleDelete(m.matrixId)}>Delete</button>
-							</td>
-						</tr>
-					))}
-					{matrices.length === 0 && (
+			<div className="card">
+				<table>
+					<thead>
 						<tr>
-							<td colSpan={3}>No matrices found.</td>
+							<th>Name</th>
+							<th>Uploaded At</th>
+							<th style={{ width: '120px' }}>Actions</th>
 						</tr>
-					)}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{matrices.map((m) => (
+							<tr key={m.matrixId}>
+								<td>
+									<Link href={`/matrices/${m.matrixId}`} style={{ fontWeight: 500 }}>
+										{m.name ?? m.matrixId}
+									</Link>
+								</td>
+								<td style={{ color: 'var(--ink-muted)', fontSize: '0.875rem' }}>
+									{m.uploadedAt ? new Date(m.uploadedAt).toLocaleDateString() : '—'}
+								</td>
+								<td>
+									<div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+										<Link href={`/matrices/${m.matrixId}`} className="btn btn-ghost btn-sm">
+											Edit
+										</Link>
+										<button
+											className="btn btn-danger btn-sm"
+											onClick={() => handleDelete(m.matrixId)}
+										>
+											Delete
+										</button>
+									</div>
+								</td>
+							</tr>
+						))}
+						{matrices.length === 0 && (
+							<tr>
+								<td colSpan={3}>
+									<div className="empty-state">
+										<p>No matrices yet. Upload your first alignment file to get started.</p>
+									</div>
+								</td>
+							</tr>
+						)}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	);
 }

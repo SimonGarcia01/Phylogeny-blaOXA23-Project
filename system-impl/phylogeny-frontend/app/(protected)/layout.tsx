@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
-	const token = useAuthStore((store) => store.token);
-	const hasHydrated = useAuthStore((store) => store.hasHydrated);
+	const token = useAuthStore((s) => s.token);
+	const hasHydrated = useAuthStore((s) => s.hasHydrated);
 	const router = useRouter();
 
 	useEffect(() => {
@@ -21,9 +21,9 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
 	}
 
 	return (
-		<div style={{ display: 'flex' }}>
+		<>
 			<Sidebar />
-			<div style={{ flex: 1, padding: '1rem' }}>{children}</div>
-		</div>
+			<div className="app-body">{children}</div>
+		</>
 	);
 }
