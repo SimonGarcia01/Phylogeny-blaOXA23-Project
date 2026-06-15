@@ -1,98 +1,246 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# phylogeny-app
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+The NestJS REST API that sits at the centre of the PhyloGen system. It handles authentication, data persistence, file storage coordination, and delegates long-running analyses to the `matrix-analyzer` microservice.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## Tech stack
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+| Concern | Technology |
+|---|---|
+| Framework | NestJS 10 |
+| Language | TypeScript 5 |
+| Database | PostgreSQL 16 via TypeORM |
+| Authentication | Passport-JWT (Bearer tokens) |
+| Password hashing | bcrypt |
+| Object storage | MinIO (S3-compatible) via the `minio` SDK |
+| HTTP client | Axios (via `@nestjs/axios`) |
+| Validation | `class-validator` + `class-transformer` |
+| Testing | Jest + Supertest (unit + e2e, ≥80% coverage) |
 
-## Project setup
+---
 
-```bash
-$ npm install
+## Project structure
+
+```
+src/
+├── auth/
+│   ├── auth.controller.ts       # POST /auth/login, /auth/signup
+│   ├── auth.service.ts          # Credential validation, JWT signing
+│   ├── strategies/
+│   │   └── jwt.strategy.ts      # Passport JWT strategy
+│   ├── users/                   # User CRUD
+│   ├── roles/                   # Role management
+│   ├── permissions/             # Permission management
+│   └── roles-permissions/       # Many-to-many: assign permissions to roles
+├── matrices/                    # Matrix upload flow and metadata
+├── visualizations/              # Visualization lifecycle (analyze → finalize → view)
+├── matrix-requests/             # Job tracking (PENDING / PROCESSING / COMPLETED / FAILED)
+├── dashboards/                  # Aggregated stats for user and admin dashboards
+└── common/
+    ├── decorators/              # @CurrentUser(), @Public(), @Internal(), @Permissions()
+    ├── guards/                  # JwtAuthGuard, PermissionsGuard, RolesGuard, InternalSecretGuard
+    ├── exceptions/              # BusinessRuleViolationException (422), DbIntegrityException (409)
+    └── utils/
+        ├── minio/               # MinIO service (presigned URLs, bucket management)
+        ├── seed/                # Database seeder (roles, permissions, example users)
+        └── api/                 # HTTP client for calling the matrix-analyzer microservice
 ```
 
-## Compile and run the project
+---
 
-```bash
-# development
-$ npm run start
+## Authentication and authorization
 
-# watch mode
-$ npm run start:dev
+The API uses **JWT Bearer tokens**. Every protected endpoint requires an `Authorization: Bearer <token>` header.
 
-# production mode
-$ npm run start:prod
+### Guards
+
+| Guard | Applied to | Behaviour |
+|---|---|---|
+| `JwtAuthGuard` | All routes (global) | Validates the JWT; skips routes marked `@Public()` or `@Internal()` |
+| `PermissionsGuard` | Routes with `@Permissions(...)` | Checks the user's role permissions against the required list |
+| `RolesGuard` | Routes with `@Roles(...)` | Checks the user's role name |
+| `InternalSecretGuard` | Routes marked `@Internal()` | Validates `x-internal-secret` header; no JWT required |
+
+### Roles
+
+| Role | What they can do |
+|---|---|
+| `Admin` | Full access to all resources, user management, role/permission management |
+| `Researcher` | CRUD on their own matrices and visualizations; read their matrix requests |
+
+---
+
+## API reference
+
+### Auth — `POST /auth/login` / `POST /auth/signup`
+
+Login returns a JWT and the user profile. Signup creates the account and returns the same shape.
+
+```json
+// Response
+{
+  "token": "eyJhbGciOiJIUzI1NiIs...",
+  "user": {
+    "id": 1,
+    "email": "researcher1@example.com",
+    "firstName": "Researcher",
+    "lastName": "One",
+    "role": "Researcher"
+  }
+}
 ```
 
-## Run tests
+### Matrices
 
-```bash
-# unit tests
-$ npm run test
+| Method | Path | Description |
+|---|---|---|
+| `POST` | `/matrices/get-matrix-upload-url` | Generate a presigned MinIO PUT URL for the client to upload directly |
+| `POST` | `/matrices` | Register the uploaded matrix metadata |
+| `GET` | `/matrices` | List the current user's matrices |
+| `GET` | `/matrices/:id` | Get one matrix (ownership enforced) |
+| `PATCH` | `/matrices/:id` | Update name / description |
+| `DELETE` | `/matrices/:id` | Delete metadata and the file from MinIO |
 
-# e2e tests
-$ npm run test:e2e
+### Visualizations
 
-# test coverage
-$ npm run test:cov
+| Method | Path | Description |
+|---|---|---|
+| `POST` | `/visualizations/analyze` | Trigger analysis for a matrix (creates a Visualization + MatrixRequest, calls the microservice) |
+| `GET` | `/visualizations` | List the current user's visualizations |
+| `GET` | `/visualizations/:id` | Get one visualization |
+| `PATCH` | `/visualizations/:id` | Update name / description / linked matrix |
+| `DELETE` | `/visualizations/:id` | Delete visualization and result file from MinIO |
+| `GET` | `/visualizations/:id/tree` | Get the presigned download URL for the Newick tree |
+
+### Matrix Requests
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/matrix-requests` | List the current user's job history |
+
+### Dashboards
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/dashboards/my` | Personal stats (matrix count, visualization count, requests today, failed count) |
+| `GET` | `/dashboards/admin` | System-wide stats (requires Admin role) |
+
+### Admin — Users / Roles / Permissions
+
+Standard CRUD available at `/users`, `/roles`, `/permissions`, `/roles-permissions`.  
+All require Admin role and the corresponding permission (e.g., `USERS_READ`).
+
+### Seed
+
+| Method | Path | Description |
+|---|---|---|
+| `POST` | `/seed` | Seeds the database with roles, permissions, and example users. Idempotent — safe to call only once (returns 200 if already seeded). |
+
+---
+
+## Matrix upload flow (detailed)
+
+The client uploads files in three steps to avoid routing large binary data through the API server:
+
+```
+1. POST /matrices/get-matrix-upload-url
+       → returns { matrixId, objectKey, uploadUrl }
+
+2. PUT <uploadUrl>    (direct MinIO upload from the browser)
+       → 200 OK from MinIO
+
+3. POST /matrices     { matrixId, name, objectKey, mimeType, fileSize }
+       → 201 Created
 ```
 
-## Deployment
+Accepted file type: `.nex` (Nexus alignment format), `application/octet-stream`, max 10 MB.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+---
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Analysis flow (detailed)
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+```
+POST /visualizations/analyze  { matrixId }
+  │
+  ├─ Verify ownership of the matrix
+  ├─ Create Visualization record (status: pending)
+  ├─ Create MatrixRequest record (status: PENDING)
+  ├─ POST http://matrix-analyzer:8000/analysis/analyze_matrix
+  │     (x-internal-secret header)
+  └─ Return { status: 'PENDING', matrixRequestId }
+
+  ... asynchronously in the Celery worker ...
+
+  POST /visualizations/finalize/:id   (called by worker — internal route)
+    → sets fileSize on the Visualization
+
+  PATCH /matrix-requests/:id/status   (called by worker — internal route)
+    → updates status to PROCESSING / COMPLETED / FAILED
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## Environment variables
 
-Check out a few resources that may come in handy when working with NestJS:
+Copy `.env.example` to `.env`:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```env
+PORT=3001
 
-## Support
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+DB_DATABASE=phylogenydb
+DB_SYNCHRONIZE=true          # set to false in production
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+JWT_SECRET=change_this_to_a_strong_secret
+JWT_EXPIRES_IN=1h
+SALT_ROUNDS=10
 
-## Stay in touch
+MINIO_ENDPOINT=localhost
+MINIO_PORT=9000
+MINIO_USE_SSL=false
+MINIO_ACCESS_KEY=minio
+MINIO_SECRET_KEY=minio123
+MINIO_MATRIX_BUCKET=matrices
+MINIO_VISUALIZATION_BUCKET=visualizations
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+INTERNAL_SECRET=change_this_to_a_strong_internal_secret
+MICROSERVICE_URL=http://localhost:8000
+FRONT_ORIGIN=http://localhost:3000
+```
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## Running locally (without Docker)
+
+```bash
+cd phylogeny-app
+npm install
+cp .env.example .env    # edit as needed
+
+npm run start:dev       # development mode with hot reload
+npm run start           # production mode
+```
+
+You need a running PostgreSQL instance and a running MinIO instance. Point `DB_HOST` and `MINIO_ENDPOINT` to them in `.env`.
+
+---
+
+## Testing
+
+```bash
+# Unit tests
+npm run test
+
+# Unit tests with coverage (≥80% required across all metrics)
+npm run test:cov
+
+# E2E tests (no real database required — controllers are tested in isolation)
+npm run test:e2e
+```
+
+Test files live alongside source files (`*.spec.ts`) and in `test/` for e2e.  
+Guards, services, controllers, utilities, and the seed service all have dedicated test suites.
