@@ -45,16 +45,20 @@ def run_jmodeltest(phy_path: str, job_dir: str, criterion: str) -> JModelTestRes
     output_path_normalized: str = str(Path(output_path).resolve())
 
     cmd: list[str] = [
-        'java', '-jar', jar_path,
-        '-d', phy_path_normalized,
-        '-g', '4',
+        'java',
+        '-jar',
+        jar_path,
+        '-d',
+        phy_path_normalized,
+        '-g',
+        '4',
         '-i',
         '-f',
         f'-{criterion}',
         '-a',
-        '-o', output_path_normalized,
+        '-o',
+        output_path_normalized,
     ]
-
 
     try:
         result: subprocess.CompletedProcess[str] = subprocess.run(
@@ -72,9 +76,7 @@ def run_jmodeltest(phy_path: str, job_dir: str, criterion: str) -> JModelTestRes
 
     if result.returncode != 0:
         raise RuntimeError(
-            f'JModelTest2 failed (exit {result.returncode}):\n'
-            f'STDOUT:\n{result.stdout}\n'
-            f'STDERR:\n{result.stderr}'
+            f'JModelTest2 failed (exit {result.returncode}):\nSTDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}'
         )
 
     best_model: str = _parse_best_model(output_path_normalized, criterion)
@@ -123,10 +125,7 @@ def _parse_best_model(output_path: str, criterion: str) -> str:
                 return model
 
     # If still not found, dump relevant lines to help debug
-    relevant: str = '\n'.join(
-        l.rstrip() for l in lines
-        if 'model' in l.lower() and not l.strip().startswith('(')
-    )
+    relevant: str = '\n'.join(l.rstrip() for l in lines if 'model' in l.lower() and not l.strip().startswith('('))
     raise RuntimeError(
         f'Could not parse best model from JModelTest2 output.\n'
         f'Criterion: {criterion}\n'

@@ -11,9 +11,9 @@ from app.core.config import settings
 
 @dataclass
 class RAxMLResult:
-    best_tree_path: str       # .raxml.bestTree
-    bootstraps_path: str      # .raxml.bootstraps
-    support_path: str         # .raxml.support  ← tree annotated with bootstrap values
+    best_tree_path: str  # .raxml.bestTree
+    bootstraps_path: str  # .raxml.bootstraps
+    support_path: str  # .raxml.support  ← tree annotated with bootstrap values
     prefix: str
 
 
@@ -30,7 +30,7 @@ def _translate_model(jmodeltest_model: str) -> str:
     base_renames: dict[str, str] = {'JC': 'JC69'}
     for old, new in base_renames.items():
         if model == old or model.startswith(old + '+'):
-            model = new + model[len(old):]
+            model = new + model[len(old) :]
             break
 
     # Replace bare +G with +G4 (but leave +G4 alone if already explicit)
@@ -55,14 +55,20 @@ def run_raxml(phy_path: str, job_dir: str, best_model: str, prefix: str) -> RAxM
 
     cmd: list[str] = [
         raxml_bin,
-        '--all',                        # ML search + bootstrapping in one run
-        '--msa', phy_path_normalized,   # input alignment
-        '--model', raxml_model,         # model translated from JModelTest2
-        '--prefix', prefix_path,        # output prefix path
-        '--bs-trees', '100',            # number of bootstrap replicates
-        '--seed', '12345',              # reproducibility
-        '--threads', '2',               # safe default for a container
-        '--redo',                       # overwrite if files already exist
+        '--all',  # ML search + bootstrapping in one run
+        '--msa',
+        phy_path_normalized,  # input alignment
+        '--model',
+        raxml_model,  # model translated from JModelTest2
+        '--prefix',
+        prefix_path,  # output prefix path
+        '--bs-trees',
+        '100',  # number of bootstrap replicates
+        '--seed',
+        '12345',  # reproducibility
+        '--threads',
+        '2',  # safe default for a container
+        '--redo',  # overwrite if files already exist
     ]
 
     try:
@@ -70,22 +76,17 @@ def run_raxml(phy_path: str, job_dir: str, best_model: str, prefix: str) -> RAxM
             cmd,
             capture_output=True,
             text=True,
-            timeout=3600,   # 1 hour — large datasets can take a while
+            timeout=3600,  # 1 hour — large datasets can take a while
             cwd=job_dir,
         )
     except subprocess.TimeoutExpired:
         raise RuntimeError('RAxML-NG timed out after 1 hour.')
     except FileNotFoundError:
-        raise RuntimeError(
-            f'RAxML-NG binary not found at {raxml_bin}. '
-            f'Make sure the binary exists and is executable.'
-        )
+        raise RuntimeError(f'RAxML-NG binary not found at {raxml_bin}. Make sure the binary exists and is executable.')
 
     if result.returncode != 0:
         raise RuntimeError(
-            f'RAxML-NG failed (exit {result.returncode}):\n'
-            f'STDOUT:\n{result.stdout}\n'
-            f'STDERR:\n{result.stderr}'
+            f'RAxML-NG failed (exit {result.returncode}):\nSTDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}'
         )
 
     # Verify expected output files exist
@@ -93,10 +94,7 @@ def run_raxml(phy_path: str, job_dir: str, best_model: str, prefix: str) -> RAxM
     bootstraps_path: str = f'{prefix_path}.raxml.bootstraps'
     support_path: str = f'{prefix_path}.raxml.support'
 
-    missing: list[str] = [
-        p for p in [best_tree_path, bootstraps_path, support_path]
-        if not os.path.exists(p)
-    ]
+    missing: list[str] = [p for p in [best_tree_path, bootstraps_path, support_path] if not os.path.exists(p)]
 
     if missing:
         raise RuntimeError(

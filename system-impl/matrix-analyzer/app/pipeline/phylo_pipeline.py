@@ -28,8 +28,8 @@ def run_phylo_pipeline(
                 job_dir=job_dir,
             )
             print(f'[pipeline] Downloaded to: {download.local_path}')
-            print("[pipeline] Size of the downloaded file :", os.path.getsize(download.local_path), " bytes")
-            with open(download.local_path, "r", encoding="utf-8", errors="ignore") as f:
+            print('[pipeline] Size of the downloaded file :', os.path.getsize(download.local_path), ' bytes')
+            with open(download.local_path, 'r', encoding='utf-8', errors='ignore') as f:
                 print(f.read(500))
         except Exception as e:
             nest.mark_failed(request.matrix_request_id, f'Failed to download matrix file: {e}')
@@ -53,7 +53,7 @@ def run_phylo_pipeline(
             jmodel_result: JModelTestResult = run_jmodeltest(phy_path, job_dir, criterion)
             print(f'[pipeline] Raw best model string length: {len(jmodel_result.best_model)}')
             print(f'[pipeline] Best model: {jmodel_result.best_model} (by {criterion})')
-            
+
         except Exception as e:
             nest.mark_failed(request.matrix_request_id, f'JModelTest2 failed: {e}')
             raise

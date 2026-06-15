@@ -1,3 +1,5 @@
+from typing import Any, cast
+
 from fastapi import APIRouter, Depends
 from app.dependencies.internal_auth import verify_internal_secret
 from app.schemas.analysis import MatrixAnalysisRequest, MatrixAnalysisResponse
@@ -12,5 +14,5 @@ router: APIRouter = APIRouter(
 async def analyze_matrix(
     matrixRequest: MatrixAnalysisRequest,
 ) -> MatrixAnalysisResponse:
-    run_analysis_task.delay(matrixRequest.model_dump())
+    cast(Any, run_analysis_task).delay(matrixRequest.model_dump())
     return MatrixAnalysisResponse(task_id=f'queued:{matrixRequest.visualization_id}')
