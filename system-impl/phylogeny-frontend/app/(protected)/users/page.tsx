@@ -74,13 +74,15 @@ export default function UsersPage() {
 			<div className="page-header">
 				<div>
 					<h1 className="page-title">Users</h1>
-					<p className="page-subtitle">Manage researcher and admin accounts</p>
+					<p className="page-subtitle">
+						{users.length} account{users.length !== 1 ? 's' : ''} — researchers and admins
+					</p>
 				</div>
 				<button
 					className={showCreate ? 'btn btn-secondary' : 'btn btn-primary'}
 					onClick={() => { setShowCreate(!showCreate); setError(''); }}
 				>
-					{showCreate ? 'Cancel' : 'Create User'}
+					{showCreate ? 'Cancel' : '+ Create User'}
 				</button>
 			</div>
 
@@ -133,7 +135,7 @@ export default function UsersPage() {
 				<table>
 					<thead>
 						<tr>
-							<th>Name</th>
+							<th>User</th>
 							<th>Email</th>
 							<th>Role</th>
 							<th style={{ width: '120px' }}>Actions</th>
@@ -142,8 +144,13 @@ export default function UsersPage() {
 					<tbody>
 						{users.map((u, index) => (
 							<tr key={u.id ?? u.email ?? index}>
-								<td style={{ fontWeight: 500 }}>
-									{u.firstName} {u.lastName}
+								<td>
+									<div className="user-name-cell">
+										<span className="user-avatar">
+											{(u.firstName?.[0] ?? '?')}{(u.lastName?.[0] ?? '')}
+										</span>
+										<span style={{ fontWeight: 500 }}>{u.firstName} {u.lastName}</span>
+									</div>
 								</td>
 								<td style={{ color: 'var(--ink-muted)', fontSize: '0.875rem' }}>{u.email}</td>
 								<td>

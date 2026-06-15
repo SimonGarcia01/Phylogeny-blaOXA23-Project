@@ -21,6 +21,13 @@ const rolesService = {
 	async remove(id: number): Promise<{ message: string }> {
 		return apiClient.delete<{ message: string }>(`/roles/${id}`);
 	},
+
+	async setPermissions(roleId: number, permissionIds: number[]): Promise<{ message: string }> {
+		return apiClient.put<{ message: string }, { permissionIds: number[] }>(
+			`/roles-permissions/role/${roleId}`,
+			{ permissionIds },
+		);
+	},
 };
 
 export default rolesService;

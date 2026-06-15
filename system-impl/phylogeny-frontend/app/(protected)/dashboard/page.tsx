@@ -1,5 +1,6 @@
 'use client';
 
+import BioBackground from '@/components/BioBackground/BioBackground';
 import { AdminDashboardStats, DashboardStats } from '@/interfaces/dashboard.interfaces';
 import dashboardService from '@/services/dashboard.service';
 import { useAuthStore } from '@/stores/auth.store';
@@ -35,7 +36,9 @@ export default function GeneralDashboardPage() {
 
 	if (isAdmin && adminStats) {
 		return (
-			<div>
+			<div style={{ position: 'relative', minHeight: 'calc(100vh - 64px)' }}>
+			<BioBackground />
+			<div style={{ position: 'relative', zIndex: 1 }}>
 				<div className="page-header">
 					<div>
 						<h1 className="page-title">Admin Dashboard</h1>
@@ -79,11 +82,14 @@ export default function GeneralDashboardPage() {
 					<Link href="/visualizations" className="btn btn-secondary">Visualizations</Link>
 				</div>
 			</div>
+			</div>
 		);
 	}
 
 	return (
-		<div>
+		<div style={{ position: 'relative', minHeight: 'calc(100vh - 64px)' }}>
+		<BioBackground />
+		<div style={{ position: 'relative', zIndex: 1 }}>
 			<div className="page-header">
 				<div>
 					<h1 className="page-title">Dashboard</h1>
@@ -166,6 +172,7 @@ export default function GeneralDashboardPage() {
 					)}
 				</>
 			)}
+		</div>
 		</div>
 	);
 }

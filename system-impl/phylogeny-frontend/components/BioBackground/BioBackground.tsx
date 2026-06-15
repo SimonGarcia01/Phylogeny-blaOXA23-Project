@@ -1,129 +1,227 @@
 'use client';
 
-import { useId, useMemo } from 'react';
+import { useEffect, useId, useRef } from 'react';
 
-// ── Layout constants ──────────────────────────────────────────────────────────
+// ── Geometry constants ────────────────────────────────────────────────────────
 
 const W = 1200;
 const H = 800;
+const HELIX_CX   = 620;
+const COMPACT_A  = 78;
+const BREAK_A    = 215;
+const PERIOD     = 290;
+const Y_START    = -320;
+const Y_END      = 1180;
+const UNRAVEL_FRAC = 0.42;
+const PHASE_PERIOD_MS = 48000;
 
-// Helix axis runs vertically in local space, then the group is rotated -32°
-// so it goes diagonally bottom-right → top-left, matching the reference image.
-const HELIX_CX = 620;   // horizontal center of the helix axis
+const SPARKLES = [
+    { cx: HELIX_CX - 192, cy: -248, r: 1.9 },
+    { cx: HELIX_CX + 78,  cy: -172, r: 2.3 },
+    { cx: HELIX_CX - 258, cy:  -88, r: 1.5 },
+    { cx: HELIX_CX + 148, cy:  -14, r: 2.7 },
+    { cx: HELIX_CX - 126, cy:   44, r: 1.6 },
+    { cx: HELIX_CX + 208, cy:  118, r: 2.1 },
+    { cx: HELIX_CX - 296, cy:  182, r: 1.4 },
+    { cx: HELIX_CX + 64,  cy:  232, r: 2.5 },
+    { cx: HELIX_CX - 168, cy:  302, r: 1.8 },
+    { cx: HELIX_CX + 238, cy:  338, r: 1.3 },
+    { cx: HELIX_CX - 224, cy:  418, r: 1.7 },
+    { cx: HELIX_CX + 158, cy:  478, r: 2.0 },
+];
 
-const COMPACT_A = 75;   // backbone amplitude at the tight/compact end (bottom-right)
-const BREAK_A   = 210;  // backbone amplitude at the unraveling end (top-left)
-
-const PERIOD    = 290;  // px per full helix cycle
-const Y_START   = -320; // extends above viewport for gapless composition
-const Y_END     = 1180; // extends below viewport
-
-// The "unraveling" zone occupies the top 40% of the helix span
-const UNRAVEL_FRAC = 0.40;
-
-// ── Amplitude varies along the helix ─────────────────────────────────────────
-// Top (low y) = breaking/unraveling → large amplitude (strands pull apart)
-// Bottom (high y) = compact/wound   → small amplitude (classic double helix)
+// ── Amplitude (variable along the helix axis) ─────────────────────────────────
 
 function amplitudeAt(y: number): number {
     const span = Y_END - Y_START;
-    // t goes 0 → 1 from top to bottom
-    const t = (y - Y_START) / span;
-    // breakFactor is 1 at the very top, fades to 0 at the unravel boundary
+    const t  = (y - Y_START) / span;
     const bf = Math.max(0, 1 - t / UNRAVEL_FRAC);
-    // Smoothstep easing for a graceful transition
-    const eased = bf * bf * (3 - 2 * bf);
-    return COMPACT_A + (BREAK_A - COMPACT_A) * eased;
+    const sm = bf * bf * (3 - 2 * bf);
+    return COMPACT_A + (BREAK_A - COMPACT_A) * sm;
 }
 
-// ── Helix geometry ────────────────────────────────────────────────────────────
+// ── Dynamic backbone — updated every frame ────────────────────────────────────
 
-function buildHelix() {
-    // — Backbone polylines —
-    const pts1: string[] = [];
-    const pts2: string[] = [];
-
+function buildBackbone(phase: number): [string, string] {
+    let p1 = '';
+    let p2 = '';
     for (let y = Y_START; y <= Y_END; y += 2) {
-        const angle = (2 * Math.PI * y) / PERIOD;
+        const a = (2 * Math.PI * y) / PERIOD + phase;
         const A = amplitudeAt(y);
-        pts1.push(`${(HELIX_CX + A * Math.sin(angle)).toFixed(1)},${y}`);
-        pts2.push(`${(HELIX_CX + A * Math.sin(angle + Math.PI)).toFixed(1)},${y}`);
+        const s = Math.sin(a);
+        p1 += `${(HELIX_CX + A * s).toFixed(1)},${y} `;
+        p2 += `${(HELIX_CX - A * s).toFixed(1)},${y} `;
     }
+    return [p1, p2];
+}
 
-    // — Rung dots (base pairs) every half-period —
-    const rungs: Array<{
-        x1: number; x2: number; y: number;
-        front: boolean; inUnravelZone: boolean;
-    }> = [];
+// ── Dynamic rungs, dots & tethers — updated every 2nd frame ──────────────────
+// Rung positions are computed at the current phase so they track the strands.
 
+function buildDynamicSVG(
+    phase: number,
+    glowSm: string,
+    glowMd: string,
+    glowLg: string,
+): string {
     const unravelBoundaryY = Y_START + (Y_END - Y_START) * UNRAVEL_FRAC;
 
+    type Rung = { x1: number; x2: number; y: number; front: boolean; inUnravelZone: boolean };
+    const rungs: Rung[] = [];
+
     for (let y = Y_START; y <= Y_END; y += PERIOD / 2) {
-        const angle = (2 * Math.PI * y) / PERIOD;
+        const a = (2 * Math.PI * y) / PERIOD + phase;
         const A = amplitudeAt(y);
-        const x1 = HELIX_CX + A * Math.sin(angle);
-        const x2 = HELIX_CX + A * Math.sin(angle + Math.PI);
+        const s = Math.sin(a);
         rungs.push({
-            x1, x2, y,
-            front: Math.sin(angle) > 0,
+            x1: HELIX_CX + A * s,
+            x2: HELIX_CX - A * s,
+            y,
+            front: s > 0,
             inUnravelZone: y < unravelBoundaryY,
         });
     }
 
-    // — Drifting dots at the unraveling end —
-    // These are nucleotides that have "escaped" from the last few rungs.
-    // They drift away from the strand endpoints with faint tether lines.
-    type DriftDot = {
-        cx: number; cy: number; r: number;
-        fromX: number; fromY: number;
-    };
-    const driftDots: DriftDot[] = [];
+    type Dot = { cx: number; cy: number; r: number; fx: number; fy: number };
+    const driftDots: Dot[] = [];
+    const driftDots2: Dot[] = [];
 
-    // Take the 6 rungs deepest in the unravel zone (closest to Y_START)
-    const unravelRungs = rungs
-        .filter(r => r.inUnravelZone)
-        .slice(0, 6);
+    const unravelRungs = rungs.filter(r => r.inUnravelZone).slice(0, 12);
 
     unravelRungs.forEach((rung, i) => {
-        // How far are we into the unravel zone? (0 = top/max-broken, 1 = boundary)
-        const depth = (rung.y - Y_START) / (unravelBoundaryY - Y_START); // 0→1
-        const escape = 60 * (1 - depth) + 12;   // escape distance: max at depth=0
-        const dotR   = 6  + (1 - depth) * 5;    // larger dots at the far broken end
+        const depth = (rung.y - Y_START) / (unravelBoundaryY - Y_START);
+        const esc1  = 70 * (1 - depth) + 14;
+        const r1    = 7 + (1 - depth) * 5;
 
-        // Strand-1-side dot drifts upward-left
-        driftDots.push({
-            cx: rung.x1 - escape * 0.85,
-            cy: rung.y  - escape * 0.55,
-            r: dotR,
-            fromX: rung.x1, fromY: rung.y,
-        });
-        // Strand-2-side dot drifts downward-right
-        driftDots.push({
-            cx: rung.x2 + escape * 0.75,
-            cy: rung.y  + escape * 0.50,
-            r: dotR - 1.5,
-            fromX: rung.x2, fromY: rung.y,
-        });
+        const p1L: Dot = { cx: rung.x1 - esc1 * 0.90, cy: rung.y - esc1 * 0.58, r: r1,       fx: rung.x1, fy: rung.y };
+        const p1R: Dot = { cx: rung.x2 + esc1 * 0.82, cy: rung.y + esc1 * 0.52, r: r1 - 1.5, fx: rung.x2, fy: rung.y };
+        driftDots.push(p1L, p1R);
+
+        if (i < 6) {
+            const esc2 = esc1 * 1.65;
+            const r2   = r1 * 0.55;
+            driftDots2.push(
+                { cx: p1L.cx - esc2 * 0.70, cy: p1L.cy - esc2 * 0.80, r: r2,       fx: p1L.cx, fy: p1L.cy },
+                { cx: p1R.cx + esc2 * 0.62, cy: p1R.cy + esc2 * 0.72, r: r2 * 0.8, fx: p1R.cx, fy: p1R.cy },
+            );
+        }
     });
 
-    return {
-        pts1: pts1.join(' '),
-        pts2: pts2.join(' '),
-        rungs,
-        driftDots,
-        unravelBoundaryY,
-    };
+    let s = '';
+
+    // Rung connector lines
+    s += '<g opacity="0.09">';
+    for (const r of rungs) {
+        s += `<line x1="${r.x1.toFixed(1)}" y1="${r.y}" x2="${r.x2.toFixed(1)}" y2="${r.y}" stroke="var(--accent-2)" stroke-width="1.4" stroke-linecap="round"/>`;
+    }
+    s += '</g>';
+
+    // Gold base-pair dots
+    s += `<g filter="url(#${glowSm})">`;
+    for (const r of rungs) {
+        const inU  = r.inUnravelZone;
+        const dotR = inU ? 3.2 : 4.6;
+        const opac = r.front ? (inU ? 0.28 : 0.52) : (inU ? 0.10 : 0.18);
+        s += `<g opacity="${opac}">`;
+        s += `<circle cx="${r.x1.toFixed(1)}" cy="${r.y}" r="${dotR}" fill="var(--accent-2)"/>`;
+        s += `<circle cx="${r.x2.toFixed(1)}" cy="${r.y}" r="${dotR}" fill="var(--accent-2)"/>`;
+        s += '</g>';
+    }
+    s += '</g>';
+
+    // Tether lines: strand → primary drift dot
+    s += '<g stroke="var(--accent-2)" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="2 5" opacity="0.22">';
+    for (const d of driftDots) {
+        s += `<line x1="${d.fx.toFixed(1)}" y1="${d.fy.toFixed(1)}" x2="${d.cx.toFixed(1)}" y2="${d.cy.toFixed(1)}"/>`;
+    }
+    s += '</g>';
+
+    // Tether lines: primary → secondary drift dot
+    s += '<g stroke="var(--accent-2)" stroke-width="0.65" stroke-linecap="round" stroke-dasharray="1.5 6" opacity="0.13">';
+    for (const d of driftDots2) {
+        s += `<line x1="${d.fx.toFixed(1)}" y1="${d.fy.toFixed(1)}" x2="${d.cx.toFixed(1)}" y2="${d.cy.toFixed(1)}"/>`;
+    }
+    s += '</g>';
+
+    // Primary drift dots
+    s += `<g filter="url(#${glowMd})">`;
+    for (const d of driftDots) {
+        s += `<circle cx="${d.cx.toFixed(1)}" cy="${d.cy.toFixed(1)}" r="${d.r.toFixed(2)}" fill="var(--accent-2)" opacity="0.40"/>`;
+    }
+    s += '</g>';
+
+    // Secondary drift dots
+    s += `<g filter="url(#${glowLg})">`;
+    for (const d of driftDots2) {
+        s += `<circle cx="${d.cx.toFixed(1)}" cy="${d.cy.toFixed(1)}" r="${d.r.toFixed(2)}" fill="var(--accent-2)" opacity="0.35"/>`;
+    }
+    s += '</g>';
+
+    return s;
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function BioBackground() {
-    const uid      = useId().replace(/:/g, '');
-    const glowSm   = `glow-sm-${uid}`;
-    const glowLg   = `glow-lg-${uid}`;
-    const fadeGrad = `strand-fade-${uid}`;
+    const strand1Ref = useRef<SVGPolylineElement>(null);
+    const strand2Ref = useRef<SVGPolylineElement>(null);
+    const tube1Ref   = useRef<SVGPolylineElement>(null);
+    const tube2Ref   = useRef<SVGPolylineElement>(null);
+    const dynamicRef = useRef<SVGGElement>(null);
+    const rafRef     = useRef<number>(0);
+    const startRef   = useRef<number | null>(null);
+    const frameRef   = useRef<number>(0);
 
-    const helix = useMemo(() => buildHelix(), []);
+    const uid      = useId().replace(/:/g, '');
+    const glowSm   = `g-sm-${uid}`;
+    const glowMd   = `g-md-${uid}`;
+    const glowLg   = `g-lg-${uid}`;
+    const fadeGrad = `sfade-${uid}`;
+
+    // Stable string refs so the rAF closure never captures stale filter IDs
+    const glowSmRef = useRef(glowSm);
+    const glowMdRef = useRef(glowMd);
+    const glowLgRef = useRef(glowLg);
+
+    useEffect(() => {
+        function tick(ts: number) {
+            if (startRef.current === null) startRef.current = ts;
+            const phase = (2 * Math.PI * (ts - startRef.current)) / PHASE_PERIOD_MS;
+            const [p1, p2] = buildBackbone(phase);
+
+            strand1Ref.current?.setAttribute('points', p1);
+            strand2Ref.current?.setAttribute('points', p2);
+            tube1Ref.current?.setAttribute('points', p1);
+            tube2Ref.current?.setAttribute('points', p2);
+
+            // Update rungs/dots/tethers at ~30 fps (every 2nd frame)
+            frameRef.current++;
+            if (frameRef.current % 2 === 0 && dynamicRef.current) {
+                dynamicRef.current.innerHTML = buildDynamicSVG(
+                    phase,
+                    glowSmRef.current,
+                    glowMdRef.current,
+                    glowLgRef.current,
+                );
+            }
+
+            rafRef.current = requestAnimationFrame(tick);
+        }
+
+        rafRef.current = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(rafRef.current);
+    }, []);
+
+    // Build initial backbone points for SSR/first paint
+    let initP1 = '';
+    let initP2 = '';
+    for (let y = Y_START; y <= Y_END; y += 2) {
+        const a = (2 * Math.PI * y) / PERIOD;
+        const A = amplitudeAt(y);
+        const s = Math.sin(a);
+        initP1 += `${(HELIX_CX + A * s).toFixed(1)},${y} `;
+        initP2 += `${(HELIX_CX - A * s).toFixed(1)},${y} `;
+    }
 
     return (
         <svg
@@ -138,128 +236,54 @@ export default function BioBackground() {
             }}
         >
             <defs>
-                {/* Small glow — for regular base-pair dots */}
-                <filter id={glowSm} x="-80%" y="-80%" width="260%" height="260%">
-                    <feGaussianBlur stdDeviation="2.8" result="blur" in="SourceGraphic" />
-                    <feMerge>
-                        <feMergeNode in="blur" />
-                        <feMergeNode in="SourceGraphic" />
-                    </feMerge>
+                <filter id={glowSm} x="-80%"  y="-80%"  width="260%" height="260%">
+                    <feGaussianBlur stdDeviation="2.5" result="blur" in="SourceGraphic" />
+                    <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                </filter>
+                <filter id={glowMd} x="-120%" y="-120%" width="340%" height="340%">
+                    <feGaussianBlur stdDeviation="5"   result="blur" in="SourceGraphic" />
+                    <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                </filter>
+                <filter id={glowLg} x="-180%" y="-180%" width="460%" height="460%">
+                    <feGaussianBlur stdDeviation="9"   result="blur" in="SourceGraphic" />
+                    <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                 </filter>
 
-                {/* Large glow — for drifting/escaping dots at the unraveling end */}
-                <filter id={glowLg} x="-150%" y="-150%" width="400%" height="400%">
-                    <feGaussianBlur stdDeviation="6" result="blur" in="SourceGraphic" />
-                    <feMerge>
-                        <feMergeNode in="blur" />
-                        <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                </filter>
-
-                {/*
-                  Vertical gradient in LOCAL (pre-rotation) space.
-                  Fades the backbone strands to transparent at the unraveling end (top)
-                  so they naturally dissolve as they break apart.
-                */}
-                <linearGradient
-                    id={fadeGrad}
-                    x1="0" y1={`${Y_START}`}
-                    x2="0" y2={`${Y_END}`}
-                    gradientUnits="userSpaceOnUse"
-                >
+                <linearGradient id={fadeGrad} x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
                     <stop offset="0%"   stopColor="var(--accent)" stopOpacity="0"    />
-                    <stop offset="18%"  stopColor="var(--accent)" stopOpacity="0.18" />
-                    <stop offset="42%"  stopColor="var(--accent)" stopOpacity="0.28" />
-                    <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.22" />
+                    <stop offset="20%"  stopColor="var(--accent)" stopOpacity="0.17" />
+                    <stop offset="46%"  stopColor="var(--accent)" stopOpacity="0.26" />
+                    <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.21" />
                 </linearGradient>
             </defs>
 
-            {/*
-              The whole helix is rotated -32° around the page centre
-              so it runs diagonally from bottom-right (compact) to top-left (unraveling),
-              matching the reference image's composition.
-            */}
-            <g
-                transform={`rotate(-32 ${W / 2} ${H / 2})`}
-                className="bio-helix-group"
-            >
-                {/* ── Teal sugar-phosphate backbones ── */}
-                {/* Gradient stroke fades the strands out at the unraveling end */}
-                <polyline
-                    points={helix.pts1}
-                    fill="none"
-                    stroke={`url(#${fadeGrad})`}
-                    strokeWidth="2.8"
-                    strokeLinecap="round"
-                />
-                <polyline
-                    points={helix.pts2}
-                    fill="none"
-                    stroke={`url(#${fadeGrad})`}
-                    strokeWidth="2.8"
-                    strokeLinecap="round"
-                />
+            <g transform={`rotate(-32 ${W / 2} ${H / 2})`} className="bio-helix-group">
 
-                {/* ── Rung connector lines (very faint gold) ── */}
-                <g opacity="0.1">
-                    {helix.rungs.map((r, i) => (
-                        <line
-                            key={i}
-                            x1={r.x1} y1={r.y}
-                            x2={r.x2} y2={r.y}
-                            stroke="var(--accent-2)"
-                            strokeWidth="1.4"
-                            strokeLinecap="round"
-                        />
+                {/* Luminous glow tubes */}
+                <polyline ref={tube1Ref} points={initP1} fill="none"
+                    stroke="var(--accent)" strokeWidth="12" opacity="0.055"
+                    filter={`url(#${glowSm})`} />
+                <polyline ref={tube2Ref} points={initP2} fill="none"
+                    stroke="var(--accent)" strokeWidth="12" opacity="0.055"
+                    filter={`url(#${glowSm})`} />
+
+                {/* Teal backbone strands */}
+                <polyline ref={strand1Ref} points={initP1} fill="none"
+                    stroke={`url(#${fadeGrad})`} strokeWidth="3" strokeLinecap="round" />
+                <polyline ref={strand2Ref} points={initP2} fill="none"
+                    stroke={`url(#${fadeGrad})`} strokeWidth="3" strokeLinecap="round" />
+
+                {/* Rungs, dots, tethers and drift dots — all phase-animated */}
+                <g ref={dynamicRef} />
+
+                {/* Sparkle accents — position-stable, only opacity animates */}
+                <g filter={`url(#${glowLg})`} className="bio-sparkles">
+                    {SPARKLES.map((s, i) => (
+                        <circle key={i} cx={s.cx} cy={s.cy} r={s.r}
+                            fill="var(--accent-2)" opacity="0.55" />
                     ))}
                 </g>
 
-                {/* ── Gold base-pair dots — the "steps" of the ladder ── */}
-                <g filter={`url(#${glowSm})`} className="bio-dots">
-                    {helix.rungs.map((r, i) => {
-                        // Dots in the unravel zone are smaller and fainter (dissolving)
-                        const scale   = r.inUnravelZone ? 0.72 : 1;
-                        const opacity = r.front
-                            ? (r.inUnravelZone ? 0.28 : 0.50)
-                            : (r.inUnravelZone ? 0.10 : 0.18);
-                        const dotR = 4.5 * scale;
-                        return (
-                            <g key={i} opacity={opacity}>
-                                <circle cx={r.x1} cy={r.y} r={dotR} fill="var(--accent-2)" />
-                                <circle cx={r.x2} cy={r.y} r={dotR} fill="var(--accent-2)" />
-                            </g>
-                        );
-                    })}
-                </g>
-
-                {/* ── Tether lines from escaped dots back to the strand ── */}
-                <g
-                    stroke="var(--accent-2)"
-                    strokeWidth="1"
-                    strokeDasharray="2 5"
-                    strokeLinecap="round"
-                    opacity="0.18"
-                >
-                    {helix.driftDots.map((d, i) => (
-                        <line
-                            key={i}
-                            x1={d.fromX} y1={d.fromY}
-                            x2={d.cx}   y2={d.cy}
-                        />
-                    ))}
-                </g>
-
-                {/* ── Escaped / drifting nucleotide dots (stronger glow) ── */}
-                <g filter={`url(#${glowLg})`} className="bio-dots-float">
-                    {helix.driftDots.map((d, i) => (
-                        <circle
-                            key={i}
-                            cx={d.cx} cy={d.cy} r={d.r}
-                            fill="var(--accent-2)"
-                            opacity="0.38"
-                        />
-                    ))}
-                </g>
             </g>
         </svg>
     );

@@ -98,6 +98,17 @@ services:
       - app-network
 
   ###############################################
+  # Redis — broker + result backend for Celery
+  ###############################################
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  ###############################################
   # FastAPI microservice for matrix analysis
   ###############################################
   matrix-analyzer:
@@ -125,7 +136,43 @@ services:
 
       INTERNAL_SECRET: ${INTERNAL_SECRET}
 
+      REDIS_URL: redis://redis:6379/0
+
     depends_on:
+      - minio
+      - phylogeny-app
+      - redis
+    networks:
+      - app-network
+
+  ###############################################
+  # Celery worker for async phylo pipeline jobs
+  ###############################################
+  matrix-analyzer-worker:
+    build:
+      context: ./matrix-analyzer
+      dockerfile: Dockerfile
+    container_name: matrix-analyzer-worker
+    command: celery -A app.celery_app.celery_app worker --loglevel=info --concurrency=2
+    environment:
+      MINIO_ENDPOINT: ${MINIO_ENDPOINT}
+      MINIO_PORT: ${MINIO_PORT}
+      MINIO_SECURE: false
+
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+
+      MINIO_MATRIX_BUCKET: ${MINIO_MATRIX_BUCKET}
+      MINIO_VISUALIZATION_BUCKET: ${MINIO_VISUALIZATION_BUCKET}
+
+      NEST_API_URL: ${NEST_HOST}:${NEST_PORT}
+
+      INTERNAL_SECRET: ${INTERNAL_SECRET}
+
+      REDIS_URL: redis://redis:6379/0
+
+    depends_on:
+      - redis
       - minio
       - phylogeny-app
     networks:

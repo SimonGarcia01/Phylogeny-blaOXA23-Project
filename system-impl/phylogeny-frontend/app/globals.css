@@ -279,40 +279,171 @@ button {
 	z-index: 1;
 }
 
-/* DNA helix group — very slow opacity breathe */
+/* Helix group — very slow opacity breathe */
 .bio-helix-group {
-	animation: bio-breathe 10s ease-in-out infinite alternate;
+	animation: bio-breathe 11s ease-in-out infinite alternate;
 	will-change: opacity;
 }
 @keyframes bio-breathe {
-	from { opacity: 0.80; }
+	from { opacity: 0.78; }
 	to   { opacity: 1.00; }
 }
 
-/* Regular base-pair dots — slow glow pulse */
+/* Regular base-pair dots */
 .bio-dots {
 	animation: bio-dots-pulse 7s ease-in-out infinite alternate;
 	will-change: opacity;
 }
 @keyframes bio-dots-pulse {
-	from { opacity: 0.75; }
+	from { opacity: 0.72; }
 	to   { opacity: 1.00; }
 }
 
-/* Drifting nucleotide dots at the unraveling end — offset phase for shimmer */
+/* Primary drift dots — offset phase */
 .bio-dots-float {
-	animation: bio-float-pulse 5s ease-in-out 1.5s infinite alternate;
+	animation: bio-float-pulse 5s ease-in-out 1.2s infinite alternate;
 	will-change: opacity;
 }
 @keyframes bio-float-pulse {
-	from { opacity: 0.65; }
+	from { opacity: 0.62; }
 	to   { opacity: 1.00; }
+}
+
+/* Secondary drift dots */
+.bio-dots-float2 {
+	animation: bio-float-pulse 5s ease-in-out 2.4s infinite alternate;
+	will-change: opacity;
+}
+
+/* Sparkle accents — different cadence */
+.bio-sparkles {
+	animation: bio-sparkle-pulse 9s ease-in-out 3.5s infinite alternate;
+	will-change: opacity;
+}
+@keyframes bio-sparkle-pulse {
+	from { opacity: 0.55; }
+	to   { opacity: 0.95; }
 }
 
 /* Table inside .card — strip the table's own border/radius to avoid double border */
 .card table {
 	border: none;
 	border-radius: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ADMIN — ROLES / PERMISSIONS / USERS
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Role cards grid */
+.role-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	gap: 1rem;
+}
+
+.role-card {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	padding: 1.25rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+	transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.role-card:hover {
+	border-color: var(--accent);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.role-card-name {
+	font-weight: 600;
+	font-size: 1rem;
+	color: var(--ink);
+}
+
+.role-card-desc {
+	font-size: 0.83rem;
+	color: var(--ink-muted);
+	flex: 1;
+	min-height: 1.2em;
+}
+
+.role-card-footer {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 0.4rem;
+	padding-top: 0.75rem;
+	border-top: 1px solid var(--border);
+}
+
+/* Permission chip grid */
+.perm-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.perm-chip {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.28rem 0.75rem;
+	border-radius: 999px;
+	font-size: 0.75rem;
+	font-family: var(--font-mono);
+	font-weight: 500;
+	cursor: pointer;
+	border: 1.5px solid var(--border);
+	background: transparent;
+	color: var(--ink-muted);
+	transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+	user-select: none;
+	line-height: 1;
+}
+
+.perm-chip:hover {
+	border-color: var(--accent);
+	color: var(--accent);
+}
+
+.perm-chip-active {
+	background: var(--accent);
+	border-color: var(--accent);
+	color: #fff !important;
+}
+
+/* User avatar circle */
+.user-avatar {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background: color-mix(in srgb, var(--accent) 18%, transparent);
+	color: var(--accent);
+	font-size: 0.72rem;
+	font-weight: 700;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+}
+
+/* Inline name + avatar row */
+.user-name-cell {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+}
+
+/* Permissions description row in role detail */
+.perm-section-hint {
+	font-size: 0.82rem;
+	color: var(--ink-muted);
+	margin-bottom: 0.75rem;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -625,6 +756,7 @@ button {
 }
 
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-row > * { min-width: 0; }   /* prevent grid children from overflowing the cell */
 
 /* ═══════════════════════════════════════════════════════════════════
    BADGES
@@ -729,8 +861,11 @@ button {
 
 .auth-card {
 	width: 100%;
-	max-width: 440px;
-	background: var(--surface);
+	max-width: 520px;   /* wider so two-column form rows aren't cramped */
+	/* Glass — the helix behind the card stays visible */
+	background: color-mix(in srgb, var(--surface) 82%, transparent);
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
 	border: 1px solid var(--border);
 	border-radius: var(--radius-lg);
 	box-shadow: var(--shadow-lg);
