@@ -71,6 +71,11 @@ export class MinioService implements OnModuleInit {
         );
     }
 
+    async generatePresignedGetUrl(bucket: string, objectKey: string): Promise<string> {
+        const client: Minio.Client = this.getClient();
+        return await client.presignedGetObject(bucket, objectKey, 60 * 60);
+    }
+
     async deleteFile(bucket: string, objectKey: string): Promise<void> {
         const client: Minio.Client = this.getClient();
 

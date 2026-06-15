@@ -118,7 +118,9 @@ export class VisualizationsService {
             order: { createdAt: 'DESC' },
         });
 
-        return visualizations.map((v) => new ResponseVisualizationListItemDto(v.visualizationId, v.name, v.createdAt));
+        return visualizations.map(
+            (v) => new ResponseVisualizationListItemDto(v.visualizationId, v.name, v.createdAt, v.fileSize),
+        );
     }
 
     async findOne(visualizationId: string, user: User): Promise<ResponseVisualizationDetailDto> {
@@ -209,6 +211,29 @@ export class VisualizationsService {
         return new ResponseMessage(
             `The visualization with the name ${visualization.name} has been removed successfully (ID: ${visualizationId}).`,
         );
+    }
+
+    async getTreeUrl(visualizationId: string, user: User): Promise<{ url: string }> {
+        const visualization: Visualization | null = await this.visualizationRepository.findOne({
+            where: { visualizationId },
+            relations: ['user'],
+        });
+
+        if (!visualization) {
+            throw new NotFoundException(`The entered visualization ID ${visualizationId} wasn't found.`);
+        }
+
+        assertOwnership(visualization.user.id, user.id, 'visualization');
+
+        if (visualization.fileSize == null) {
+            throw new BusinessRuleViolationException('Visualization is not yet ready — analysis still in progress.');
+        }
+
+        const url: string = await this.minioService.generatePresignedGetUrl(
+            this.minioService.visualizationBucketName,
+            visualization.objectKey,
+        );
+        return { url };
     }
 
     // -----------------------------------------------------------------------

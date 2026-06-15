@@ -33,7 +33,7 @@ export class RolesService {
     async findAll(): Promise<ResponseRoleDto[]> {
         const roles: Role[] = await this.roleRepository.find();
 
-        return roles.map((r) => new ResponseRoleDto(r.name, r.description));
+        return roles.map((r) => new ResponseRoleDto(r.id, r.name, r.description));
     }
 
     async findOne(roleId: number): Promise<ResponseRoleDto> {
@@ -46,7 +46,7 @@ export class RolesService {
 
         const permissions: string[] = role.rolesPermissions?.map((rp) => rp.permission.name) ?? [];
 
-        return new ResponseRoleDto(role.name, role.description, permissions);
+        return new ResponseRoleDto(role.id, role.name, role.description, permissions);
     }
 
     async update(roleId: number, updateRoleDto: UpdateRoleDto): Promise<ResponseMessage> {

@@ -90,6 +90,8 @@ services:
     container_name: phylogeny-frontend
     ports:
       - "3000:3000"
+    environment:
+      INTERNAL_API_URL: http://phylogeny-app:3001
     depends_on:
       - phylogeny-app
     networks:

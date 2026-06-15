@@ -1,5 +1,6 @@
 'use client';
 
+import Sidebar from '@/components/Sidebar/Sidebar';
 import { useAuthStore } from '@/stores/auth.store';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -19,5 +20,10 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
 		return null;
 	}
 
-	return <>{children}</>;
+	return (
+		<div style={{ display: 'flex' }}>
+			<Sidebar />
+			<div style={{ flex: 1, padding: '1rem' }}>{children}</div>
+		</div>
+	);
 }

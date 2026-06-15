@@ -35,7 +35,7 @@ export class PermissionsService {
     async findAll(): Promise<ResponsePermissionDto[]> {
         const permissions: Permission[] = await this.permissionRepository.find();
 
-        return permissions.map((p) => new ResponsePermissionDto(p.name, p.description));
+        return permissions.map((p) => new ResponsePermissionDto(p.id, p.name, p.description));
     }
 
     async findOne(permissionId: number): Promise<ResponsePermissionDto> {
@@ -43,7 +43,7 @@ export class PermissionsService {
 
         if (!permission) throw new NotFoundException(`The entered permission ID ${permissionId} wasn't found.`);
 
-        return new ResponsePermissionDto(permission.name, permission.description);
+        return new ResponsePermissionDto(permission.id, permission.name, permission.description);
     }
 
     async update(permissionId: number, updatePermissionDto: UpdatePermissionDto): Promise<ResponseMessage> {

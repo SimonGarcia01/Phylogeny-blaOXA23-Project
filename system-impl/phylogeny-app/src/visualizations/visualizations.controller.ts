@@ -56,6 +56,15 @@ export class VisualizationsController {
         return await this.visualizationsService.remove(id, user);
     }
 
+    @Get(':id/tree-url')
+    @Permissions('VISUALIZATIONS_READ')
+    async getTreeUrl(
+        @Param('id', ParseUUIDPipe) id: string,
+        @CurrentUser() user: User,
+    ): Promise<{ url: string }> {
+        return await this.visualizationsService.getTreeUrl(id, user);
+    }
+
     @Patch(':id/finalize')
     @Internal()
     @UseGuards(InternalSecretGuard)

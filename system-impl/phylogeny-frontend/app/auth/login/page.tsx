@@ -1,6 +1,7 @@
 'use client';
 
 import { AuthResponse } from '@/interfaces/auth.interfaces';
+import { getApiError } from '@/libs/errors';
 import authService from '@/services/auth.service';
 import { useAuthStore } from '@/stores/auth.store';
 import Link from 'next/link';
@@ -11,6 +12,7 @@ export default function Page() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState('');
 
 	const router = useRouter();
 
@@ -19,6 +21,7 @@ export default function Page() {
 
 	async function handleLogin(event: React.SubmitEvent<HTMLFormElement>): Promise<void> {
 		event.preventDefault();
+		setError('');
 
 		try {
 			setLoading(true);
@@ -30,8 +33,8 @@ export default function Page() {
 
 			// Redirect to personal dashboard
 			router.push('/dashboard');
-		} catch (error) {
-			console.error('Login failed:', error);
+		} catch (err) {
+			setError(getApiError(err));
 		} finally {
 			setLoading(false);
 		}
@@ -40,6 +43,7 @@ export default function Page() {
 	return (
 		<div>
 			<h2>Login</h2>
+			{error && <p style={{ color: 'red' }}>{error}</p>}
 			<form onSubmit={handleLogin}>
 				<label htmlFor="email">Email:</label>
 				<input

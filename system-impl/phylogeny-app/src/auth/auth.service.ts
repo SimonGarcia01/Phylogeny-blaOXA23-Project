@@ -46,7 +46,7 @@ export class AuthService {
         const payload = { sub: user.id, email: user.email, permissions };
 
         const accessToken = this.jwtService.sign(payload);
-        const responseUser = new ResponseUserDto(user.email, user.firstName, user.lastName, user.role.name);
+        const responseUser = new ResponseUserDto(user.id, user.email, user.firstName, user.lastName, user.role.name);
 
         return new AuthResponseDto(accessToken, responseUser);
     }
@@ -78,6 +78,7 @@ export class AuthService {
 
         const accessToken = this.jwtService.sign(payload);
         const responseUser = new ResponseUserDto(
+            savedUser.id,
             savedUser.email,
             savedUser.firstName,
             savedUser.lastName,
