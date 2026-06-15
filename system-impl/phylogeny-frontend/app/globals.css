@@ -263,6 +263,52 @@ button {
 	}
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   BIO BACKGROUND COMPONENT
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Wrapper for any page that uses BioBackground */
+.bio-page {
+	position: relative;
+	overflow: hidden;
+}
+
+/* Lifts direct content children above the SVG layer */
+.bio-page-content {
+	position: relative;
+	z-index: 1;
+}
+
+/* DNA helix group — very slow opacity breathe */
+.bio-helix-group {
+	animation: bio-breathe 10s ease-in-out infinite alternate;
+	will-change: opacity;
+}
+@keyframes bio-breathe {
+	from { opacity: 0.80; }
+	to   { opacity: 1.00; }
+}
+
+/* Regular base-pair dots — slow glow pulse */
+.bio-dots {
+	animation: bio-dots-pulse 7s ease-in-out infinite alternate;
+	will-change: opacity;
+}
+@keyframes bio-dots-pulse {
+	from { opacity: 0.75; }
+	to   { opacity: 1.00; }
+}
+
+/* Drifting nucleotide dots at the unraveling end — offset phase for shimmer */
+.bio-dots-float {
+	animation: bio-float-pulse 5s ease-in-out 1.5s infinite alternate;
+	will-change: opacity;
+}
+@keyframes bio-float-pulse {
+	from { opacity: 0.65; }
+	to   { opacity: 1.00; }
+}
+
 /* Table inside .card — strip the table's own border/radius to avoid double border */
 .card table {
 	border: none;

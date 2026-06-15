@@ -1,5 +1,6 @@
 'use client';
 
+import BioBackground from '@/components/BioBackground/BioBackground';
 import { AuthResponse } from '@/interfaces/auth.interfaces';
 import { getApiError } from '@/libs/errors';
 import authService from '@/services/auth.service';
@@ -35,8 +36,10 @@ export default function Page() {
 	}
 
 	return (
-		<div className="auth-wrapper">
-			<div className="auth-card">
+		<div className="bio-page auth-wrapper">
+			<BioBackground />
+
+			<div className="bio-page-content auth-card">
 				<div className="auth-logo">PhyloGen</div>
 				<h2 className="auth-title">Welcome back</h2>
 				<p className="auth-subtitle">Sign in to continue to your workspace</p>
