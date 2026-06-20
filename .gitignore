@@ -64,7 +64,6 @@ pids/
 *.pid
 
 # Lockfiles (don't ignore globally if you want them tracked; included for local-only workflows)
-package-lock.json
 pnpm-lock.yaml
 yarn.lock
 
