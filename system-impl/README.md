@@ -53,15 +53,15 @@ Browser
 
 ### How the services connect
 
-| Connection | Protocol | Notes |
-|---|---|---|
-| Frontend → NestJS | HTTP REST | All API calls use a Bearer JWT |
-| NestJS → PostgreSQL | TCP | TypeORM manages schema and migrations |
-| NestJS → MinIO | S3 API | Presigned PUT URLs for uploads; GET for tree downloads |
-| NestJS → FastAPI | HTTP POST | Protected by a shared `INTERNAL_SECRET` header |
-| FastAPI → Celery | Redis queue | `task.delay()` serialises the job to JSON and pushes it to Redis |
-| Celery worker → MinIO | S3 API | Downloads the alignment, uploads the result tree |
-| Celery worker → NestJS | HTTP (internal) | Reports PROCESSING / COMPLETED / FAILED status back |
+| Connection             | Protocol        | Notes                                                            |
+| ---------------------- | --------------- | ---------------------------------------------------------------- |
+| Frontend → NestJS      | HTTP REST       | All API calls use a Bearer JWT                                   |
+| NestJS → PostgreSQL    | TCP             | TypeORM manages schema and migrations                            |
+| NestJS → MinIO         | S3 API          | Presigned PUT URLs for uploads; GET for tree downloads           |
+| NestJS → FastAPI       | HTTP POST       | Protected by a shared `INTERNAL_SECRET` header                   |
+| FastAPI → Celery       | Redis queue     | `task.delay()` serialises the job to JSON and pushes it to Redis |
+| Celery worker → MinIO  | S3 API          | Downloads the alignment, uploads the result tree                 |
+| Celery worker → NestJS | HTTP (internal) | Reports PROCESSING / COMPLETED / FAILED status back              |
 
 ---
 
@@ -83,12 +83,12 @@ cp .env.example .env
 
 Open `.env` and change at minimum:
 
-| Variable | What to set |
-|---|---|
-| `JWT_SECRET` | Any long random string |
-| `INTERNAL_SECRET` | Any long random string (must match in both services) |
-| `DB_PASSWORD` | Database password |
-| `MINIO_ACCESS_KEY` / `MINIO_SECRET_KEY` | MinIO credentials |
+| Variable                                | What to set                                          |
+| --------------------------------------- | ---------------------------------------------------- |
+| `JWT_SECRET`                            | Any long random string                               |
+| `INTERNAL_SECRET`                       | Any long random string (must match in both services) |
+| `DB_PASSWORD`                           | Database password                                    |
+| `MINIO_ACCESS_KEY` / `MINIO_SECRET_KEY` | MinIO credentials                                    |
 
 The defaults in `.env.example` are safe for local development.
 
@@ -109,27 +109,27 @@ This builds all images and starts every container. The first boot may take a few
 On first run the database is empty. Trigger the seed endpoint once:
 
 ```bash
-curl -X POST http://localhost:3001/seed
+curl -X POST http://localhost:3001/seed/run
 ```
 
 This creates roles, permissions, and three example users (see below).
 
 ### 5. Open the application
 
-| URL | Service |
-|---|---|
-| `http://localhost:3000` | Web application (frontend) |
-| `http://localhost:3001` | NestJS REST API |
-| `http://localhost:8000/docs` | FastAPI interactive docs |
-| `http://localhost:9001` | MinIO web console |
+| URL                          | Service                    |
+| ---------------------------- | -------------------------- |
+| `http://localhost:3000`      | Web application (frontend) |
+| `http://localhost:3001`      | NestJS REST API            |
+| `http://localhost:8000/docs` | FastAPI interactive docs   |
+| `http://localhost:9001`      | MinIO web console          |
 
 ---
 
 ## Example users (created by seed)
 
-| Role | Email | Password |
-|---|---|---|
-| Admin | `admin@example.com` | `Admin123` |
+| Role       | Email                     | Password        |
+| ---------- | ------------------------- | --------------- |
+| Admin      | `admin@example.com`       | `Admin123`      |
 | Researcher | `researcher1@example.com` | `Researcher123` |
 | Researcher | `researcher2@example.com` | `Researcher123` |
 
@@ -141,6 +141,7 @@ This creates roles, permissions, and three example users (see below).
 ## Main functionalities
 
 ### For researchers
+
 - **Sign up / Log in** — JWT-based authentication with role-aware access control
 - **Upload a matrix** — get a presigned MinIO URL, upload the `.nex` alignment directly from the browser, then register the metadata
 - **Trigger phylogenetic analysis** — one click starts the full pipeline: model selection (JModelTest2) → ML tree + bootstrapping (RAxML-NG) → result stored in MinIO
@@ -149,7 +150,9 @@ This creates roles, permissions, and three example users (see below).
 - **Manage visualizations** — rename, re-link to a different matrix, or delete
 
 ### For admins
+
 Everything researchers can do, plus:
+
 - **User management** — create, edit, soft-delete users; assign roles
 - **Role & permission management** — create roles, define fine-grained permissions, assign them to roles
 - **Admin dashboard** — system-wide counts (total users, matrices, visualizations, requests today)
